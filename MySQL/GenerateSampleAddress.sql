@@ -1,14 +1,13 @@
 CREATE DEFINER=`root`@`localhost` PROCEDURE `GenerateSampleAddress`(
-	_StateCode CHAR(2),
+	_StateCode CHAR(2),
+    _CityName VARCHAR(100),
     _Gender CHAR(1)
 )
 BEGIN
 
 DECLARE _AddressNumber VARCHAR(5);
 DECLARE _StreetName VARCHAR(130);
-DECLARE _CityName VARCHAR(100);
 DECLARE _ZipCode CHAR(5);
-DECLARE _CountyName VARCHAR(100);
 DECLARE _MaxZipID INT;
 DECLARE _MaxAreaCodeID INT;
 DECLARE _AreaCode CHAR(3);
@@ -26,14 +25,13 @@ DROP TABLE IF EXISTS ZipsInState;
 CREATE TEMPORARY TABLE ZipsInState(
 	ID int not null auto_increment primary key,
     City varchar(100) not null,
-    County varchar(100) not null,
     Zip_Code char(5) not null,
     State char(2) not null);
     
-INSERT INTO ZipsInState(City, County, Zip_Code, State)
-SELECT City, County, Zip_Code, State
+INSERT INTO ZipsInState(City, Zip_Code, State)
+SELECT City, Zip_Code, State
 FROM zipcodes
-WHERE state = _StateCode;
+WHERE state = _StateCode AND city = _CityName;
 
 SELECT MAX(ID) INTO _MaxZipID FROM ZipsInState;
 
@@ -62,7 +60,7 @@ FROM streetnames AS mn
 	) AS rid ON mn.ID = rid.RandID;
 
 #Select a zip code and extract all information with it.
-SELECT City, County, Zip_Code, State  INTO _CityName, _CountyName, _ZipCode, _StateCode
+SELECT City, Zip_Code, State  INTO _CityName, _ZipCode, _StateCode
 FROM ZipsInState AS mn
 	INNER JOIN (
 		SELECT ROUND((RAND() * _MaxZipID), 0) AS RandID
@@ -86,7 +84,6 @@ SELECT
     _CityName AS City,
     _StateCode AS State,
     _ZipCode AS Zip,
-    _CountyName AS County,
     _PhoneNumber AS Phone;
 
 END

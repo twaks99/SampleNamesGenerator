@@ -1,8 +1,8 @@
--- MySQL dump 10.13  Distrib 8.0.29, for Linux (x86_64)
+-- MySQL dump 10.13  Distrib 8.0.22, for Win64 (x86_64)
 --
 -- Host: localhost    Database: samplenames
 -- ------------------------------------------------------
--- Server version	8.0.32-0ubuntu0.22.04.2
+-- Server version	8.0.22
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
@@ -289,6 +289,10 @@ INSERT INTO `zipcodes` VALUES (22750,'79070','Perryton','TX',36.39,-100.8),(2275
 UNLOCK TABLES;
 
 --
+-- Dumping events for database 'samplenames'
+--
+
+--
 -- Dumping routines for database 'samplenames'
 --
 /*!50003 DROP FUNCTION IF EXISTS `GenerateRandomNumber` */;
@@ -521,19 +525,18 @@ DELIMITER ;
 /*!50003 SET character_set_results = utf8mb4 */ ;
 /*!50003 SET collation_connection  = utf8mb4_0900_ai_ci */ ;
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
-/*!50003 SET sql_mode              = 'ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION' */ ;
+/*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
 CREATE DEFINER=`root`@`localhost` PROCEDURE `GenerateSampleAddress`(
 	_StateCode CHAR(2),
+    _CityName VARCHAR(100),
     _Gender CHAR(1)
 )
 BEGIN
 
 DECLARE _AddressNumber VARCHAR(5);
 DECLARE _StreetName VARCHAR(130);
-DECLARE _CityName VARCHAR(100);
 DECLARE _ZipCode CHAR(5);
-DECLARE _CountyName VARCHAR(100);
 DECLARE _MaxZipID INT;
 DECLARE _MaxAreaCodeID INT;
 DECLARE _AreaCode CHAR(3);
@@ -551,14 +554,13 @@ DROP TABLE IF EXISTS ZipsInState;
 CREATE TEMPORARY TABLE ZipsInState(
 	ID int not null auto_increment primary key,
     City varchar(100) not null,
-    County varchar(100) not null,
     Zip_Code char(5) not null,
     State char(2) not null);
     
-INSERT INTO ZipsInState(City, County, Zip_Code, State)
-SELECT City, County, Zip_Code, State
+INSERT INTO ZipsInState(City, Zip_Code, State)
+SELECT City, Zip_Code, State
 FROM zipcodes
-WHERE state = _StateCode;
+WHERE state = _StateCode AND city = _CityName;
 
 SELECT MAX(ID) INTO _MaxZipID FROM ZipsInState;
 
@@ -587,7 +589,7 @@ FROM streetnames AS mn
 	) AS rid ON mn.ID = rid.RandID;
 
 #Select a zip code and extract all information with it.
-SELECT City, County, Zip_Code, State  INTO _CityName, _CountyName, _ZipCode, _StateCode
+SELECT City, Zip_Code, State  INTO _CityName, _ZipCode, _StateCode
 FROM ZipsInState AS mn
 	INNER JOIN (
 		SELECT ROUND((RAND() * _MaxZipID), 0) AS RandID
@@ -611,7 +613,6 @@ SELECT
     _CityName AS City,
     _StateCode AS State,
     _ZipCode AS Zip,
-    _CountyName AS County,
     _PhoneNumber AS Phone;
 
 END ;;
@@ -1091,4 +1092,4 @@ DELIMITER ;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2023-03-20  0:37:24
+-- Dump completed on 2023-03-31 13:27:33
