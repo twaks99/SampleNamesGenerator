@@ -11,17 +11,17 @@ const
   CommonLetters: array[0..19] of Char = ('A','B','C','D','E','F','G','H',
     'I','J','K','L','M','N','O','P','R','S','T','W');
 type
-	TNameMap = specialize TFPGMap<String, String>;
+  TNameMap = specialize TFPGMap<String, String>;
 
-	TSampleName = Class(TObject)
+  TSampleName = Class(TObject)
     constructor Create(id: Integer; fName, lName: String; mi, gndr : Char;
       email, address, city, state, zip, phone: String; bDate: TDateTime);
     constructor Create;
-	public
+  public
     ID : Integer;
-		FirstName : String;
-	  LastName : String;
-  	MI : Char;
+    FirstName : String;
+    LastName : String;
+    MI : Char;
     Gender: Char;
     Email: String;
     Address: String;
@@ -32,30 +32,30 @@ type
     BirthDate: TDateTime;
     Function BirthDateString : String;
     Function GenerateDictionary : TNameMap;
-	end;
+  end;
 
   TSampleNamesList = specialize TObjectList<TSampleName>;
 
   TZipCode = Class(TObject)
-		constructor Create(zip, city, state : String);
+    constructor Create(zip, city, state : String);
   public
-		ZipCode: String;
+    ZipCode: String;
     City: String;
     StateCode: String;
   end;
 
   TZipCodesList = specialize TObjectList<TZipCode>;
 
-	TSampleNamesGenerator = Class(TObject)
-		constructor Create(db: TSQLite3Connection);
-	public
-		StateCode: String;
+  TSampleNamesGenerator = Class(TObject)
+    constructor Create(db: TSQLite3Connection);
+  public
+    StateCode: String;
     City: String;
     NumRowsGenerate: Integer;
     function GenerateSampleSet(state, cityName: String; numRows, mdist, fdist: Integer; rdist: Boolean): TSampleNamesList;
-	private
+  private
     DBConnection : TSQLite3Connection;
-		DataRetrieveQuery : TSQLQuery;
+    DataRetrieveQuery : TSQLQuery;
     FemaleFirstNames: TStringList;
     MaleFirstNames: TStringList;
     LastNames: TStringList;
@@ -75,7 +75,7 @@ type
     procedure LoadLists;
     procedure GetAreaCodesForState(state: String);
     procedure RunQuery(Sql: TStringList);
-	end;
+  end;
 
 implementation
 
@@ -98,7 +98,7 @@ end;
 
 constructor TSampleName.Create;
 begin
-	self.ID:= 0;
+  self.ID:= 0;
   self.FirstName:= String.Empty;
   self.LastName:= String.Empty;
   self.MI:= ' ';
@@ -114,14 +114,14 @@ end;
 
 function TSampleName.BirthDateString : String;
 begin
-	Result := FormatDateTime('YYYY-MM-DD', BirthDate);
+  Result := FormatDateTime('YYYY-MM-DD', BirthDate);
 end;
 
 function TSampleName.GenerateDictionary : TNameMap;
 var
   nameDictionary : TNameMap;
 begin
-	nameDictionary := TNameMap.Create;
+  nameDictionary := TNameMap.Create;
   nameDictionary.Add('ID', self.ID.ToString);
   nameDictionary.Add('FirstName', self.FirstName);
   nameDictionary.Add('LastName', self.LastName);
@@ -134,7 +134,7 @@ begin
   nameDictionary.Add('ZipCode', self.ZipCode);
   nameDictionary.Add('PhoneNumber', self.PhoneNumber);
   nameDictionary.Add('BirthDate', self.BirthDateString);
-	Result := nameDictionary;
+  Result := nameDictionary;
 end;
 
 
@@ -147,9 +147,9 @@ end;
 
 constructor TSampleNamesGenerator.Create(db: TSQLite3Connection);
 begin
-	DBConnection:= db;
+  DBConnection:= db;
   DataRetrieveQuery := TSQLQuery.Create(Nil);
-	DataRetrieveQuery.DataBase := DBConnection;
+  DataRetrieveQuery.DataBase := DBConnection;
   DataRetrieveQuery.Transaction := DBConnection.Transaction;
   FemaleFirstNames := TStringList.Create;
   MaleFirstNames := TStringList.Create;
@@ -172,8 +172,8 @@ var
   i, genNumber, maleCntr, femaleCntr : Integer;
   gndr : Char;
 begin
-	StateCode:= state;
-	City:= cityName;
+  StateCode:= state;
+  City:= cityName;
   NumRowsGenerate:= numRows;
   CurrentRecordId := 0;
   RandomGenderDist := rdist;
@@ -186,11 +186,11 @@ begin
   for i := 1 to numRows do begin
     //Get Gender.
     if (RandomGenderDist) then begin
-	    genNumber:= Random(2);
+      genNumber:= Random(2);
       if (genNumber = 0) then
-  	    gndr := 'M'
+        gndr := 'M'
       else
-  	    gndr := 'F';
+        gndr := 'F';
     end
     else begin
       if (maleCntr < MaleCount) then begin
@@ -232,35 +232,35 @@ var
   SampleDate: TDateTime;
 begin
   SampleName := TSampleName.Create;
-	inc(CurrentRecordId);
+  inc(CurrentRecordId);
 
   //Get ID
   SampleName.ID:= CurrentRecordId;
   SampleName.Gender:= gender;
-	//First Name
+  //First Name
   if (gender = 'M') then begin
     genNumber := Random(MaleFirstNames.Count);
     SampleName.FirstName:= MaleFirstNames[genNumber];
   end
   else begin
-		genNumber := Random(FemaleFirstNames.Count);
+    genNumber := Random(FemaleFirstNames.Count);
     SampleName.FirstName:= FemaleFirstNames[genNumber];
   end;
-	//Last Name
+  //Last Name
   genNumber:= Random(LastNames.Count);
   SampleName.LastName:= LastNames[genNumber];
   //Middle Initial
   genNumber := Random(20);
   SampleName.MI:= CommonLetters[genNumber];
   //Email
-	genNumber:= Random(EmailDomains.Count);
+  genNumber:= Random(EmailDomains.Count);
   SampleName.Email := LowerCase(SampleName.FirstName[1]) + LowerCase(SampleName.LastName)
-  	+ IntToStr(GenerateRandomFixedDigitNumber(2)) + '@' + EmailDomains[genNumber];
+    + IntToStr(GenerateRandomFixedDigitNumber(2)) + '@' + EmailDomains[genNumber];
   //Address
   genNumber:= Random(StreetNames.Count);
   SampleName.Address:= IntToStr(GenerateRandomFixedDigitNumber(4)) + ' ' + StreetNames[genNumber];
   //City, State, Zip
-	genNumber:= Random(ZipCodes.Count);
+  genNumber:= Random(ZipCodes.Count);
   ZipCode := ZipCodes[genNumber];
   SampleName.City:= ZipCode.City;
   SampleName.StateCode:= ZipCode.StateCode;
@@ -269,10 +269,10 @@ begin
   GetAreaCodesForState(ZipCode.StateCode);
   genNumber:= Random(AreaCodes.Count);
   SampleName.PhoneNumber:= '(' + AreaCodes[genNumber] + ') ' + IntToStr(GenerateRandomFixedDigitNumber(3))
-  	+ '-' + IntToStr(GenerateRandomFixedDigitNumber(4));
+    + '-' + IntToStr(GenerateRandomFixedDigitNumber(4));
   //Birth Date
   Year:= CurrentYear - (20 + Random(76));
-	SampleDate:= EncodeDate(Year, 1, 1);
+  SampleDate:= EncodeDate(Year, 1, 1);
   SampleName.BirthDate:= SampleDate + Random(360);
   Result := SampleName;
 end;
@@ -282,7 +282,7 @@ var
   MaxLatt, MaxLong: Float;
   SqlList: TStringList;
 begin
-	//Get max lattitude & longitude for city
+  //Get max lattitude & longitude for city
   SqlList := TStringList.Create;
   SqlList.Add('SELECT MAX(LATTITUDE) AS Max_Lattitude, MAX(LONGITUDE) AS Max_Longitude ');
   SqlList.Add('FROM ZipCodes WHERE STATE = ''' + StateCode + ''' AND CITY = ''' + City + '''');
@@ -296,21 +296,21 @@ begin
 
   //Now get list of nearby zip codes.
   SqlList.Clear;
-	SqlList.Add('SELECT city, state, zip_code ');
-	SqlList.Add('FROM zipcodes ');
-	SqlList.Add('WHERE (lattitude > (' + FloatToStr(MaxLatt) + ' - 0.2) ');
-	SqlList.Add('	AND lattitude < (' + FloatToStr(MaxLatt) + ' + 0.2)) ');
-  SqlList.Add('	AND (longitude < (' + FloatToStr(MaxLong) + ' + 0.2) ');
-	SqlList.Add('	AND longitude > (' + FloatToStr(MaxLong) + ' - 0.2)) ');
-	SqlList.Add('ORDER BY state, city');
+  SqlList.Add('SELECT city, state, zip_code ');
+  SqlList.Add('FROM zipcodes ');
+  SqlList.Add('WHERE (lattitude > (' + FloatToStr(MaxLatt) + ' - 0.2) ');
+  SqlList.Add('  AND lattitude < (' + FloatToStr(MaxLatt) + ' + 0.2)) ');
+  SqlList.Add('  AND (longitude < (' + FloatToStr(MaxLong) + ' + 0.2) ');
+  SqlList.Add('  AND longitude > (' + FloatToStr(MaxLong) + ' - 0.2)) ');
+  SqlList.Add('ORDER BY state, city');
   RunQuery(SqlList);
   ZipCodes.Clear;
   while (not DataRetrieveQuery.EOF) do begin
-		ZipCodes.Add(TZipCode.Create(
-			DataRetrieveQuery.FieldByName('zip_code').AsString,
-    	DataRetrieveQuery.FieldByName('city').AsString,
-    	DataRetrieveQuery.FieldByName('state').AsString));
-  	DataRetrieveQuery.Next;
+    ZipCodes.Add(TZipCode.Create(
+      DataRetrieveQuery.FieldByName('zip_code').AsString,
+      DataRetrieveQuery.FieldByName('city').AsString,
+      DataRetrieveQuery.FieldByName('state').AsString));
+    DataRetrieveQuery.Next;
   end;
   DataRetrieveQuery.Close;
 end;
@@ -319,17 +319,17 @@ procedure TSampleNamesGenerator.GetAreaCodesForState(state: String);
 var
   SqlList: TStringList;
 begin
-	if (not StateLoaded.Equals(state)) then begin
+  if (not StateLoaded.Equals(state)) then begin
     SqlList := TStringList.Create;
-		SqlList.Add('SELECT AREA_CODE FROM AreaCodes ');
-		SqlList.Add('WHERE STATE_CODE = ''' + state + ''' ');
-		RunQuery(SqlList);
-  	AreaCodes.Clear;
-	  while (not DataRetrieveQuery.EOF) do begin
-			AreaCodes.Add(DataRetrieveQuery.FieldByName('AREA_CODE').AsString);
-	  	DataRetrieveQuery.Next;
-  	end;
- 	 DataRetrieveQuery.Close;
+    SqlList.Add('SELECT AREA_CODE FROM AreaCodes ');
+    SqlList.Add('WHERE STATE_CODE = ''' + state + ''' ');
+    RunQuery(SqlList);
+    AreaCodes.Clear;
+    while (not DataRetrieveQuery.EOF) do begin
+      AreaCodes.Add(DataRetrieveQuery.FieldByName('AREA_CODE').AsString);
+      DataRetrieveQuery.Next;
+    end;
+    DataRetrieveQuery.Close;
    StateLoaded := state;
   end;
 end;
@@ -391,12 +391,12 @@ var
   baseNum, randSeed: Int64;
 begin
   if (numDigits = 1) then begin
-		Result := Random(10);
+    Result := Random(10);
   end
   else begin
-	  baseNum:= 10 ** (numDigits - 1);
-  	randSeed := (10 ** (numDigits)) - baseNum;
-	  Result := baseNum + Random(randSeed);
+    baseNum:= 10 ** (numDigits - 1);
+    randSeed := (10 ** (numDigits)) - baseNum;
+    Result := baseNum + Random(randSeed);
   end;
 end;
 
@@ -404,9 +404,9 @@ procedure TSampleNamesGenerator.RunQuery(Sql: TStringList);
 var
   i: Integer;
 begin
-	DataRetrieveQuery.Close;
+  DataRetrieveQuery.Close;
   DataRetrieveQuery.SQL.Clear;
-	for i := 0 to Sql.Count - 1 do begin
+  for i := 0 to Sql.Count - 1 do begin
     DataRetrieveQuery.SQL.Add(Sql[i]);
   end;
   DataRetrieveQuery.Open;

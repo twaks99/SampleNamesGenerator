@@ -90,7 +90,7 @@ implementation
 
 procedure TformMain.FormCreate(Sender: TObject);
 begin
-	connectionMain.DatabaseName := 'SampleNames.db';
+  connectionMain.DatabaseName := 'SampleNames.db';
   connectionMain.Open;
   queryStates.Open;
   SavedSettings := TSavedSettings.Create;
@@ -100,14 +100,14 @@ end;
 
 procedure TformMain.gridResultsDblClick(Sender: TObject);
 var
-	selectedIdx: Integer;
+  selectedIdx: Integer;
   sampleName: TSampleName;
 begin
-	selectedIdx:= gridResults.Selection.Top - 1;
+  selectedIdx:= gridResults.Selection.Top - 1;
   if (selectedIdx > 0) then begin
-		sampleName := SampleNamesList[selectedIdx];
-  	NameDetailForm.SetNameRecord(sampleName);
-	  NameDetailForm.ShowModal;
+    sampleName := SampleNamesList[selectedIdx];
+    NameDetailForm.SetNameRecord(sampleName);
+    NameDetailForm.ShowModal;
   end;
 end;
 
@@ -117,10 +117,10 @@ var
   clipTxt, crlf : String;
   colnum, selectedIdx : Integer;
 begin
-	if (radiogroupDelimeter.Items[radiogroupDelimeter.ItemIndex].Equals('Tab')) then
-  	delim := Chr(9)
+  if (radiogroupDelimeter.Items[radiogroupDelimeter.ItemIndex].Equals('Tab')) then
+    delim := Chr(9)
   else
-  	delim := ',';
+    delim := ',';
   crlf := Chr(13) + Chr(10);
   clipTxt := String.Empty;
   selectedIdx:= gridResults.Selection.Top;
@@ -158,11 +158,11 @@ end;
 
 procedure TformMain.menuItemShowDetailsClick(Sender: TObject);
 var
-	selectedIdx: Integer;
+  selectedIdx: Integer;
   sampleName: TSampleName;
 begin
-	selectedIdx:= gridResults.Selection.Top - 1;
-	sampleName := SampleNamesList[selectedIdx];
+  selectedIdx:= gridResults.Selection.Top - 1;
+  sampleName := SampleNamesList[selectedIdx];
   NameDetailForm.SetNameRecord(sampleName);
   NameDetailForm.ShowModal;
 end;
@@ -213,16 +213,16 @@ var
   randomGenderDist : Boolean;
 begin
   row_count:= Trim(txtNumRows.Text);
-	if ((comboStates.ItemIndex >= 0) and (comboCities.ItemIndex >= 0) and (not (row_count.Equals(String.Empty)))) then begin
-  	state_code := GetStateCodeFromCombo();
-	  city_name := comboCities.Items[comboCities.ItemIndex];
-  	num_rows := StrToInt(txtNumRows.Text);
+  if ((comboStates.ItemIndex >= 0) and (comboCities.ItemIndex >= 0) and (not (row_count.Equals(String.Empty)))) then begin
+    state_code := GetStateCodeFromCombo();
+    city_name := comboCities.Items[comboCities.ItemIndex];
+    num_rows := StrToInt(txtNumRows.Text);
     maleDist := spinMaleDist.Value;
     femaleDist := spinFemaleDist.Value;
     randomGenderDist := chkRandomGDist.Checked;
-	  SampleNamesList := SamplesGenerator.GenerateSampleSet(state_code, city_name, num_rows,
+    SampleNamesList := SamplesGenerator.GenerateSampleSet(state_code, city_name, num_rows,
       maleDist, femaleDist, randomGenderDist);
-		PopulateSampleNamesGrid;
+    PopulateSampleNamesGrid;
     SavedSettings.StateName:= GetStateCodeFromCombo;
     SavedSettings.CityName := city_name;
     SavedSettings.NumRows := num_rows;
@@ -230,8 +230,8 @@ begin
     SavedSettings.FemalePercentage := femaleDist;
     SavedSettings.RandomGenderDistribution := randomGenderDist;
   end
-	else begin
-		MessageDlg('Message', 'State, City, and Number of rows are required fields.', TMsgDlgType.mtInformation, [mbOK], '');
+  else begin
+    MessageDlg('Message', 'State, City, and Number of rows are required fields.', TMsgDlgType.mtInformation, [mbOK], '');
   end;
 end;
 
@@ -253,10 +253,10 @@ var
   clipTxt, crlf : String;
   rownum, colnum : Integer;
 begin
-	if (radiogroupDelimeter.Items[radiogroupDelimeter.ItemIndex].Equals('Tab')) then
-  	delim := Chr(9)
+  if (radiogroupDelimeter.Items[radiogroupDelimeter.ItemIndex].Equals('Tab')) then
+    delim := Chr(9)
   else
-  	delim := ',';
+    delim := ',';
   crlf := Chr(13) + Chr(10);
   clipTxt := String.Empty;
   //copy column header names.
@@ -293,7 +293,7 @@ var
   ExportFileName, ExportExt: String;
   colnum, rownum: Integer;
 begin
-	if dialogExport.Execute then begin
+  if dialogExport.Execute then begin
     //MessageDlg('Message', 'Filename: ' + savedlgExport.FileName, TMsgDlgType.mtInformation, [mbOK], '');
     if (dialogExport.FileName <> String.Empty) then begin
       ExportFileName := dialogExport.FileName;
@@ -308,7 +308,7 @@ begin
           ExportWs.WriteText(0, colnum, gridResults.Columns[colnum].Title.Caption);
           //HeaderCell := ExportWs.GetCell(0, colnum);
           ExportWs.WriteFontStyle(0, colnum, [fssBold]);
-  	    end;
+        end;
 
         //Set column widths.
         ExportWs.WriteColWidth(0, 0.4, TsSizeUnits.suInches, TsColWidthtype.cwtCustom);
@@ -325,9 +325,9 @@ begin
         ExportWs.WriteColWidth(11, 0.9, TsSizeUnits.suInches, TsColWidthtype.cwtCustom);
 
         rownum := 1;
-  	    while (rownum <= SampleNamesList.Count) do begin
+        while (rownum <= SampleNamesList.Count) do begin
           ExportWs.WriteNumber(rownum, 0, SampleNamesList[rownum - 1].ID);
-			    ExportWs.WriteText(rownum, 1, SampleNamesList[rownum - 1].FirstName);
+          ExportWs.WriteText(rownum, 1, SampleNamesList[rownum - 1].FirstName);
           ExportWs.WriteText(rownum, 2, SampleNamesList[rownum - 1].LastName);
           ExportWs.WriteText(rownum, 3, SampleNamesList[rownum - 1].MI);
           ExportWs.WriteText(rownum, 4, SampleNamesList[rownum - 1].Gender);
@@ -340,20 +340,20 @@ begin
           ExportWs.WriteDateTime(rownum, 11, SampleNamesList[rownum - 1].BirthDate);
 
           ExportWs.WriteNumberFormat(rownum, 10, TsNumberFormat.nfLongDate, 'YYYY-MM-DD');
-			    rownum:= rownum + 1;
+          rownum:= rownum + 1;
         end;
         //Save to file
-    	  if (ExportExt = '.xlsx') then begin
-	    	  ExportWb.WriteToFile(ExportFileName, fpsTypes.sfOOXML, true);
-	      end
-  	    else begin  //Otherwise, write to open document spreadsheet format
-    	    ExportWb.WriteToFile(ExportFileName, fpsTypes.sfOpenDocument, true);
-	      end;
+        if (ExportExt = '.xlsx') then begin
+          ExportWb.WriteToFile(ExportFileName, fpsTypes.sfOOXML, true);
+        end
+        else begin  //Otherwise, write to open document spreadsheet format
+          ExportWb.WriteToFile(ExportFileName, fpsTypes.sfOpenDocument, true);
+        end;
       end;
     end
     else begin
       MessageDlg('Message', 'A filename must be specified.', TMsgDlgType.mtInformation, [mbOK], '');
-		end;
+    end;
   end;
 
 end;
@@ -408,7 +408,7 @@ begin
     QueryStates.Next;
   end;
   if (SavedSettings.StateName <> String.Empty) then
-	  SetSavedStateName;
+    SetSavedStateName;
 end;
 
 procedure TformMain.SetSavedStateName;
@@ -469,10 +469,10 @@ begin
   gridResults.Clear;
   gridResults.RowCount := SampleNamesList.Count + 1;
   while (cnt < SampleNamesList.Count) do begin
-		gridResults.Cells[0, row_num] := IntToStr(SampleNamesList[cnt].ID);
+    gridResults.Cells[0, row_num] := IntToStr(SampleNamesList[cnt].ID);
     gridResults.Cells[1, row_num] := SampleNamesList[cnt].FirstName;
-		gridResults.Cells[2, row_num] := SampleNamesList[cnt].LastName;
-		gridResults.Cells[3, row_num] := SampleNamesList[cnt].MI;
+    gridResults.Cells[2, row_num] := SampleNamesList[cnt].LastName;
+    gridResults.Cells[3, row_num] := SampleNamesList[cnt].MI;
     gridResults.Cells[4, row_num] := SampleNamesList[cnt].Gender;
     gridResults.Cells[5, row_num] := SampleNamesList[cnt].Email;
     gridResults.Cells[6, row_num] := SampleNamesList[cnt].Address;

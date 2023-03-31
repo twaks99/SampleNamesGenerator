@@ -9,8 +9,8 @@ uses
   Buttons, fgl, Generics.Collections, GenerateSampleName, Clipbrd, savedsettings;
 
 const
-	SourceFields: array[0..11] of String = ('ID','FirstName','LastName','MI',
-  	'Gender','Email','Address','City','StateCode','ZipCode',
+  SourceFields: array[0..11] of String = ('ID','FirstName','LastName','MI',
+    'Gender','Email','Address','City','StateCode','ZipCode',
     'PhoneNumber','BirthDate');
   NumFields: Integer = 12;
 
@@ -46,7 +46,7 @@ type
     procedure PopulateColumnsGrid;
     procedure UpdateSavedSettings;
   private
-		namesList: TSampleNamesList;
+    namesList: TSampleNamesList;
     columnMapList: TColumnMapList;
     savedSettings: TSavedSettings;
   public
@@ -70,7 +70,7 @@ end;
 
 procedure TInsertStatementForm.FormCreate(Sender: TObject);
 begin
-	columnMapList := TColumnMapList.Create;
+  columnMapList := TColumnMapList.Create;
 end;
 
 procedure TInsertStatementForm.SetNamesList(listNames: TSampleNamesList; settings: TSavedSettings);
@@ -92,26 +92,26 @@ begin
   useSavedSettings := (savedSettings.SavedColumnMappings.Count > 0);
   //Populate the table name from the saved settings.
   if (useSavedSettings) then
-  	editTableName.Text := savedSettings.DBTableName;
+    editTableName.Text := savedSettings.DBTableName;
   //Populate the column mappings. Use the column names from the saved settings if defined.
-	while cnt < NumFields do begin
-		gridColumns.Cells[0, row_num] := SourceFields[cnt];
+  while cnt < NumFields do begin
+    gridColumns.Cells[0, row_num] := SourceFields[cnt];
     if (useSavedSettings) then begin
-			for i := 0 to savedSettings.SavedColumnMappings.Count -1 do begin
+      for i := 0 to savedSettings.SavedColumnMappings.Count -1 do begin
         thisSavedMapping := savedSettings.SavedColumnMappings[i];
         if (thisSavedMapping.SourceColumnName = SourceFields[cnt]) then begin
           gridColumns.Cells[1, row_num] := thisSavedMapping.DBColumnName;
           if (thisSavedMapping.UseMapping) then
-          	gridColumns.Cells[2, row_num] := '1'
-					else
-          	gridColumns.Cells[2, row_num] := '0';
+            gridColumns.Cells[2, row_num] := '1'
+          else
+            gridColumns.Cells[2, row_num] := '0';
           Break;
         end;
       end;
     end
     else begin
-	    gridColumns.Cells[1, row_num] := SourceFields[cnt];
-  	  gridColumns.Cells[2, row_num] := '1';
+      gridColumns.Cells[1, row_num] := SourceFields[cnt];
+      gridColumns.Cells[2, row_num] := '1';
     end;
     Inc(row_num);
     Inc(cnt);
@@ -120,7 +120,7 @@ end;
 
 procedure TInsertStatementForm.btnCloseClick(Sender: TObject);
 begin
-	self.Hide;
+  self.Hide;
 end;
 
 procedure TInsertStatementForm.btnCopyClipboardClick(Sender: TObject);
@@ -150,16 +150,16 @@ begin
     memoSelectedNames.Lines.Clear;
     for i := 1 to gridColumns.RowCount - 1 do begin
       if (gridColumns.Cells[2, i] = '1') then begin
-			  //memoSelectedNames.Lines.Add(gridColumns.Cells[1, i]);
-			  columnMapList.Add(TColumnMap.Create(gridColumns.Cells[0, i], gridColumns.Cells[1, i]));
+        //memoSelectedNames.Lines.Add(gridColumns.Cells[1, i]);
+        columnMapList.Add(TColumnMap.Create(gridColumns.Cells[0, i], gridColumns.Cells[1, i]));
       end;
     end;
 
-	  //Construct the header clause
+    //Construct the header clause
     insertClause:= 'INSERT INTO ' + tableName + '(';
     for i := 0 to columnMapList.Count - 1 do begin
       if (i > 0) then begin
-			  insertClause:= insertClause + ', ';
+        insertClause:= insertClause + ', ';
       end;
       insertClause:= insertClause + columnMapList[i].DBColumnName;
     end;
@@ -175,14 +175,14 @@ begin
         end;
         nameRecord := namesList[i].GenerateDictionary;
         sourceColName:= columnMapList[j].SourceColumnName;
-			  valuesClause := valuesClause + '''' + nameRecord[sourceColName] + '''';
+        valuesClause := valuesClause + '''' + nameRecord[sourceColName] + '''';
       end;
       valuesClause := valuesClause + ')';
       if (i = namesList.Count - 1) then begin
         valuesClause := valuesClause + ';';
       end
       else begin
-			  valuesClause := valuesClause + ',';
+        valuesClause := valuesClause + ',';
       end;
       memoSelectedNames.Lines.Add(valuesClause);
       nameRecord.Free;

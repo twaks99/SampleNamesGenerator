@@ -8,7 +8,7 @@ uses
   Classes, SysUtils, DOM, XMLRead, XMLWrite, Generics.Collections;
 
 const
-	SettingsFileName : String = 'savedsettings.xml';
+  SettingsFileName : String = 'savedsettings.xml';
 
 type
   TSavedColumnMapping = Class(TObject)
@@ -31,7 +31,7 @@ type
       MalePercentage : Integer;
       FemalePercentage : Integer;
       DBTableName : String;
-			SavedColumnMappings : TSavedColumnMappingList;
+      SavedColumnMappings : TSavedColumnMappingList;
       procedure SaveSettingsToFile;
     private
       procedure ReadSettingsFromFile;
@@ -56,19 +56,19 @@ begin
   MalePercentage := 0;
   FemalePercentage := 0;
   SavedColumnMappings := TSavedColumnMappingList.Create;
-	ReadSettingsFromFile;
+  ReadSettingsFromFile;
 end;
 
 procedure TSavedSettings.ReadSettingsFromFile;
 var
-	doc : TXMLDocument;
+  doc : TXMLDocument;
   fldListNode, fldItemNode : TDOMNode;
   sourceColumn, dbColumn, useMapStr, randomDistStr : String;
   useThisMap : Boolean;
 begin
   if (FileExists(SettingsFileName)) then begin
-	  ReadXMLFile(doc, SettingsFileName);
-	  StateName := doc.DocumentElement.FindNode('StateName').FirstChild.NodeValue;
+    ReadXMLFile(doc, SettingsFileName);
+    StateName := doc.DocumentElement.FindNode('StateName').FirstChild.NodeValue;
     CityName := doc.DocumentElement.FindNode('CityName').FirstChild.NodeValue;
     NumRows := StrToInt(doc.DocumentElement.FindNode('NumRecords').FirstChild.NodeValue);
     DBTableName := doc.DocumentElement.FindNode('DBTableName').FirstChild.NodeValue;
@@ -79,15 +79,15 @@ begin
       RandomGenderDistribution := false;
     MalePercentage := StrToInt(doc.DocumentElement.FindNode('MalePercentage').FirstChild.NodeValue);
     FemalePercentage := StrToInt(doc.DocumentElement.FindNode('FemalePercentage').FirstChild.NodeValue);
-	  //Get Fields List.
+    //Get Fields List.
     fldListNode := doc.DocumentElement.FindNode('FieldsList');
     fldItemNode := fldListNode.FirstChild;
     while Assigned(fldItemNode) do begin
-		  sourceColumn := fldItemNode.FindNode('SourceColumn').FirstChild.NodeValue;
+      sourceColumn := fldItemNode.FindNode('SourceColumn').FirstChild.NodeValue;
       dbColumn := fldItemNode.FindNode('DBColumn').FirstChild.NodeValue;
-		  useMapStr := fldItemNode.FindNode('UseMapping').FirstChild.NodeValue;
+      useMapStr := fldItemNode.FindNode('UseMapping').FirstChild.NodeValue;
       if (useMapStr = 'true') then
-    	  useThisMap := true
+        useThisMap := true
       else
         useThisMap := false;
       SavedColumnMappings.Add(TSavedColumnMapping.Create(sourceColumn, dbColumn, useThisMap));
@@ -96,7 +96,7 @@ begin
     doc.Free;
   end
   else begin
-	  StateName := String.Empty;
+    StateName := String.Empty;
     CityName := String.Empty;
     NumRows := 0;
     RandomGenderDistribution := true;
@@ -107,7 +107,7 @@ end;
 
 procedure TSavedSettings.SaveSettingsToFile;
 var
-	doc : TXMLDocument;
+  doc : TXMLDocument;
   rootNode, parentNode, txtValueNode, fldListNode, fldItemNode, itemNode : TDOMNode;
   i : Integer;
   useColStr : String;
