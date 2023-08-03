@@ -100,17 +100,20 @@ begin
   connectionMain.Open;
   queryStates.Open;
   SavedSettings := TSavedSettings.Create;
-  PopulateStatesCombo;
   SamplesGenerator := TSampleNamesGenerator.Create(connectionMain);
+  SelectSavedCountry;
+  PopulateStatesCombo;
 end;
 
 procedure TformMain.SelectSavedCountry;
 begin
   if (not String.IsNullOrEmpty(SavedSettings.CountryName)) then begin
+    countryCode := SavedSettings.CountryName;
     if (SavedSettings.CountryName = 'US') then
       comboCountry.ItemIndex := 0
     else
       comboCountry.ItemIndex := 1;
+    comboCountrySelect(self);
   end;
 end;
 
@@ -460,7 +463,7 @@ end;
 
 procedure TformMain.SetSavedStateName;
 var
-  savedStateCode, savedCityName : String;
+  savedStateCode, savedCityName, currentStateCode : String;
   idx : Integer;
 begin
   savedStateCode:= SavedSettings.StateName;
@@ -468,6 +471,7 @@ begin
   idx := 0;
   queryStates.First;
   while (not queryStates.EOF) do begin
+    currentStateCode := queryStates.FieldByName('state_code').AsString;
     if (queryStates.FieldByName('state_code').AsString = savedStateCode) then begin
       comboStates.ItemIndex:= idx;
       Break;

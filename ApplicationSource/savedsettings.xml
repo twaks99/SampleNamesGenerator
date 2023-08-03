@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <SavedSettings>
-  <CountryName>CA</CountryName>
-  <StateName>ON</StateName>
-  <CityName>Hamilton</CityName>
+  <CountryName>US</CountryName>
+  <StateName>CO</StateName>
+  <CityName>Aspen</CityName>
   <NumRecords>60</NumRecords>
   <DBTableName>customer_list</DBTableName>
   <RandomGenderDistribution>true</RandomGenderDistribution>
