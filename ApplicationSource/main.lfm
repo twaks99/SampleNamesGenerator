@@ -11,9 +11,9 @@ object formMain: TformMain
   OnCreate = FormCreate
   LCLVersion = '2.2.4.0'
   object comboStates: TComboBox
-    Left = 56
+    Left = 304
     Height = 23
-    Top = 8
+    Top = 9
     Width = 256
     AutoComplete = True
     AutoCompleteText = [cbactEnabled, cbactEndOfLineComplete, cbactSearchAscending]
@@ -22,25 +22,25 @@ object formMain: TformMain
     TabOrder = 0
   end
   object comboCities: TComboBox
-    Left = 400
+    Left = 608
     Height = 23
-    Top = 8
-    Width = 328
+    Top = 9
+    Width = 280
     AutoComplete = True
     AutoCompleteText = [cbactEnabled, cbactEndOfLineComplete, cbactSearchAscending]
     ItemHeight = 15
     TabOrder = 1
   end
   object lblState: TLabel
-    Left = 16
+    Left = 264
     Height = 15
-    Top = 9
+    Top = 8
     Width = 26
     Caption = 'State'
     ParentColor = False
   end
   object lblCities: TLabel
-    Left = 360
+    Left = 576
     Height = 15
     Top = 9
     Width = 21
@@ -120,17 +120,17 @@ object formMain: TformMain
     ParentColor = False
   end
   object txtNumRows: TEdit
-    Left = 832
+    Left = 848
     Height = 23
-    Top = 8
+    Top = 65
     Width = 64
     TabOrder = 2
     Text = '50'
   end
   object lblNumRows: TLabel
-    Left = 736
+    Left = 752
     Height = 15
-    Top = 9
+    Top = 66
     Width = 75
     Caption = 'Number Rows'
     ParentColor = False
@@ -372,6 +372,29 @@ object formMain: TformMain
       TabOrder = 2
     end
   end
+  object comboCountry: TComboBox
+    Left = 64
+    Height = 23
+    Top = 8
+    Width = 169
+    ItemHeight = 15
+    ItemIndex = 0
+    Items.Strings = (
+      'United States'
+      'Canada'
+    )
+    OnSelect = comboCountrySelect
+    TabOrder = 10
+    Text = 'United States'
+  end
+  object lblCountry: TLabel
+    Left = 16
+    Height = 15
+    Top = 8
+    Width = 43
+    Caption = 'Country'
+    ParentColor = False
+  end
   object connectionMain: TSQLite3Connection
     Connected = False
     LoginPrompt = False
@@ -390,10 +413,17 @@ object formMain: TformMain
       'select STATE_CODE, STATE_NAME'
       'from States'
       'where official_state = 1'
+      '  AND country_code = :Country'
       'order by state_name'
       ''
     )
-    Params = <>
+    Params = <    
+      item
+        DataType = ftString
+        Name = 'Country'
+        ParamType = ptInput
+        Value = 'US'
+      end>
     Macros = <>
     Left = 880
     Top = 544
@@ -409,9 +439,9 @@ object formMain: TformMain
     Database = connectionMain
     Transaction = transactionMain
     SQL.Strings = (
-      'select distinct city from zipcodes'
-      'where state = :state'
-      'order by city'
+      'SELECT DISTINCT city FROM zipcodes'
+      'WHERE state = :state'
+      'ORDER BY city'
       ''
     )
     Params = <    

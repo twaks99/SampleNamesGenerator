@@ -20,11 +20,13 @@ type
     btnClipboard: TBitBtn;
     btnExport: TBitBtn;
     chkRandomGDist: TCheckBox;
+    comboCountry: TComboBox;
     comboStates: TComboBox;
     comboCities: TComboBox;
     connectionMain: TSQLite3Connection;
     dialogExport: TSaveDialog;
     grpGenderDisttribution: TGroupBox;
+    lblCountry: TLabel;
     lblMaleDist: TLabel;
     lblFemaleDist: TLabel;
     MainMenu1: TMainMenu;
@@ -56,6 +58,7 @@ type
     procedure btnExportClick(Sender: TObject);
     procedure btnGenerateClick(Sender: TObject);
     procedure chkRandomGDistChange(Sender: TObject);
+    procedure comboCountrySelect(Sender: TObject);
     procedure comboStatesSelect(Sender: TObject);
     procedure FormClose(Sender: TObject; var CloseAction: TCloseAction);
     procedure FormCreate(Sender: TObject);
@@ -69,12 +72,14 @@ type
     SamplesGenerator: TSampleNamesGenerator;
     SampleNamesList: TSampleNamesList;
     SavedSettings: TSavedSettings;
+    countryCode: String;
     function GetStateCodeFromCombo : String;
     procedure PopulateStatesCombo;
     procedure PopulateSampleNamesGrid;
     procedure ExportToCSVFile(fileName: String);
     procedure SetSavedStateName;
     procedure PopulateCitiesCombo;
+    procedure SelectSavedCountry;
   public
 
   end;
@@ -90,12 +95,23 @@ implementation
 
 procedure TformMain.FormCreate(Sender: TObject);
 begin
-	connectionMain.DatabaseName := 'SampleNames.db';
+  countryCode := 'US';
+  connectionMain.DatabaseName := 'SampleNames.db';
   connectionMain.Open;
   queryStates.Open;
   SavedSettings := TSavedSettings.Create;
   PopulateStatesCombo;
   SamplesGenerator := TSampleNamesGenerator.Create(connectionMain);
+end;
+
+procedure TformMain.SelectSavedCountry;
+begin
+  if (not String.IsNullOrEmpty(SavedSettings.CountryName)) then begin
+    if (SavedSettings.CountryName = 'US') then
+      comboCountry.ItemIndex := 0
+    else
+      comboCountry.ItemIndex := 1;
+  end;
 end;
 
 procedure TformMain.gridResultsDblClick(Sender: TObject);
@@ -190,19 +206,34 @@ end;
 procedure TformMain.PopulateCitiesCombo;
 var
   state_id: String;
+  sql: TStringList;
 begin
   state_id := GetStateCodeFromCombo();
 
-  if (queryCities.Active) then begin
-    queryCities.Close;
-  end;
-  queryCities.Params[0].Value := state_id;
-  queryCities.Open;
-  queryCities.First;
-  comboCities.Items.Clear;
-  while (not queryCities.EOF) do begin
-    comboCities.Items.Add(queryCities.FieldByName('city').AsString);
-    queryCities.Next;
+  if (not String.IsNullOrEmpty(state_id)) then begin
+    if (queryCities.Active) then begin
+      queryCities.Close;
+    end;
+    sql := TStringList.Create;
+    if (countryCode = 'US') then begin
+      sql.Add('SELECT DISTINCT city FROM zipcodes ');
+      sql.Add('WHERE state = :state ');
+      sql.Add('ORDER BY city');
+    end
+    else begin
+      sql.Add('SELECT DISTINCT CITY FROM CanadaZipCodes ');
+      sql.Add('WHERE PROVINCE = :state ');
+      sql.Add('ORDER BY CITY');
+    end;
+    queryCities.SQL := sql;
+    queryCities.Params[0].Value := state_id;
+    queryCities.Open;
+    queryCities.First;
+    comboCities.Items.Clear;
+    while (not queryCities.EOF) do begin
+      comboCities.Items.Add(queryCities.FieldByName('city').AsString);
+      queryCities.Next;
+    end;
   end;
 end;
 
@@ -220,9 +251,10 @@ begin
     maleDist := spinMaleDist.Value;
     femaleDist := spinFemaleDist.Value;
     randomGenderDist := chkRandomGDist.Checked;
-	  SampleNamesList := SamplesGenerator.GenerateSampleSet(state_code, city_name, num_rows,
+	  SampleNamesList := SamplesGenerator.GenerateSampleSet(countryCode, state_code, city_name, num_rows,
       maleDist, femaleDist, randomGenderDist);
 		PopulateSampleNamesGrid;
+    SavedSettings.CountryName:= countryCode;
     SavedSettings.StateName:= GetStateCodeFromCombo;
     SavedSettings.CityName := city_name;
     SavedSettings.NumRows := num_rows;
@@ -245,6 +277,21 @@ begin
     spinMaleDist.Enabled := true;
     spinFemaleDist.Enabled := true;
   end;
+end;
+
+procedure TformMain.comboCountrySelect(Sender: TObject);
+var
+  countrySelected: String;
+begin
+  countrySelected := comboCountry.Items[comboCountry.ItemIndex];
+  if (countrySelected = 'United States') then
+    countryCode:= 'US'
+  else
+    countryCode := 'CA';
+  queryStates.Params[0].Value := countryCode;
+  queryStates.Close;
+  queryStates.Open;
+  PopulateStatesCombo;
 end;
 
 procedure TformMain.btnClipboardClick(Sender: TObject);
@@ -431,15 +478,17 @@ begin
   //Populate combo box for cities.
   PopulateCitiesCombo;
   //Set city to saved value.
-  queryCities.First;
-  idx := 0;
-  while (not queryCities.EOF) do begin
-    if (queryCities.FieldByName('city').AsString = savedCityName) then begin
-      comboCities.ItemIndex:= idx;
-      break;
+  if (queryCities.Active) then begin
+    queryCities.First;
+    idx := 0;
+    while (not queryCities.EOF) do begin
+      if (queryCities.FieldByName('city').AsString = savedCityName) then begin
+        comboCities.ItemIndex:= idx;
+        break;
+      end;
+      Inc(idx);
+      queryCities.Next;
     end;
-    Inc(idx);
-    queryCities.Next;
   end;
   //Set value for number of rows
   txtNumRows.Text := IntToStr(SavedSettings.NumRows);
@@ -451,17 +500,22 @@ end;
 
 function TformMain.GetStateCodeFromCombo : String;
 var
-  state_name: String;
+  state_name, state_code: String;
 begin
-  state_name := comboStates.Items[comboStates.ItemIndex];
-  queryStates.First;
-  while (not queryStates.EOF) do begin
-    if (queryStates.FieldByName('state_name').AsString = state_name) then begin
-      Result := queryStates.FieldByName('state_code').AsString;
-      Break;
+  state_code := String.Empty;
+  state_name := String.Empty;
+  if (comboStates.ItemIndex >= 0) then begin
+    state_name := comboStates.Items[comboStates.ItemIndex];
+    queryStates.First;
+    while (not queryStates.EOF) do begin
+      if (queryStates.FieldByName('state_name').AsString = state_name) then begin
+        state_code := queryStates.FieldByName('state_code').AsString;
+        Break;
+      end;
+      queryStates.Next;
     end;
-    queryStates.Next;
   end;
+  Result := state_code;
 end;
 
 procedure TformMain.PopulateSampleNamesGrid;

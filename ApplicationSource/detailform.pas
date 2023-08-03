@@ -37,9 +37,9 @@ type
     procedure btnCloseClick(Sender: TObject);
     procedure FormActivate(Sender: TObject);
   private
-    SampleName: TSampleName;
+		SampleName: TSampleName;
   public
-    procedure SetNameRecord(NameRecord: TSampleName);
+		procedure SetNameRecord(NameRecord: TSampleName);
   end;
 
 var
@@ -53,7 +53,7 @@ implementation
 
 procedure TNameDetailForm.btnCloseClick(Sender: TObject);
 begin
-  self.Hide;
+	self.Hide;
 end;
 
 procedure TNameDetailForm.FormActivate(Sender: TObject);
@@ -67,19 +67,19 @@ var
 begin
   SampleName := NameRecord;
   if (SampleName.Gender = 'M') then
-    genderText := 'Male'
+  	genderText := 'Male'
   else
     genderText := 'Female';
 
   editName.Text:= SampleName.FirstName + ' ' + SampleName.LastName;
-  editMI.Text:= SampleName.MI;
+	editMI.Text:= SampleName.MI;
   editGender.Text:= genderText;
   editAddress.Text:= SampleName.Address;
   editCity.Text:= SampleName.City;
   editState.Text:= SampleName.StateCode;
   editEmail.Text:= SampleName.Email;
   editZip.Text:= SampleName.ZipCode;
-  editPhone.Text:= SampleName.PhoneNumber;
+	editPhone.Text:= SampleName.PhoneNumber;
   editBirthDate.Text:= FormatDateTime('YYYY-MM-DD', SampleName.BirthDate);
   self.Caption:= 'Address Display - ID: ' + IntToStr(SampleName.ID);
 end;

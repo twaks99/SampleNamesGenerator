@@ -1,12 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <SavedSettings>
-  <StateName>CO</StateName>
-  <CityName>Boulder</CityName>
-  <NumRecords>30</NumRecords>
+  <CountryName>CA</CountryName>
+  <StateName>ON</StateName>
+  <CityName>Hamilton</CityName>
+  <NumRecords>60</NumRecords>
   <DBTableName>customer_list</DBTableName>
-  <RandomGenderDistribution>false</RandomGenderDistribution>
-  <MalePercentage>25</MalePercentage>
-  <FemalePercentage>75</FemalePercentage>
+  <RandomGenderDistribution>true</RandomGenderDistribution>
+  <MalePercentage>50</MalePercentage>
+  <FemalePercentage>50</FemalePercentage>
   <FieldsList>
     <Field>
       <SourceColumn>ID</SourceColumn>
