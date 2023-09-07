@@ -108,7 +108,7 @@ object formMain: TformMain
     Options = [goFixedVertLine, goFixedHorzLine, goVertLine, goHorzLine, goRangeSelect, goColSizing, goRowSelect, goThumbTracking, goSmoothScroll]
     PopupMenu = popupNamesGrid
     RowCount = 2
-    TabOrder = 5
+    TabOrder = 4
     OnDblClick = gridResultsDblClick
   end
   object lblSampleNames: TLabel
@@ -119,25 +119,9 @@ object formMain: TformMain
     Caption = 'Names List'
     ParentColor = False
   end
-  object txtNumRows: TEdit
-    Left = 848
-    Height = 23
-    Top = 65
-    Width = 64
-    TabOrder = 2
-    Text = '50'
-  end
-  object lblNumRows: TLabel
-    Left = 752
-    Height = 15
-    Top = 66
-    Width = 75
-    Caption = 'Number Rows'
-    ParentColor = False
-  end
   object radiogroupDelimeter: TRadioGroup
     Left = 32
-    Height = 48
+    Height = 57
     Hint = 'Select the delimited character when copying results to the clipboard.'
     Top = 40
     Width = 201
@@ -150,7 +134,7 @@ object formMain: TformMain
     ChildSizing.ShrinkVertical = crsScaleChilds
     ChildSizing.Layout = cclLeftToRightThenTopToBottom
     ChildSizing.ControlsPerLine = 2
-    ClientHeight = 28
+    ClientHeight = 37
     ClientWidth = 197
     Columns = 2
     ItemIndex = 0
@@ -160,7 +144,7 @@ object formMain: TformMain
     )
     ParentShowHint = False
     ShowHint = True
-    TabOrder = 4
+    TabOrder = 3
   end
   object btnExport: TBitBtn
     Left = 192
@@ -206,7 +190,7 @@ object formMain: TformMain
       0000000000000000000000000000000000000000000000000000
     }
     OnClick = btnExportClick
-    TabOrder = 7
+    TabOrder = 6
   end
   object btnClipboard: TBitBtn
     Left = 16
@@ -255,7 +239,7 @@ object formMain: TformMain
     OnClick = btnClipboardClick
     ParentShowHint = False
     ShowHint = True
-    TabOrder = 6
+    TabOrder = 5
   end
   object btnClose: TBitBtn
     Left = 467
@@ -267,7 +251,7 @@ object formMain: TformMain
     Kind = bkClose
     ModalResult = 11
     OnClick = btnCloseClick
-    TabOrder = 8
+    TabOrder = 7
   end
   object btnGenerate: TBitBtn
     Left = 904
@@ -312,17 +296,17 @@ object formMain: TformMain
       0000000000000000000000000000000000000000000000000000
     }
     OnClick = btnGenerateClick
-    TabOrder = 3
+    TabOrder = 2
   end
   object grpGenderDisttribution: TGroupBox
-    Left = 287
+    Left = 240
     Height = 57
     Top = 40
-    Width = 441
+    Width = 417
     Caption = 'Gender Distribution'
     ClientHeight = 37
-    ClientWidth = 437
-    TabOrder = 9
+    ClientWidth = 413
+    TabOrder = 8
     object lblMaleDist: TLabel
       Left = 8
       Height = 15
@@ -384,7 +368,7 @@ object formMain: TformMain
       'Canada'
     )
     OnSelect = comboCountrySelect
-    TabOrder = 10
+    TabOrder = 9
     Text = 'United States'
   end
   object lblCountry: TLabel
@@ -394,6 +378,40 @@ object formMain: TformMain
     Width = 43
     Caption = 'Country'
     ParentColor = False
+  end
+  object grpRowCount: TGroupBox
+    Left = 663
+    Height = 57
+    Top = 40
+    Width = 329
+    Caption = 'Other'
+    ClientHeight = 37
+    ClientWidth = 325
+    TabOrder = 10
+    object lblNumRows: TLabel
+      Left = 8
+      Height = 15
+      Top = 8
+      Width = 75
+      Caption = 'Number Rows'
+      ParentColor = False
+    end
+    object txtNumRows: TEdit
+      Left = 96
+      Height = 23
+      Top = 8
+      Width = 64
+      TabOrder = 0
+      Text = '50'
+    end
+    object chkIncludeNearby: TCheckBox
+      Left = 184
+      Height = 19
+      Top = 8
+      Width = 132
+      Caption = 'Include Nearby Cities'
+      TabOrder = 1
+    end
   end
   object connectionMain: TSQLite3Connection
     Connected = False

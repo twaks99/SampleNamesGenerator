@@ -29,6 +29,7 @@ type
       CityName : String;
       NumRows : Integer;
       RandomGenderDistribution : Boolean;
+      IncludeNearbyCities : Boolean;
       MalePercentage : Integer;
       FemalePercentage : Integer;
       DBTableName : String;
@@ -55,6 +56,7 @@ begin
   CityName := String.Empty;
   NumRows := 0;
   RandomGenderDistribution := true;
+  IncludeNearbyCities := false;
   MalePercentage := 0;
   FemalePercentage := 0;
   SavedColumnMappings := TSavedColumnMappingList.Create;
@@ -65,41 +67,51 @@ procedure TSavedSettings.ReadSettingsFromFile;
 var
 	doc : TXMLDocument;
   fldListNode, fldItemNode : TDOMNode;
-  sourceColumn, dbColumn, useMapStr, randomDistStr : String;
+  sourceColumn, dbColumn, useMapStr, nodeValueStr : String;
   useThisMap : Boolean;
 begin
   if (FileExists(SettingsFileName)) then begin
 	  ReadXMLFile(doc, SettingsFileName);
-    if (doc.DocumentElement.FindNode('CountryName') <> nil) then
-      CountryName := doc.DocumentElement.FindNode('CountryName').FirstChild.NodeValue
-    else
-      CountryName := String.Empty;
-	  StateName := doc.DocumentElement.FindNode('StateName').FirstChild.NodeValue;
-    CityName := doc.DocumentElement.FindNode('CityName').FirstChild.NodeValue;
-    NumRows := StrToInt(doc.DocumentElement.FindNode('NumRecords').FirstChild.NodeValue);
-    DBTableName := doc.DocumentElement.FindNode('DBTableName').FirstChild.NodeValue;
-    randomDistStr := doc.DocumentElement.FindNode('RandomGenderDistribution').FirstChild.NodeValue;
-    if (randomDistStr = 'true') then
-      RandomGenderDistribution := true
-    else
-      RandomGenderDistribution := false;
-    MalePercentage := StrToInt(doc.DocumentElement.FindNode('MalePercentage').FirstChild.NodeValue);
-    FemalePercentage := StrToInt(doc.DocumentElement.FindNode('FemalePercentage').FirstChild.NodeValue);
-	  //Get Fields List.
-    fldListNode := doc.DocumentElement.FindNode('FieldsList');
-    fldItemNode := fldListNode.FirstChild;
-    while Assigned(fldItemNode) do begin
-		  sourceColumn := fldItemNode.FindNode('SourceColumn').FirstChild.NodeValue;
-      dbColumn := fldItemNode.FindNode('DBColumn').FirstChild.NodeValue;
-		  useMapStr := fldItemNode.FindNode('UseMapping').FirstChild.NodeValue;
-      if (useMapStr = 'true') then
-    	  useThisMap := true
+    try
+      if (doc.DocumentElement.FindNode('CountryName') <> nil) then
+        CountryName := doc.DocumentElement.FindNode('CountryName').FirstChild.NodeValue
       else
-        useThisMap := false;
-      SavedColumnMappings.Add(TSavedColumnMapping.Create(sourceColumn, dbColumn, useThisMap));
-      fldItemNode := fldItemNode.NextSibling;
+        CountryName := String.Empty;
+	    StateName := doc.DocumentElement.FindNode('StateName').FirstChild.NodeValue;
+      CityName := doc.DocumentElement.FindNode('CityName').FirstChild.NodeValue;
+      NumRows := StrToInt(doc.DocumentElement.FindNode('NumRecords').FirstChild.NodeValue);
+      DBTableName := doc.DocumentElement.FindNode('DBTableName').FirstChild.NodeValue;
+      //Random Gender Distribution
+      if (doc.DocumentElement.FindNode('RandomGenderDistribution') <> nil) then begin
+        nodeValueStr := doc.DocumentElement.FindNode('RandomGenderDistribution').FirstChild.NodeValue;
+        RandomGenderDistribution := (nodeValueStr = 'true');
+      end;
+      if (doc.DocumentElement.FindNode('MalePercentage') <> nil) then
+        MalePercentage := StrToInt(doc.DocumentElement.FindNode('MalePercentage').FirstChild.NodeValue);
+      if (doc.DocumentElement.FindNode('FemalePercentage') <> nil) then
+        FemalePercentage := StrToInt(doc.DocumentElement.FindNode('FemalePercentage').FirstChild.NodeValue);
+      //Include Nearby Cities
+      if (doc.DocumentElement.FindNode('IncludeNearbyCities') <> nil) then begin
+        nodeValueStr := doc.DocumentElement.FindNode('IncludeNearbyCities').FirstChild.NodeValue;
+        IncludeNearbyCities := (nodeValueStr = 'true');
+      end;
+      //Get Fields List.
+      fldListNode := doc.DocumentElement.FindNode('FieldsList');
+      fldItemNode := fldListNode.FirstChild;
+      while Assigned(fldItemNode) do begin
+		    sourceColumn := fldItemNode.FindNode('SourceColumn').FirstChild.NodeValue;
+        dbColumn := fldItemNode.FindNode('DBColumn').FirstChild.NodeValue;
+		    useMapStr := fldItemNode.FindNode('UseMapping').FirstChild.NodeValue;
+        if (useMapStr = 'true') then
+    	    useThisMap := true
+        else
+          useThisMap := false;
+        SavedColumnMappings.Add(TSavedColumnMapping.Create(sourceColumn, dbColumn, useThisMap));
+        fldItemNode := fldItemNode.NextSibling;
+      end;
+    finally
+      doc.Free;
     end;
-    doc.Free;
   end
   else begin
 	  StateName := String.Empty;
@@ -143,6 +155,12 @@ begin
     rootNode.AppendChild(CreateXMLValueNode(doc, 'MalePercentage', IntToStr(MalePercentage)));
     //Female distribution percentage
     rootNode.AppendChild(CreateXMLValueNode(doc, 'FemalePercentage', IntToStr(FemalePercentage)));
+    //Include Nearby Cities in Search
+    if (IncludeNearbyCities) then
+      useColStr:= 'true'
+    else
+      useColStr := 'false';
+    rootNode.AppendChild(CreateXMLValueNode(doc, 'IncludeNearbyCities', useColStr));
     //column mapping list
     fldListNode := doc.CreateElement('FieldsList');
     rootNode.AppendChild(fldListNode);

@@ -19,16 +19,19 @@ type
     btnClose: TBitBtn;
     btnClipboard: TBitBtn;
     btnExport: TBitBtn;
+    chkIncludeNearby: TCheckBox;
     chkRandomGDist: TCheckBox;
     comboCountry: TComboBox;
     comboStates: TComboBox;
     comboCities: TComboBox;
     connectionMain: TSQLite3Connection;
     dialogExport: TSaveDialog;
+    grpRowCount: TGroupBox;
     grpGenderDisttribution: TGroupBox;
     lblCountry: TLabel;
     lblMaleDist: TLabel;
     lblFemaleDist: TLabel;
+    lblNumRows: TLabel;
     MainMenu1: TMainMenu;
     menugroupFile: TMenuItem;
     menuitemGenInsertStatements: TMenuItem;
@@ -44,8 +47,6 @@ type
     radiogroupDelimeter: TRadioGroup;
     spinMaleDist: TSpinEdit;
     spinFemaleDist: TSpinEdit;
-    txtNumRows: TEdit;
-    lblNumRows: TLabel;
     lblState: TLabel;
     lblCities: TLabel;
     lblSampleNames: TLabel;
@@ -53,6 +54,7 @@ type
     queryCities: TSQLQuery;
     gridResults: TStringGrid;
     transactionMain: TSQLTransaction;
+    txtNumRows: TEdit;
     procedure btnClipboardClick(Sender: TObject);
     procedure btnCloseClick(Sender: TObject);
     procedure btnExportClick(Sender: TObject);
@@ -244,7 +246,7 @@ procedure TformMain.btnGenerateClick(Sender: TObject);
 var
   state_code, city_name, row_count: String;
   num_rows, maleDist, femaleDist: Integer;
-  randomGenderDist : Boolean;
+  randomGenderDist, includeNearbyCities : Boolean;
 begin
   row_count:= Trim(txtNumRows.Text);
 	if ((comboStates.ItemIndex >= 0) and (comboCities.ItemIndex >= 0) and (not (row_count.Equals(String.Empty)))) then begin
@@ -254,8 +256,9 @@ begin
     maleDist := spinMaleDist.Value;
     femaleDist := spinFemaleDist.Value;
     randomGenderDist := chkRandomGDist.Checked;
+    includeNearbyCities := chkIncludeNearby.Checked;
 	  SampleNamesList := SamplesGenerator.GenerateSampleSet(countryCode, state_code, city_name, num_rows,
-      maleDist, femaleDist, randomGenderDist);
+      maleDist, femaleDist, randomGenderDist, includeNearbyCities);
 		PopulateSampleNamesGrid;
     SavedSettings.CountryName:= countryCode;
     SavedSettings.StateName:= GetStateCodeFromCombo;
@@ -264,6 +267,7 @@ begin
     SavedSettings.MalePercentage := maleDist;
     SavedSettings.FemalePercentage := femaleDist;
     SavedSettings.RandomGenderDistribution := randomGenderDist;
+    SavedSettings.IncludeNearbyCities := chkIncludeNearby.Checked;
   end
 	else begin
 		MessageDlg('Message', 'State, City, and Number of rows are required fields.', TMsgDlgType.mtInformation, [mbOK], '');
@@ -498,6 +502,7 @@ begin
   txtNumRows.Text := IntToStr(SavedSettings.NumRows);
   //Set Gender distribution parameters.
   chkRandomGDist.Checked := SavedSettings.RandomGenderDistribution;
+  chkIncludeNearby.Checked := SavedSettings.IncludeNearbyCities;
   spinMaleDist.Value := SavedSettings.MalePercentage;
   spinFemaleDist.Value := SavedSettings.FemalePercentage;
 end;
