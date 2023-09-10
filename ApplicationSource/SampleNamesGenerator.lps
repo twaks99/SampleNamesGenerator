@@ -18,8 +18,8 @@
         <ComponentName Value="formMain"/>
         <HasResources Value="True"/>
         <ResourceBaseClass Value="Form"/>
-        <TopLine Value="488"/>
-        <CursorPos X="22" Y="493"/>
+        <TopLine Value="483"/>
+        <CursorPos X="53" Y="505"/>
         <UsageCount Value="200"/>
         <Loaded Value="True"/>
         <LoadedDesigner Value="True"/>
@@ -29,7 +29,7 @@
         <IsPartOfProject Value="True"/>
         <UnitName Value="GenerateSampleName"/>
         <EditorIndex Value="3"/>
-        <TopLine Value="298"/>
+        <TopLine Value="247"/>
         <CursorPos Y="289"/>
         <UsageCount Value="201"/>
         <Loaded Value="True"/>
@@ -43,7 +43,7 @@
         <UnitName Value="DetailForm"/>
         <EditorIndex Value="4"/>
         <TopLine Value="45"/>
-        <CursorPos Y="51"/>
+        <CursorPos Y="47"/>
         <UsageCount Value="164"/>
         <Loaded Value="True"/>
         <LoadedDesigner Value="True"/>
@@ -55,10 +55,9 @@
         <HasResources Value="True"/>
         <ResourceBaseClass Value="Form"/>
         <UnitName Value="InsertStatementForm"/>
-        <IsVisibleTab Value="True"/>
         <EditorIndex Value="2"/>
         <TopLine Value="73"/>
-        <CursorPos X="28" Y="79"/>
+        <CursorPos X="4" Y="83"/>
         <UsageCount Value="152"/>
         <Loaded Value="True"/>
         <LoadedDesigner Value="True"/>
@@ -66,8 +65,9 @@
       <Unit>
         <Filename Value="savedsettings.pas"/>
         <IsPartOfProject Value="True"/>
+        <IsVisibleTab Value="True"/>
         <EditorIndex Value="1"/>
-        <TopLine Value="86"/>
+        <TopLine Value="69"/>
         <CursorPos X="27" Y="69"/>
         <UsageCount Value="101"/>
         <Loaded Value="True"/>
