@@ -18,8 +18,8 @@
         <ComponentName Value="formMain"/>
         <HasResources Value="True"/>
         <ResourceBaseClass Value="Form"/>
-        <TopLine Value="483"/>
-        <CursorPos X="53" Y="505"/>
+        <TopLine Value="488"/>
+        <CursorPos X="22" Y="493"/>
         <UsageCount Value="200"/>
         <Loaded Value="True"/>
         <LoadedDesigner Value="True"/>
@@ -28,9 +28,8 @@
         <Filename Value="generatesamplename.pas"/>
         <IsPartOfProject Value="True"/>
         <UnitName Value="GenerateSampleName"/>
-        <IsVisibleTab Value="True"/>
         <EditorIndex Value="3"/>
-        <TopLine Value="304"/>
+        <TopLine Value="298"/>
         <CursorPos Y="289"/>
         <UsageCount Value="201"/>
         <Loaded Value="True"/>
@@ -42,10 +41,11 @@
         <HasResources Value="True"/>
         <ResourceBaseClass Value="Form"/>
         <UnitName Value="DetailForm"/>
+        <IsVisibleTab Value="True"/>
         <EditorIndex Value="4"/>
         <TopLine Value="45"/>
-        <CursorPos Y="47"/>
-        <UsageCount Value="160"/>
+        <CursorPos Y="51"/>
+        <UsageCount Value="164"/>
         <Loaded Value="True"/>
         <LoadedDesigner Value="True"/>
       </Unit>
@@ -59,7 +59,7 @@
         <EditorIndex Value="2"/>
         <TopLine Value="73"/>
         <CursorPos X="4" Y="83"/>
-        <UsageCount Value="148"/>
+        <UsageCount Value="152"/>
         <Loaded Value="True"/>
         <LoadedDesigner Value="True"/>
       </Unit>
@@ -67,9 +67,9 @@
         <Filename Value="savedsettings.pas"/>
         <IsPartOfProject Value="True"/>
         <EditorIndex Value="1"/>
-        <TopLine Value="70"/>
+        <TopLine Value="86"/>
         <CursorPos X="27" Y="69"/>
-        <UsageCount Value="97"/>
+        <UsageCount Value="101"/>
         <Loaded Value="True"/>
       </Unit>
       <Unit>
@@ -104,7 +104,7 @@
         <UsageCount Value="3"/>
       </Unit>
     </Units>
-    <JumpHistory HistoryIndex="29">
+    <JumpHistory HistoryIndex="28">
       <Position>
         <Filename Value="main.pas"/>
         <Caret Line="473" TopLine="451"/>
@@ -132,10 +132,6 @@
       <Position>
         <Filename Value="main.pas"/>
         <Caret Line="112" Column="29" TopLine="89"/>
-      </Position>
-      <Position>
-        <Filename Value="main.pas"/>
-        <Caret Line="145" Column="21" TopLine="325"/>
       </Position>
       <Position>
         <Filename Value="savedsettings.pas"/>

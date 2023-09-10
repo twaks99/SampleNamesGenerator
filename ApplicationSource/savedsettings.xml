@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <SavedSettings>
-  <CountryName>CA</CountryName>
-  <StateName>AB</StateName>
-  <CityName>Calgary</CityName>
+  <CountryName>US</CountryName>
+  <StateName>CA</StateName>
+  <CityName>San Diego</CityName>
   <NumRecords>75</NumRecords>
   <DBTableName>customer_list</DBTableName>
-  <RandomGenderDistribution>true</RandomGenderDistribution>
-  <MalePercentage>0</MalePercentage>
-  <FemalePercentage>0</FemalePercentage>
+  <RandomGenderDistribution>false</RandomGenderDistribution>
+  <MalePercentage>50</MalePercentage>
+  <FemalePercentage>50</FemalePercentage>
   <IncludeNearbyCities>true</IncludeNearbyCities>
   <FieldsList>
     <Field>

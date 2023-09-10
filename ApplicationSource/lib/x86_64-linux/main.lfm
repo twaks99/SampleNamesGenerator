@@ -1,0 +1,528 @@
+object formMain: TformMain
+  Left = 263
+  Height = 663
+  Top = 121
+  Width = 1023
+  Caption = 'Sample Names Generator'
+  ClientHeight = 634
+  ClientWidth = 1023
+  Menu = MainMenu1
+  OnClose = FormClose
+  OnCreate = FormCreate
+  LCLVersion = '2.2.4.0'
+  object comboStates: TComboBox
+    Left = 304
+    Height = 31
+    Top = 9
+    Width = 256
+    AutoComplete = True
+    AutoCompleteText = [cbactEnabled, cbactEndOfLineComplete, cbactSearchAscending]
+    ItemHeight = 0
+    OnSelect = comboStatesSelect
+    TabOrder = 0
+  end
+  object comboCities: TComboBox
+    Left = 608
+    Height = 31
+    Top = 9
+    Width = 280
+    AutoComplete = True
+    AutoCompleteText = [cbactEnabled, cbactEndOfLineComplete, cbactSearchAscending]
+    ItemHeight = 0
+    TabOrder = 1
+  end
+  object lblState: TLabel
+    Left = 264
+    Height = 19
+    Top = 8
+    Width = 33
+    Caption = 'State'
+    ParentColor = False
+  end
+  object lblCities: TLabel
+    Left = 576
+    Height = 19
+    Top = 9
+    Width = 23
+    Caption = 'City'
+    ParentColor = False
+  end
+  object gridResults: TStringGrid
+    Left = 16
+    Height = 448
+    Top = 136
+    Width = 989
+    AlternateColor = clBtnFace
+    Anchors = [akTop, akLeft, akRight, akBottom]
+    ColCount = 12
+    Columns = <    
+      item
+        Title.Caption = 'Id'
+        Width = 30
+      end    
+      item
+        Title.Caption = 'First Name'
+        Width = 85
+      end    
+      item
+        Title.Caption = 'Last Name'
+        Width = 95
+      end    
+      item
+        Title.Caption = 'MI'
+        Width = 35
+      end    
+      item
+        Title.Caption = 'Gender'
+        Width = 55
+      end    
+      item
+        Title.Caption = 'Email'
+        Width = 100
+      end    
+      item
+        Title.Caption = 'Address'
+        Width = 200
+      end    
+      item
+        Title.Caption = 'City'
+        Width = 100
+      end    
+      item
+        Title.Caption = 'State'
+        Width = 45
+      end    
+      item
+        Title.Caption = 'Zip'
+        Width = 60
+      end    
+      item
+        Title.Caption = 'Phone'
+        Width = 95
+      end    
+      item
+        Title.Caption = 'Birth Date'
+        Width = 85
+      end>
+    FixedCols = 0
+    Options = [goFixedVertLine, goFixedHorzLine, goVertLine, goHorzLine, goRangeSelect, goColSizing, goRowSelect, goThumbTracking, goSmoothScroll]
+    PopupMenu = popupNamesGrid
+    RowCount = 2
+    TabOrder = 4
+    OnDblClick = gridResultsDblClick
+  end
+  object lblSampleNames: TLabel
+    Left = 16
+    Height = 19
+    Top = 112
+    Width = 69
+    Caption = 'Names List'
+    ParentColor = False
+  end
+  object radiogroupDelimeter: TRadioGroup
+    Left = 16
+    Height = 57
+    Hint = 'Select the delimited character when copying results to the clipboard.'
+    Top = 48
+    Width = 201
+    AutoFill = True
+    Caption = 'Delimiter for Clipboard Copy'
+    ChildSizing.LeftRightSpacing = 6
+    ChildSizing.EnlargeHorizontal = crsHomogenousChildResize
+    ChildSizing.EnlargeVertical = crsHomogenousChildResize
+    ChildSizing.ShrinkHorizontal = crsScaleChilds
+    ChildSizing.ShrinkVertical = crsScaleChilds
+    ChildSizing.Layout = cclLeftToRightThenTopToBottom
+    ChildSizing.ControlsPerLine = 2
+    ClientHeight = 37
+    ClientWidth = 199
+    Columns = 2
+    ItemIndex = 0
+    Items.Strings = (
+      'Tab'
+      'Comma'
+    )
+    ParentShowHint = False
+    ShowHint = True
+    TabOrder = 3
+  end
+  object btnExport: TBitBtn
+    Left = 192
+    Height = 30
+    Top = 592
+    Width = 80
+    Anchors = [akLeft, akBottom]
+    Caption = 'Export'
+    Glyph.Data = {
+      36040000424D3604000000000000360000002800000010000000100000000100
+      2000000000000004000064000000640000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000009595
+      95DFB5B5B5DDB5B5B5DDB5B5B5DDB5B5B5DDB5B5B5DDB5B5B5DDB5B5B5DDB5B5
+      B5DDB5B5B5DDB5B5B5DDB5B5B5DD959595DF000000000000000000000000B0B0
+      B0E0F2F2F2FFF2F2F2FFF2F2F2FFF2F2F2FFF2F2F2FFF2F2F2FFF2F2F2FFF2F2
+      F2FFF2F2F2FFF2F2F2FFF2F2F2FFB0B0B0E0000000000000000000000000B0B0
+      B0E0F2F2F2FFF2F2F2FFF2F2F2FFF2F2F2FFF2F2F2FFF2F2F2FFF2F2F2FFF2F2
+      F2FFF2F2F2FFC29673FFC8A589FFB0ACA8E2000000000000000000000000B0B0
+      B0E0F2F2F2FFF2F2F2FFF2F2F2FFF2F2F2FFF2F2F2FFF2F2F2FFF2F2F2FFF2F2
+      F2FFF2F2F2FFD4B59DFFFAF7F4FFB8947BF99C6339120000000000000000B0B0
+      B0E0F2F2F2FFF2F2F2FFF2F2F2FFF2F2F2FFF2F2F2FFF2F2F2FFCF9E78FFDCBE
+      A5FFDABCA4FFEBDED3FFFFFFFFFFF9F6F3FFB58B6CCB965A2D1100000000B0B0
+      B0E0F2F2F2FFF2F2F2FFF2F2F2FFF2F2F2FFF2F2F2FFF2F2F2FFDDBBA1FFFFFF
+      FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF3ECE7FFA57753AF00000000B0B0
+      B0E0F2F2F2FFF2F2F2FFF2F2F2FFF2F2F2FFF2F2F2FFF2F2F2FFCC9972FFD9B5
+      9AFFD5B398FFEADBD0FFFFFFFFFFF9F5F2FFB48A6AC89966330F00000000B0B0
+      B0E0F2F2F2FFF2F2F2FFF2F2F2FFF2F2F2FFF2F2F2FFF2F2F2FFF2F2F2FFF2F2
+      F2FFF2F2F2FFD4B59DFFFAF6F3FFB79379F8965A3C110000000000000000B0B0
+      B0E0F2F2F2FFF2F2F2FFF2F2F2FFF2F2F2FFF2F2F2FFF2F2F2FFF2F2F2FFF2F2
+      F2FFF2F2F2FFC09370FFC8A68AFFAFACA8E2000000000000000000000000B0B0
+      B0E0F2F2F2FFF2F2F2FFF2F2F2FFF2F2F2FFF2F2F2FFF2F2F2FFF2F2F2FFF2F2
+      F2FFF2F2F2FFF2F2F2FFF2F2F2FFB0B0B0E0000000000000000000000000D0A4
+      7BFFD0A47BFFD0A47BFFD0A47BFFD0A47BFFD0A47BFFD0A47BFFD0A47BFFD0A4
+      7BFFD0A47BFFD0A47BFFD0A47BFFD0A47BFF000000000000000000000000D0A4
+      7BFFD0A47BFFD0A47BFFD0A47BFFD0A47BFFD0A47BFFD0A47BFFD0A47BFFD0A4
+      7BFFD0A47BFFD0A47BFFD0A47BFFD0A47BFF000000000000000000000000D0A4
+      7BFFD0A47BFFD0A47BFFD0A47BFFD0A47BFFD0A47BFFD0A47BFFD0A47BFFD0A4
+      7BFFD0A47BFFD0A47BFFD0A47BFFD0A47BFF0000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000
+    }
+    OnClick = btnExportClick
+    TabOrder = 6
+  end
+  object btnClipboard: TBitBtn
+    Left = 16
+    Height = 30
+    Hint = 'Copy results to clipboard using the delimiter specified above.'
+    Top = 592
+    Width = 144
+    Anchors = [akLeft, akBottom]
+    Caption = 'Copy to Clipboard'
+    Glyph.Data = {
+      36040000424D3604000000000000360000002800000010000000100000000100
+      2000000000000004000064000000640000000000000000000000000000000000
+      0000FFAD641CFBB16882FBB06788FBB06788FBB06788FBB06788FBB06788FBB0
+      6788FBB06788FBB0678BFBA75EB4FFAA5F330000000000000000000000000000
+      0000FDB1697CF9BE85FFF5D0ACFFF5D0ACFFF5D0ACFFF5D0ACFFF5D0ACFFF5D0
+      ACFFF5D0ACFFEFD3B9FFF4B884FFFBA45ABC0000000000000000000000000000
+      0000FBB16880F6CDA8FFEFEAE7FFEFEAE7FFEFEAE7FFEFEAE7FFEFEAE7FFEFEA
+      E7FFEFEAE7FFE7E3DFFFECC9ABFFFBA55AC00000000000000000000000000000
+      0000FBB16880F6CDA8FFACD3F1FF58B1FCFF82C0F7FFE4DFDCFFE4DFDCFFEAE5
+      E2FFEAE5E2FFE7E3DFFFECC9ABFFFBA55AC00000000000000000000000000000
+      0000FBB16880F6CDA8FFACD3F1FF58B1FCFF81BFF7FFE2DEDAFFE1DBD9FFE1DB
+      D9FFE1DBD9FFE4DFDBFFECC9ABFFFBA55AC00000000000000000000000000000
+      0000FBB16880F6CDA8FFEFEAE7FFEFEAE7FFEFEAE7FFEFEAE7FFEFEAE7FFEFEA
+      E7FFEFEAE7FFE7E3DFFFECC9ABFFFBA55AC00000000000000000000000000000
+      0000FBB16880F6CDA8FFACD3F1FF58B1FCFF81BFF7FFE3DEDBFFE4DFDCFFE9E4
+      E2FFEAE5E2FFE7E3DFFFECC9ABFFFBA55AC00000000000000000000000000000
+      0000FBB16880F6CDA8FFACD3F1FF58B1FCFF81BFF7FFE2DDDAFFE1DBD9FFE1DB
+      D9FFE1DBD9FFE4DFDBFFECC9ABFFFBA55AC00000000000000000000000000000
+      0000FBB16880F6CDA8FFEFEAE7FFEFEAE7FFEFEAE7FFEFEAE7FFEFEAE7FFEFEA
+      E7FFEFEAE7FFE7E3DFFFECC9ABFFFBA55AC00000000000000000000000000000
+      0000FBB16880F6CDA8FFACD3F1FF58B1FCFF81BFF7FFE3DEDBFFE4DFDCFFE9E4
+      E2FFEAE5E2FFE7E3DFFFECC9ABFFFBA55AC00000000000000000000000000000
+      0000FBB16880F6CDA8FFACD3F1FF58B1FCFF81BFF7FFE2DEDAFFE1DBD9FFE1DB
+      D9FFE1DBD9FFE4DFDBFFECC9ABFFFBA55AC00000000000000000000000000000
+      0000FBB16880F6CDA8FFEFEAE7FFEFEAE7FFEFEAE7FFEFEAE7FFEFEAE7FFEFEA
+      E7FFEFEAE7FFE7E3DFFFECC9ABFFFBA55AC00000000000000000000000000000
+      0000FBB16880F5CCA4FFEFEAE7FF9F99F3FF6760FCFF6760FCFF6760FCFF6257
+      FBFF786DF8FFE7E2DFFFECC7A8FFFBA55AC00000000000000000000000000000
+      0000FCB26759FCB168FCFCB168FF8E76D5FF6760FCFF6760FCFF6760FCFF645B
+      FCFF6856F1FFFCB168FFFBA55AFEFCA65D920000000000000000000000000000
+      0000000000000000000000000000675EFB396661FB846760FCFE6156FCFE6155
+      FCA86152FA640000000000000000000000000000000000000000000000000000
+      000000000000000000000000000000000000000000006358FC626153FB8B0000
+      0000000000000000000000000000000000000000000000000000
+    }
+    OnClick = btnClipboardClick
+    ParentShowHint = False
+    ShowHint = True
+    TabOrder = 5
+  end
+  object btnClose: TBitBtn
+    Left = 480
+    Height = 30
+    Top = 592
+    Width = 76
+    Anchors = [akRight, akBottom]
+    DefaultCaption = True
+    Kind = bkClose
+    ModalResult = 11
+    OnClick = btnCloseClick
+    TabOrder = 7
+  end
+  object btnGenerate: TBitBtn
+    Left = 904
+    Height = 30
+    Top = 9
+    Width = 88
+    Caption = 'Generate'
+    Glyph.Data = {
+      36040000424D3604000000000000360000002800000010000000100000000100
+      2000000000000004000064000000640000000000000000000000000000000000
+      000000000000000000000696F2DC0696F2500000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      00000000000000000000069AF3A90694F2FF0697F18400000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      000000000000000000000595F1350697F3FB05A2F4F50699F29E0080FF040000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000069BF3D802DBFBFF04B1F6F5059AF3C40099
+      EE0F000000000000000000000000000000000000000000000000000000000000
+      00000000000000000000000000000595F26004B0F6F200FEFFFF03BFF8F70699
+      F2DE0991EE1E0000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000008EFF090698F2F301F1FDFF00FFFFFF03CF
+      F9FC0598F2EE0593F034000000000000000000000000000000000594F2620694
+      F2FF0694F2FF0694F2FF0694F2FF0694F2FF0694F2FF02D4FAFF00FFFFFF00FF
+      FFFF02DEFBFE0599F2F40696F2500000000000000000000000000080FF06059A
+      F3C204BDF7F600FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FF
+      FFFF00FFFFFF01EBFDFF059DF4F50697F1840000000000000000000000000099
+      E60A069AF3D203C7F8F900FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FF
+      FFFF00FFFFFF00FFFFFF01F4FEFF05A5F5F40699F2A20099FF05000000000000
+      00000099F2140699F3E203CFF9FC00FFFFFF00FFFFFF00FFFFFF05A0F4FB0694
+      F2FF0694F2FF0694F2FF0694F2FF0694F2FF0694F2FF0594F262000000000000
+      0000000000000992F61C0598F3E902D7FAFD00FFFFFF00FFFFFF01E5FCFF0599
+      F2F40893F3420000000000000000000000000000000000000000000000000000
+      000000000000000000000791F1250599F2EF02E0FBFF00FFFFFF00FFFFFF01E5
+      FCFF0599F2F40893F34200000000000000000000000000000000000000000000
+      00000000000000000000000000000595F1350699F2F401E5FCFF00FFFFFF00FF
+      FFFF01E5FCFF0599F2F40893F342000000000000000000000000000000000000
+      0000000000000000000000000000000000000893F3420599F3F501EBFDFF00FF
+      FFFF00FFFFFF01E5FCFF0599F2F40893F3420000000000000000000000000000
+      000000000000000000000000000000000000000000000695F3570695F2FE0694
+      F2FF0694F2FF0694F2FF0694F2FF0695F2E50000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000
+    }
+    OnClick = btnGenerateClick
+    TabOrder = 2
+  end
+  object grpGenderDisttribution: TGroupBox
+    Left = 224
+    Height = 57
+    Top = 48
+    Width = 433
+    Caption = 'Gender Distribution'
+    ClientHeight = 37
+    ClientWidth = 431
+    TabOrder = 8
+    object lblMaleDist: TLabel
+      Left = 8
+      Height = 19
+      Top = 8
+      Width = 31
+      Caption = 'Male'
+      ParentColor = False
+    end
+    object spinMaleDist: TSpinEdit
+      Tag = 50
+      Left = 64
+      Height = 29
+      Top = 4
+      Width = 58
+      Enabled = False
+      MaxValue = 100
+      OnChange = spinMaleDistChange
+      TabOrder = 0
+    end
+    object lblFemaleDist: TLabel
+      Left = 136
+      Height = 19
+      Top = 8
+      Width = 47
+      Caption = 'Female'
+      ParentColor = False
+    end
+    object spinFemaleDist: TSpinEdit
+      Left = 192
+      Height = 29
+      Top = 4
+      Width = 58
+      Enabled = False
+      MaxValue = 100
+      OnChange = spinFemaleDistChange
+      TabOrder = 1
+    end
+    object chkRandomGDist: TCheckBox
+      Left = 272
+      Height = 21
+      Top = 4
+      Width = 153
+      Caption = 'Random Distribution'
+      Checked = True
+      OnChange = chkRandomGDistChange
+      State = cbChecked
+      TabOrder = 2
+    end
+  end
+  object comboCountry: TComboBox
+    Left = 80
+    Height = 31
+    Top = 8
+    Width = 169
+    ItemHeight = 0
+    ItemIndex = 0
+    Items.Strings = (
+      'United States'
+      'Canada'
+    )
+    OnSelect = comboCountrySelect
+    TabOrder = 9
+    Text = 'United States'
+  end
+  object lblCountry: TLabel
+    Left = 16
+    Height = 19
+    Top = 8
+    Width = 50
+    Caption = 'Country'
+    ParentColor = False
+  end
+  object grpRowCount: TGroupBox
+    Left = 664
+    Height = 57
+    Top = 48
+    Width = 329
+    Caption = 'Other'
+    ClientHeight = 37
+    ClientWidth = 327
+    TabOrder = 10
+    object lblNumRows: TLabel
+      Left = 8
+      Height = 19
+      Top = 8
+      Width = 89
+      Caption = 'Number Rows'
+      ParentColor = False
+    end
+    object txtNumRows: TEdit
+      Left = 104
+      Height = 31
+      Top = 4
+      Width = 56
+      TabOrder = 0
+      Text = '50'
+    end
+    object chkIncludeNearby: TCheckBox
+      Left = 168
+      Height = 21
+      Top = 6
+      Width = 156
+      Caption = 'Include Nearby Cities'
+      TabOrder = 1
+    end
+  end
+  object connectionMain: TSQLite3Connection
+    Connected = False
+    LoginPrompt = False
+    DatabaseName = '/home/tomk/Working/Delphi/SampleNamesGenerator/SampleNames.db'
+    KeepConnection = False
+    Transaction = transactionMain
+    AlwaysUseBigint = False
+    Left = 960
+    Top = 544
+  end
+  object queryStates: TSQLQuery
+    FieldDefs = <>
+    Database = connectionMain
+    Transaction = transactionMain
+    SQL.Strings = (
+      'select STATE_CODE, STATE_NAME'
+      'from States'
+      'where official_state = 1'
+      '  AND country_code = :Country'
+      'order by state_name'
+      ''
+    )
+    Params = <    
+      item
+        DataType = ftString
+        Name = 'Country'
+        ParamType = ptInput
+        Value = 'US'
+      end>
+    Macros = <>
+    Left = 880
+    Top = 544
+  end
+  object transactionMain: TSQLTransaction
+    Active = False
+    Database = connectionMain
+    Left = 920
+    Top = 544
+  end
+  object queryCities: TSQLQuery
+    FieldDefs = <>
+    Database = connectionMain
+    Transaction = transactionMain
+    SQL.Strings = (
+      'SELECT DISTINCT city FROM zipcodes'
+      'WHERE state = :state'
+      'ORDER BY city'
+      ''
+    )
+    Params = <    
+      item
+        DataType = ftString
+        Name = 'state'
+        ParamType = ptInput
+        Value = 'MD'
+      end>
+    Macros = <>
+    Left = 832
+    Top = 544
+  end
+  object dialogExport: TSaveDialog
+    DefaultExt = '.xlsx'
+    Filter = 'Excel Spreadsheet|*.xlsx|Opendocument Spreadsheet|*.ods|Comma Separated Values|*.csv'
+    Left = 776
+    Top = 544
+  end
+  object MainMenu1: TMainMenu
+    Left = 112
+    Top = 216
+    object menugroupFile: TMenuItem
+      Caption = 'File'
+      object menuitemExport: TMenuItem
+        Caption = 'Export'
+        OnClick = btnExportClick
+      end
+      object menuitemGenInsertStatements: TMenuItem
+        Caption = 'Generate Insert Statements'
+        OnClick = menuitemGenInsertStatementsClick
+      end
+      object menuitemClipboard: TMenuItem
+        Caption = 'Copy to Clipboard'
+        OnClick = btnClipboardClick
+      end
+      object menuitemClipRow: TMenuItem
+        Caption = 'Copy Row to Clipboard'
+        OnClick = menuitemClipRowClick
+      end
+      object menuitemClose: TMenuItem
+        Caption = 'Close'
+        OnClick = btnCloseClick
+      end
+    end
+    object menugroupAction: TMenuItem
+      Caption = 'Action'
+      object menuitemGenerateNames: TMenuItem
+        Caption = 'Generate Name List'
+        OnClick = btnGenerateClick
+      end
+    end
+  end
+  object popupNamesGrid: TPopupMenu
+    Left = 899
+    Top = 253
+    object menuItemShowDetails: TMenuItem
+      Caption = 'Show Details'
+      OnClick = menuItemShowDetailsClick
+    end
+    object menuitemPopClipRow: TMenuItem
+      Caption = 'Copy Row to Clipboard'
+      OnClick = menuitemClipRowClick
+    end
+  end
+end
