@@ -11,7 +11,7 @@ uses
   {$ENDIF}
   Interfaces, // this includes the LCL widgetset
   Forms, main, GenerateSampleName, DetailForm, InsertStatementForm,
-savedsettings
+savedsettings, dataexport
   { you can add units after this };
 
 {$R *.res}

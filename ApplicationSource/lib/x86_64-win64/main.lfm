@@ -1,11 +1,11 @@
 object formMain: TformMain
-  Left = 295
-  Height = 634
-  Top = 152
-  Width = 1010
+  Left = 263
+  Height = 663
+  Top = 121
+  Width = 1023
   Caption = 'Sample Names Generator'
-  ClientHeight = 614
-  ClientWidth = 1010
+  ClientHeight = 643
+  ClientWidth = 1023
   Menu = MainMenu1
   OnClose = FormClose
   OnCreate = FormCreate
@@ -49,9 +49,9 @@ object formMain: TformMain
   end
   object gridResults: TStringGrid
     Left = 16
-    Height = 444
-    Top = 120
-    Width = 976
+    Height = 457
+    Top = 136
+    Width = 989
     AlternateColor = clBtnFace
     Anchors = [akTop, akLeft, akRight, akBottom]
     ColCount = 12
@@ -114,16 +114,16 @@ object formMain: TformMain
   object lblSampleNames: TLabel
     Left = 16
     Height = 15
-    Top = 96
+    Top = 112
     Width = 58
     Caption = 'Names List'
     ParentColor = False
   end
   object radiogroupDelimeter: TRadioGroup
-    Left = 32
+    Left = 16
     Height = 57
     Hint = 'Select the delimited character when copying results to the clipboard.'
-    Top = 40
+    Top = 48
     Width = 201
     AutoFill = True
     Caption = 'Delimiter for Clipboard Copy'
@@ -149,7 +149,7 @@ object formMain: TformMain
   object btnExport: TBitBtn
     Left = 192
     Height = 30
-    Top = 572
+    Top = 601
     Width = 80
     Anchors = [akLeft, akBottom]
     Caption = 'Export'
@@ -196,7 +196,7 @@ object formMain: TformMain
     Left = 16
     Height = 30
     Hint = 'Copy results to clipboard using the delimiter specified above.'
-    Top = 572
+    Top = 601
     Width = 144
     Anchors = [akLeft, akBottom]
     Caption = 'Copy to Clipboard'
@@ -242,9 +242,9 @@ object formMain: TformMain
     TabOrder = 5
   end
   object btnClose: TBitBtn
-    Left = 467
+    Left = 480
     Height = 30
-    Top = 572
+    Top = 601
     Width = 76
     Anchors = [akRight, akBottom]
     DefaultCaption = True
@@ -299,13 +299,13 @@ object formMain: TformMain
     TabOrder = 2
   end
   object grpGenderDisttribution: TGroupBox
-    Left = 240
+    Left = 224
     Height = 57
-    Top = 40
-    Width = 417
+    Top = 48
+    Width = 433
     Caption = 'Gender Distribution'
     ClientHeight = 37
-    ClientWidth = 413
+    ClientWidth = 429
     TabOrder = 8
     object lblMaleDist: TLabel
       Left = 8
@@ -319,6 +319,7 @@ object formMain: TformMain
       Tag = 50
       Left = 64
       Height = 23
+      Hint = 'Percentage of generated names that are male'
       Top = 4
       Width = 58
       Enabled = False
@@ -327,7 +328,7 @@ object formMain: TformMain
       TabOrder = 0
     end
     object lblFemaleDist: TLabel
-      Left = 144
+      Left = 136
       Height = 15
       Top = 8
       Width = 38
@@ -335,8 +336,9 @@ object formMain: TformMain
       ParentColor = False
     end
     object spinFemaleDist: TSpinEdit
-      Left = 200
+      Left = 192
       Height = 23
+      Hint = 'Percentage of generated names that are female'
       Top = 4
       Width = 58
       Enabled = False
@@ -345,8 +347,9 @@ object formMain: TformMain
       TabOrder = 1
     end
     object chkRandomGDist: TCheckBox
-      Left = 280
+      Left = 272
       Height = 19
+      Hint = 'The ratio of males and females will be random'
       Top = 4
       Width = 130
       Caption = 'Random Distribution'
@@ -357,7 +360,7 @@ object formMain: TformMain
     end
   end
   object comboCountry: TComboBox
-    Left = 64
+    Left = 80
     Height = 23
     Top = 8
     Width = 169
@@ -380,9 +383,9 @@ object formMain: TformMain
     ParentColor = False
   end
   object grpRowCount: TGroupBox
-    Left = 663
+    Left = 664
     Height = 57
-    Top = 40
+    Top = 48
     Width = 329
     Caption = 'Other'
     ClientHeight = 37
@@ -397,17 +400,19 @@ object formMain: TformMain
       ParentColor = False
     end
     object txtNumRows: TEdit
-      Left = 96
+      Left = 104
       Height = 23
-      Top = 8
-      Width = 64
+      Hint = 'The number of rows that will be generated'
+      Top = 4
+      Width = 56
       TabOrder = 0
       Text = '50'
     end
     object chkIncludeNearby: TCheckBox
-      Left = 184
+      Left = 168
       Height = 19
-      Top = 8
+      Hint = 'Include addresses for nearby cities as well'
+      Top = 6
       Width = 132
       Caption = 'Include Nearby Cities'
       TabOrder = 1
@@ -475,7 +480,7 @@ object formMain: TformMain
   end
   object dialogExport: TSaveDialog
     DefaultExt = '.xlsx'
-    Filter = 'Excel Spreadsheet|*.xlsx|Opendocument Spreadsheet|*.ods|Comma Separated Values|*.csv'
+    Filter = 'Excel Spreadsheet|*.xlsx|Opendocument Spreadsheet|*.ods|Comma Separated Values|*.csv|XML Document|*.xml|JSON Document|*.json'
     Left = 776
     Top = 544
   end

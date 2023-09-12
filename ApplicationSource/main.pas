@@ -8,7 +8,7 @@ uses
   Classes, SysUtils, SQLite3Conn, SQLDB, DB, Forms, Controls, Graphics, Dialogs,
   DBGrids, StdCtrls, Grids, GenerateSampleName, fpSpreadsheet, fpsTypes,
   Clipbrd, ExtCtrls, Buttons, Menus, Spin, fpsallformats, DetailForm,
-  InsertStatementForm, savedsettings;
+  InsertStatementForm, savedsettings, dataexport;
 
 type
 
@@ -78,7 +78,6 @@ type
     function GetStateCodeFromCombo : String;
     procedure PopulateStatesCombo;
     procedure PopulateSampleNamesGrid;
-    procedure ExportToCSVFile(fileName: String);
     procedure SetSavedStateName;
     procedure PopulateCitiesCombo;
     procedure SelectSavedCountry;
@@ -342,67 +341,17 @@ end;
 
 procedure TformMain.btnExportClick(Sender: TObject);
 var
-  ExportWb: TsWorkbook;
-  ExportWs: TsWorksheet;
-  ExportFileName, ExportExt: String;
-  colnum, rownum: Integer;
+  dataExporter: TDataExport;
+  exportFileName: String;
 begin
 	if dialogExport.Execute then begin
     //MessageDlg('Message', 'Filename: ' + savedlgExport.FileName, TMsgDlgType.mtInformation, [mbOK], '');
     if (dialogExport.FileName <> String.Empty) then begin
-      ExportFileName := dialogExport.FileName;
-      ExportExt:= ExtractFileExt(ExportFileName);
-      if (ExportExt = '.csv') then begin
-        ExportToCSVFile(ExportFileName);
-      end
-      else begin
-        ExportWb := TsWorkbook.Create;
-        ExportWs := ExportWb.AddWorksheet('Sheet 1');
-        for colnum := 0 to gridResults.ColCount - 1 do begin
-          ExportWs.WriteText(0, colnum, gridResults.Columns[colnum].Title.Caption);
-          //HeaderCell := ExportWs.GetCell(0, colnum);
-          ExportWs.WriteFontStyle(0, colnum, [fssBold]);
-  	    end;
-
-        //Set column widths.
-        ExportWs.WriteColWidth(0, 0.4, TsSizeUnits.suInches, TsColWidthtype.cwtCustom);
-        ExportWs.WriteColWidth(1, 0.95, TsSizeUnits.suInches, TsColWidthtype.cwtCustom);
-        ExportWs.WriteColWidth(2, 1.0, TsSizeUnits.suInches, TsColWidthtype.cwtCustom);
-        ExportWs.WriteColWidth(3, 0.4, TsSizeUnits.suInches, TsColWidthtype.cwtCustom);
-        ExportWs.WriteColWidth(4, 0.6, TsSizeUnits.suInches, TsColWidthtype.cwtCustom);
-        ExportWs.WriteColWidth(5, 2.2, TsSizeUnits.suInches, TsColWidthtype.cwtCustom);
-        ExportWs.WriteColWidth(6, 2.1, TsSizeUnits.suInches, TsColWidthtype.cwtCustom);
-        ExportWs.WriteColWidth(7, 1.6, TsSizeUnits.suInches, TsColWidthtype.cwtCustom);
-        ExportWs.WriteColWidth(8, 0.55, TsSizeUnits.suInches, TsColWidthtype.cwtCustom);
-        ExportWs.WriteColWidth(9, 0.55, TsSizeUnits.suInches, TsColWidthtype.cwtCustom);
-        ExportWs.WriteColWidth(10, 1.05, TsSizeUnits.suInches, TsColWidthtype.cwtCustom);
-        ExportWs.WriteColWidth(11, 0.9, TsSizeUnits.suInches, TsColWidthtype.cwtCustom);
-
-        rownum := 1;
-  	    while (rownum <= SampleNamesList.Count) do begin
-          ExportWs.WriteNumber(rownum, 0, SampleNamesList[rownum - 1].ID);
-			    ExportWs.WriteText(rownum, 1, SampleNamesList[rownum - 1].FirstName);
-          ExportWs.WriteText(rownum, 2, SampleNamesList[rownum - 1].LastName);
-          ExportWs.WriteText(rownum, 3, SampleNamesList[rownum - 1].MI);
-          ExportWs.WriteText(rownum, 4, SampleNamesList[rownum - 1].Gender);
-          ExportWs.WriteText(rownum, 5, SampleNamesList[rownum - 1].Email);
-          ExportWs.WriteText(rownum, 6, SampleNamesList[rownum - 1].Address);
-          ExportWs.WriteText(rownum, 7, SampleNamesList[rownum - 1].City);
-          ExportWs.WriteText(rownum, 8, SampleNamesList[rownum - 1].StateCode);
-          ExportWs.WriteText(rownum, 9, SampleNamesList[rownum - 1].ZipCode);
-          ExportWs.WriteText(rownum, 10, SampleNamesList[rownum - 1].PhoneNumber);
-          ExportWs.WriteDateTime(rownum, 11, SampleNamesList[rownum - 1].BirthDate);
-
-          ExportWs.WriteNumberFormat(rownum, 11, TsNumberFormat.nfShortDate, 'yyyy-mm-dd');
-			    rownum:= rownum + 1;
-        end;
-        //Save to file
-    	  if (ExportExt = '.xlsx') then begin
-	    	  ExportWb.WriteToFile(ExportFileName, fpsTypes.sfOOXML, true);
-	      end
-  	    else begin  //Otherwise, write to open document spreadsheet format
-    	    ExportWb.WriteToFile(ExportFileName, fpsTypes.sfOpenDocument, true);
-	      end;
+      exportFileName := dialogExport.FileName;
+      dataExporter := TDataExport.Create;
+      dataExporter.ExportFile(SampleNamesList, exportFileName);
+      if (not dataExporter.ExportSuccessful) then begin
+        MessageDlg('Message', dataExporter.StatusMsg, TMsgDlgType.mtInformation, [mbOK], '');
       end;
     end
     else begin
@@ -410,47 +359,6 @@ begin
 		end;
   end;
 
-end;
-
-procedure TformMain.ExportToCSVFile(fileName: String);
-var
-  colNum, rowNum: Integer;
-  fileContents: TStringList;
-  lineText: String;
-begin
-  try
-    fileContents:= TStringList.Create;
-    lineText:= String.Empty;
-    for colNum := 0 to gridResults.Columns.Count - 1 do begin
-      if (colNum > 0) then begin
-        lineText:= lineText + ',';
-      end;
-      lineText:= lineText + '"' + gridResults.Columns[colNum].Title.Caption + '"';
-    end;
-    fileContents.Add(lineText);
-
-    for rowNum:= 0 to SampleNamesList.Count - 1 do begin
-      lineText:= String.Empty;
-      lineText:= lineText + '"' + IntToStr(SampleNamesList[rowNum].ID);
-      lineText:= lineText + '"' + SampleNamesList[rowNum].FirstName + '",';
-      lineText:= lineText + '"' + SampleNamesList[rownum].LastName + '",';
-      lineText:= lineText + '"' + SampleNamesList[rownum].MI + '",';
-      lineText:= lineText + '"' + SampleNamesList[rownum].Gender + '",';
-      lineText:= lineText + '"' + SampleNamesList[rownum].Email + '",';
-      lineText:= lineText + '"' + SampleNamesList[rownum].Address + '",';
-      lineText:= lineText + '"' + SampleNamesList[rownum].City + '",';
-      lineText:= lineText + '"' + SampleNamesList[rownum].StateCode + '",';
-      lineText:= lineText + '"' + SampleNamesList[rownum].ZipCode + '",';
-      lineText:= lineText + '"' + SampleNamesList[rownum].PhoneNumber + '",';
-      lineText:= lineText + '"' + FormatDateTime('YYYY-MM-DD', SampleNamesList[rownum].BirthDate) + '"';
-      fileContents.Add(lineText);
-    end;
-    fileContents.SaveToFile(fileName);
-  except
-    on e: EInOutError do begin
-      MessageDlg('Message', e.Message, TMsgDlgType.mtInformation, [mbOK], '');
-    end;
-  end;
 end;
 
 procedure TformMain.PopulateStatesCombo;

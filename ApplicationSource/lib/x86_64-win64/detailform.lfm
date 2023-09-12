@@ -11,31 +11,31 @@ object NameDetailForm: TNameDetailForm
   LCLVersion = '2.2.4.0'
   object editName: TEdit
     Left = 72
-    Height = 23
+    Height = 31
     Top = 24
     Width = 360
     ReadOnly = True
     TabOrder = 0
   end
   object lblName: TLabel
-    Left = 16
-    Height = 15
+    Left = 17
+    Height = 19
     Top = 24
-    Width = 32
+    Width = 39
     Caption = 'Name'
     ParentColor = False
   end
   object lblGender: TLabel
     Left = 272
-    Height = 15
+    Height = 19
     Top = 64
-    Width = 38
+    Width = 48
     Caption = 'Gender'
     ParentColor = False
   end
   object editGender: TEdit
     Left = 336
-    Height = 23
+    Height = 31
     Top = 64
     Width = 96
     ReadOnly = True
@@ -43,7 +43,7 @@ object NameDetailForm: TNameDetailForm
   end
   object editMI: TEdit
     Left = 72
-    Height = 23
+    Height = 31
     Top = 64
     Width = 72
     ReadOnly = True
@@ -51,15 +51,15 @@ object NameDetailForm: TNameDetailForm
   end
   object lblMI: TLabel
     Left = 16
-    Height = 15
-    Top = 65
-    Width = 14
+    Height = 19
+    Top = 64
+    Width = 17
     Caption = 'MI'
     ParentColor = False
   end
   object editAddress: TEdit
     Left = 72
-    Height = 23
+    Height = 31
     Top = 104
     Width = 360
     ReadOnly = True
@@ -67,15 +67,15 @@ object NameDetailForm: TNameDetailForm
   end
   object lblAddress: TLabel
     Left = 16
-    Height = 15
+    Height = 19
     Top = 104
-    Width = 42
+    Width = 50
     Caption = 'Address'
     ParentColor = False
   end
   object editCity: TEdit
     Left = 72
-    Height = 23
+    Height = 31
     Top = 144
     Width = 360
     ReadOnly = True
@@ -83,15 +83,15 @@ object NameDetailForm: TNameDetailForm
   end
   object lblCity: TLabel
     Left = 16
-    Height = 15
+    Height = 19
     Top = 144
-    Width = 21
+    Width = 23
     Caption = 'City'
     ParentColor = False
   end
   object editState: TEdit
     Left = 72
-    Height = 23
+    Height = 31
     Top = 184
     Width = 184
     ReadOnly = True
@@ -99,7 +99,7 @@ object NameDetailForm: TNameDetailForm
   end
   object editZip: TEdit
     Left = 336
-    Height = 23
+    Height = 31
     Top = 184
     Width = 96
     ReadOnly = True
@@ -107,23 +107,23 @@ object NameDetailForm: TNameDetailForm
   end
   object lblState: TLabel
     Left = 16
-    Height = 15
+    Height = 19
     Top = 184
-    Width = 26
+    Width = 33
     Caption = 'State'
     ParentColor = False
   end
   object lblZip: TLabel
     Left = 272
-    Height = 15
+    Height = 19
     Top = 184
-    Width = 48
+    Width = 54
     Caption = 'Zip Code'
     ParentColor = False
   end
   object editEmail: TEdit
     Left = 72
-    Height = 23
+    Height = 31
     Top = 224
     Width = 360
     ReadOnly = True
@@ -131,7 +131,7 @@ object NameDetailForm: TNameDetailForm
   end
   object editPhone: TEdit
     Left = 72
-    Height = 23
+    Height = 31
     Top = 272
     Width = 112
     ReadOnly = True
@@ -139,7 +139,7 @@ object NameDetailForm: TNameDetailForm
   end
   object editBirthDate: TEdit
     Left = 296
-    Height = 23
+    Height = 31
     Top = 272
     Width = 136
     ReadOnly = True
@@ -147,25 +147,25 @@ object NameDetailForm: TNameDetailForm
   end
   object lblEmail: TLabel
     Left = 16
-    Height = 15
+    Height = 19
     Top = 224
-    Width = 29
+    Width = 34
     Caption = 'Email'
     ParentColor = False
   end
   object lblPhone: TLabel
     Left = 16
-    Height = 15
+    Height = 19
     Top = 272
-    Width = 34
+    Width = 40
     Caption = 'Phone'
     ParentColor = False
   end
   object lblBirthDate: TLabel
     Left = 224
-    Height = 15
+    Height = 19
     Top = 272
-    Width = 52
+    Width = 65
     Caption = 'Birth Date'
     ParentColor = False
   end

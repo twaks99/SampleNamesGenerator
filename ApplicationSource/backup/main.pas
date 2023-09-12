@@ -8,7 +8,7 @@ uses
   Classes, SysUtils, SQLite3Conn, SQLDB, DB, Forms, Controls, Graphics, Dialogs,
   DBGrids, StdCtrls, Grids, GenerateSampleName, fpSpreadsheet, fpsTypes,
   Clipbrd, ExtCtrls, Buttons, Menus, Spin, fpsallformats, DetailForm,
-  InsertStatementForm, savedsettings;
+  InsertStatementForm, savedsettings, dataexport;
 
 type
 
@@ -344,13 +344,20 @@ procedure TformMain.btnExportClick(Sender: TObject);
 var
   ExportWb: TsWorkbook;
   ExportWs: TsWorksheet;
-  ExportFileName, ExportExt: String;
+  dataExporter: TDataExport;
+  exportFileName, ExportExt: String;
   colnum, rownum: Integer;
 begin
 	if dialogExport.Execute then begin
     //MessageDlg('Message', 'Filename: ' + savedlgExport.FileName, TMsgDlgType.mtInformation, [mbOK], '');
     if (dialogExport.FileName <> String.Empty) then begin
-      ExportFileName := dialogExport.FileName;
+      exportFileName := dialogExport.FileName;
+      dataExporter := TDataExport.Create;
+      dataExporter.ExportFile(SampleNamesList, exportFileName);
+      if (not dataExporter.ExportSuccessful) then begin
+        MessageDlg('Message', dataExporter.StatusMsg, TMsgDlgType.mtInformation, [mbOK], '');
+      end;
+      (*
       ExportExt:= ExtractFileExt(ExportFileName);
       if (ExportExt = '.csv') then begin
         ExportToCSVFile(ExportFileName);
@@ -404,6 +411,7 @@ begin
     	    ExportWb.WriteToFile(ExportFileName, fpsTypes.sfOpenDocument, true);
 	      end;
       end;
+      *)
     end
     else begin
       MessageDlg('Message', 'A filename must be specified.', TMsgDlgType.mtInformation, [mbOK], '');
