@@ -19,8 +19,8 @@
         <HasResources Value="True"/>
         <ResourceBaseClass Value="Form"/>
         <IsVisibleTab Value="True"/>
-        <TopLine Value="263"/>
-        <CursorPos Y="81"/>
+        <TopLine Value="79"/>
+        <CursorPos X="32" Y="92"/>
         <UsageCount Value="200"/>
         <Loaded Value="True"/>
         <LoadedDesigner Value="True"/>
@@ -29,8 +29,8 @@
         <Filename Value="generatesamplename.pas"/>
         <IsPartOfProject Value="True"/>
         <UnitName Value="GenerateSampleName"/>
-        <EditorIndex Value="4"/>
-        <TopLine Value="97"/>
+        <EditorIndex Value="1"/>
+        <TopLine Value="289"/>
         <CursorPos Y="289"/>
         <UsageCount Value="201"/>
         <Loaded Value="True"/>
@@ -42,12 +42,10 @@
         <HasResources Value="True"/>
         <ResourceBaseClass Value="Form"/>
         <UnitName Value="DetailForm"/>
-        <EditorIndex Value="5"/>
+        <EditorIndex Value="-1"/>
         <TopLine Value="45"/>
         <CursorPos Y="47"/>
-        <UsageCount Value="196"/>
-        <Loaded Value="True"/>
-        <LoadedDesigner Value="True"/>
+        <UsageCount Value="197"/>
       </Unit>
       <Unit>
         <Filename Value="insertstatementform.pas"/>
@@ -56,28 +54,27 @@
         <HasResources Value="True"/>
         <ResourceBaseClass Value="Form"/>
         <UnitName Value="InsertStatementForm"/>
-        <EditorIndex Value="3"/>
+        <EditorIndex Value="2"/>
         <TopLine Value="73"/>
         <CursorPos X="4" Y="83"/>
-        <UsageCount Value="184"/>
+        <UsageCount Value="185"/>
         <Loaded Value="True"/>
-        <LoadedDesigner Value="True"/>
       </Unit>
       <Unit>
         <Filename Value="savedsettings.pas"/>
         <IsPartOfProject Value="True"/>
-        <EditorIndex Value="2"/>
+        <EditorIndex Value="-1"/>
         <TopLine Value="128"/>
         <CursorPos X="18" Y="135"/>
-        <UsageCount Value="133"/>
-        <Loaded Value="True"/>
+        <UsageCount Value="134"/>
       </Unit>
       <Unit>
         <Filename Value="dataexport.pas"/>
         <IsPartOfProject Value="True"/>
-        <EditorIndex Value="1"/>
+        <EditorIndex Value="3"/>
+        <TopLine Value="35"/>
         <CursorPos X="17" Y="59"/>
-        <UsageCount Value="51"/>
+        <UsageCount Value="52"/>
         <Loaded Value="True"/>
       </Unit>
       <Unit>
@@ -105,128 +102,7 @@
         <UsageCount Value="10"/>
       </Unit>
     </Units>
-    <JumpHistory HistoryIndex="29">
-      <Position>
-        <Filename Value="dataexport.pas"/>
-        <Caret Line="215" TopLine="192"/>
-      </Position>
-      <Position>
-        <Filename Value="dataexport.pas"/>
-        <Caret Line="216" TopLine="192"/>
-      </Position>
-      <Position>
-        <Filename Value="dataexport.pas"/>
-        <Caret Line="217" TopLine="192"/>
-      </Position>
-      <Position>
-        <Filename Value="dataexport.pas"/>
-        <Caret Line="218" TopLine="192"/>
-      </Position>
-      <Position>
-        <Filename Value="dataexport.pas"/>
-        <Caret Line="219" TopLine="192"/>
-      </Position>
-      <Position>
-        <Filename Value="dataexport.pas"/>
-        <Caret Line="220" TopLine="194"/>
-      </Position>
-      <Position>
-        <Filename Value="dataexport.pas"/>
-        <Caret Line="221" TopLine="195"/>
-      </Position>
-      <Position>
-        <Filename Value="dataexport.pas"/>
-        <Caret Line="205" TopLine="195"/>
-      </Position>
-      <Position>
-        <Filename Value="dataexport.pas"/>
-        <Caret Line="206" TopLine="195"/>
-      </Position>
-      <Position>
-        <Filename Value="dataexport.pas"/>
-        <Caret Line="207" TopLine="195"/>
-      </Position>
-      <Position>
-        <Filename Value="dataexport.pas"/>
-        <Caret Line="208" TopLine="195"/>
-      </Position>
-      <Position>
-        <Filename Value="dataexport.pas"/>
-        <Caret Line="209" TopLine="195"/>
-      </Position>
-      <Position>
-        <Filename Value="dataexport.pas"/>
-        <Caret Line="210" TopLine="195"/>
-      </Position>
-      <Position>
-        <Filename Value="dataexport.pas"/>
-        <Caret Line="211" TopLine="195"/>
-      </Position>
-      <Position>
-        <Filename Value="dataexport.pas"/>
-        <Caret Line="212" TopLine="195"/>
-      </Position>
-      <Position>
-        <Filename Value="dataexport.pas"/>
-        <Caret Line="213" TopLine="195"/>
-      </Position>
-      <Position>
-        <Filename Value="dataexport.pas"/>
-        <Caret Line="214" TopLine="195"/>
-      </Position>
-      <Position>
-        <Filename Value="dataexport.pas"/>
-        <Caret Line="215" TopLine="195"/>
-      </Position>
-      <Position>
-        <Filename Value="dataexport.pas"/>
-        <Caret Line="216" TopLine="195"/>
-      </Position>
-      <Position>
-        <Filename Value="dataexport.pas"/>
-        <Caret Line="217" TopLine="195"/>
-      </Position>
-      <Position>
-        <Filename Value="dataexport.pas"/>
-        <Caret Line="218" TopLine="195"/>
-      </Position>
-      <Position>
-        <Filename Value="dataexport.pas"/>
-        <Caret Line="219" TopLine="195"/>
-      </Position>
-      <Position>
-        <Filename Value="dataexport.pas"/>
-        <Caret Line="220" TopLine="195"/>
-      </Position>
-      <Position>
-        <Filename Value="dataexport.pas"/>
-        <Caret Line="221" TopLine="195"/>
-      </Position>
-      <Position>
-        <Filename Value="dataexport.pas"/>
-        <Caret Line="205" TopLine="195"/>
-      </Position>
-      <Position>
-        <Filename Value="dataexport.pas"/>
-        <Caret Line="206" TopLine="195"/>
-      </Position>
-      <Position>
-        <Filename Value="dataexport.pas"/>
-        <Caret Line="223" TopLine="197"/>
-      </Position>
-      <Position>
-        <Filename Value="dataexport.pas"/>
-        <Caret Line="224" TopLine="198"/>
-      </Position>
-      <Position>
-        <Filename Value="dataexport.pas"/>
-        <Caret Line="194" Column="22" TopLine="192"/>
-      </Position>
-      <Position>
-        <Filename Value="dataexport.pas"/>
-        <Caret Line="243" TopLine="237"/>
-      </Position>
-    </JumpHistory>
+    <JumpHistory HistoryIndex="-1"/>
     <RunParams>
       <FormatVersion Value="2"/>
       <Modes ActiveMode=""/>

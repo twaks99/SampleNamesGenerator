@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <SavedSettings>
-  <CountryName>CA</CountryName>
-  <StateName>ON</StateName>
-  <CityName>Toronto</CityName>
-  <NumRecords>75</NumRecords>
+  <CountryName>US</CountryName>
+  <StateName>CA</StateName>
+  <CityName>Los Angeles</CityName>
+  <NumRecords>165</NumRecords>
   <DBTableName>customer_list</DBTableName>
   <RandomGenderDistribution>true</RandomGenderDistribution>
   <MalePercentage>0</MalePercentage>

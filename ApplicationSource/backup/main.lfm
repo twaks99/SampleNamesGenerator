@@ -1,57 +1,57 @@
 object formMain: TformMain
-  Left = 263
-  Height = 663
+  Left = 311
+  Height = 679
   Top = 121
-  Width = 1023
+  Width = 1060
   Caption = 'Sample Names Generator'
-  ClientHeight = 643
-  ClientWidth = 1023
+  ClientHeight = 679
+  ClientWidth = 1060
   Menu = MainMenu1
   OnClose = FormClose
   OnCreate = FormCreate
-  LCLVersion = '2.2.4.0'
+  LCLVersion = '3.6.0.0'
   object comboStates: TComboBox
-    Left = 304
-    Height = 23
-    Top = 9
+    Left = 320
+    Height = 33
+    Top = 8
     Width = 256
     AutoComplete = True
     AutoCompleteText = [cbactEnabled, cbactEndOfLineComplete, cbactSearchAscending]
-    ItemHeight = 15
-    OnSelect = comboStatesSelect
+    ItemHeight = 0
     TabOrder = 0
+    OnSelect = comboStatesSelect
   end
   object comboCities: TComboBox
-    Left = 608
-    Height = 23
+    Left = 624
+    Height = 33
     Top = 9
-    Width = 280
+    Width = 296
     AutoComplete = True
     AutoCompleteText = [cbactEnabled, cbactEndOfLineComplete, cbactSearchAscending]
-    ItemHeight = 15
+    ItemHeight = 0
     TabOrder = 1
   end
   object lblState: TLabel
     Left = 264
-    Height = 15
-    Top = 8
-    Width = 26
+    Height = 21
+    Top = 16
+    Width = 34
     Caption = 'State'
     ParentColor = False
   end
   object lblCities: TLabel
-    Left = 576
-    Height = 15
-    Top = 9
-    Width = 21
+    Left = 584
+    Height = 21
+    Top = 16
+    Width = 26
     Caption = 'City'
     ParentColor = False
   end
   object gridResults: TStringGrid
     Left = 16
-    Height = 457
-    Top = 136
-    Width = 989
+    Height = 485
+    Top = 144
+    Width = 1026
     AlternateColor = clBtnFace
     Anchors = [akTop, akLeft, akRight, akBottom]
     ColCount = 12
@@ -66,7 +66,7 @@ object formMain: TformMain
       end    
       item
         Title.Caption = 'Last Name'
-        Width = 95
+        Width = 100
       end    
       item
         Title.Caption = 'MI'
@@ -74,7 +74,7 @@ object formMain: TformMain
       end    
       item
         Title.Caption = 'Gender'
-        Width = 55
+        Width = 57
       end    
       item
         Title.Caption = 'Email'
@@ -82,11 +82,11 @@ object formMain: TformMain
       end    
       item
         Title.Caption = 'Address'
-        Width = 200
+        Width = 215
       end    
       item
         Title.Caption = 'City'
-        Width = 100
+        Width = 105
       end    
       item
         Title.Caption = 'State'
@@ -102,7 +102,7 @@ object formMain: TformMain
       end    
       item
         Title.Caption = 'Birth Date'
-        Width = 85
+        Width = 87
       end>
     FixedCols = 0
     Options = [goFixedVertLine, goFixedHorzLine, goVertLine, goHorzLine, goRangeSelect, goColSizing, goRowSelect, goThumbTracking, goSmoothScroll]
@@ -113,18 +113,18 @@ object formMain: TformMain
   end
   object lblSampleNames: TLabel
     Left = 16
-    Height = 15
-    Top = 112
-    Width = 58
+    Height = 21
+    Top = 120
+    Width = 76
     Caption = 'Names List'
     ParentColor = False
   end
   object radiogroupDelimeter: TRadioGroup
     Left = 16
-    Height = 57
+    Height = 65
     Hint = 'Select the delimited character when copying results to the clipboard.'
     Top = 48
-    Width = 201
+    Width = 208
     AutoFill = True
     Caption = 'Delimiter for Clipboard Copy'
     ChildSizing.LeftRightSpacing = 6
@@ -134,8 +134,8 @@ object formMain: TformMain
     ChildSizing.ShrinkVertical = crsScaleChilds
     ChildSizing.Layout = cclLeftToRightThenTopToBottom
     ChildSizing.ControlsPerLine = 2
-    ClientHeight = 37
-    ClientWidth = 197
+    ClientHeight = 43
+    ClientWidth = 206
     Columns = 2
     ItemIndex = 0
     Items.Strings = (
@@ -149,8 +149,8 @@ object formMain: TformMain
   object btnExport: TBitBtn
     Left = 192
     Height = 30
-    Top = 601
-    Width = 80
+    Top = 637
+    Width = 96
     Anchors = [akLeft, akBottom]
     Caption = 'Export'
     Glyph.Data = {
@@ -196,8 +196,8 @@ object formMain: TformMain
     Left = 16
     Height = 30
     Hint = 'Copy results to clipboard using the delimiter specified above.'
-    Top = 601
-    Width = 144
+    Top = 637
+    Width = 160
     Anchors = [akLeft, akBottom]
     Caption = 'Copy to Clipboard'
     Glyph.Data = {
@@ -242,10 +242,10 @@ object formMain: TformMain
     TabOrder = 5
   end
   object btnClose: TBitBtn
-    Left = 480
+    Left = 517
     Height = 30
-    Top = 601
-    Width = 76
+    Top = 637
+    Width = 91
     Anchors = [akRight, akBottom]
     DefaultCaption = True
     Kind = bkClose
@@ -254,10 +254,10 @@ object formMain: TformMain
     TabOrder = 7
   end
   object btnGenerate: TBitBtn
-    Left = 904
+    Left = 928
     Height = 30
     Top = 9
-    Width = 88
+    Width = 111
     Caption = 'Generate'
     Glyph.Data = {
       36040000424D3604000000000000360000002800000010000000100000000100
@@ -299,26 +299,26 @@ object formMain: TformMain
     TabOrder = 2
   end
   object grpGenderDisttribution: TGroupBox
-    Left = 224
-    Height = 57
+    Left = 232
+    Height = 64
     Top = 48
-    Width = 433
+    Width = 440
     Caption = 'Gender Distribution'
-    ClientHeight = 37
-    ClientWidth = 429
+    ClientHeight = 42
+    ClientWidth = 438
     TabOrder = 8
     object lblMaleDist: TLabel
       Left = 8
-      Height = 15
+      Height = 21
       Top = 8
-      Width = 26
+      Width = 33
       Caption = 'Male'
       ParentColor = False
     end
     object spinMaleDist: TSpinEdit
       Tag = 50
-      Left = 64
-      Height = 23
+      Left = 56
+      Height = 31
       Hint = 'Percentage of generated names that are male'
       Top = 4
       Width = 58
@@ -329,15 +329,15 @@ object formMain: TformMain
     end
     object lblFemaleDist: TLabel
       Left = 136
-      Height = 15
+      Height = 21
       Top = 8
-      Width = 38
+      Width = 50
       Caption = 'Female'
       ParentColor = False
     end
     object spinFemaleDist: TSpinEdit
       Left = 192
-      Height = 23
+      Height = 31
       Hint = 'Percentage of generated names that are female'
       Top = 4
       Width = 58
@@ -347,61 +347,61 @@ object formMain: TformMain
       TabOrder = 1
     end
     object chkRandomGDist: TCheckBox
-      Left = 272
-      Height = 19
+      Left = 264
+      Height = 23
       Hint = 'The ratio of males and females will be random'
       Top = 4
-      Width = 130
+      Width = 168
       Caption = 'Random Distribution'
       Checked = True
-      OnChange = chkRandomGDistChange
       State = cbChecked
       TabOrder = 2
+      OnChange = chkRandomGDistChange
     end
   end
   object comboCountry: TComboBox
     Left = 80
-    Height = 23
+    Height = 33
     Top = 8
     Width = 169
-    ItemHeight = 15
+    ItemHeight = 0
     ItemIndex = 0
     Items.Strings = (
       'United States'
       'Canada'
     )
-    OnSelect = comboCountrySelect
     TabOrder = 9
     Text = 'United States'
+    OnSelect = comboCountrySelect
   end
   object lblCountry: TLabel
     Left = 16
-    Height = 15
-    Top = 8
-    Width = 43
+    Height = 21
+    Top = 16
+    Width = 55
     Caption = 'Country'
     ParentColor = False
   end
   object grpRowCount: TGroupBox
-    Left = 664
-    Height = 57
+    Left = 680
+    Height = 64
     Top = 48
-    Width = 329
+    Width = 360
     Caption = 'Other'
-    ClientHeight = 37
-    ClientWidth = 325
+    ClientHeight = 42
+    ClientWidth = 358
     TabOrder = 10
     object lblNumRows: TLabel
-      Left = 8
-      Height = 15
+      Left = 0
+      Height = 21
       Top = 8
-      Width = 75
+      Width = 98
       Caption = 'Number Rows'
       ParentColor = False
     end
     object txtNumRows: TEdit
       Left = 104
-      Height = 23
+      Height = 33
       Hint = 'The number of rows that will be generated'
       Top = 4
       Width = 56
@@ -410,10 +410,10 @@ object formMain: TformMain
     end
     object chkIncludeNearby: TCheckBox
       Left = 168
-      Height = 19
+      Height = 23
       Hint = 'Include addresses for nearby cities as well'
       Top = 6
-      Width = 132
+      Width = 170
       Caption = 'Include Nearby Cities'
       TabOrder = 1
     end
