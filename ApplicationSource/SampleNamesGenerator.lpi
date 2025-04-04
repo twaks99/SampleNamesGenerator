@@ -14,8 +14,16 @@
       </XPManifest>
       <Icon Value="0"/>
     </General>
+    <MacroValues Count="2">
+      <Macro1 Name="LCLWidgetType" Value="qt5"/>
+      <Macro2 Name="LCLWidgetType" Value="gtk2"/>
+    </MacroValues>
     <BuildModes>
       <Item Name="Default" Default="True"/>
+      <SharedMatrixOptions Count="2">
+        <Item1 ID="039266134583" Modes="Default" Type="IDEMacro" MacroName="LCLWidgetType" Value="qt5"/>
+        <Item2 ID="627319347561" Modes="Default" Type="IDEMacro" MacroName="LCLWidgetType" Value="gtk2"/>
+      </SharedMatrixOptions>
     </BuildModes>
     <PublishOptions>
       <Version Value="2"/>
@@ -25,6 +33,9 @@
       <FormatVersion Value="2"/>
     </RunParams>
     <RequiredPackages>
+      <Item>
+        <PackageName Value="SQLDBLaz"/>
+      </Item>
       <Item>
         <PackageName Value="laz_fpspreadsheet_visual"/>
       </Item>
@@ -79,6 +90,21 @@
         <Filename Value="dataexport.pas"/>
         <IsPartOfProject Value="True"/>
       </Unit>
+      <Unit>
+        <Filename Value="datamodule.pas"/>
+        <IsPartOfProject Value="True"/>
+        <ComponentName Value="dataModuleMain"/>
+        <HasResources Value="True"/>
+        <ResourceBaseClass Value="DataModule"/>
+        <UnitName Value="dataModule"/>
+      </Unit>
+      <Unit>
+        <Filename Value="multiplecitiesselect.pas"/>
+        <IsPartOfProject Value="True"/>
+        <ComponentName Value="MultipleCitiesSelect"/>
+        <ResourceBaseClass Value="Form"/>
+        <UnitName Value="MultipleCitiesSelect"/>
+      </Unit>
     </Units>
   </ProjectOptions>
   <CompilerOptions>
@@ -93,7 +119,6 @@
     </SearchPaths>
     <Linking>
       <Debugging>
-        <GenerateDebugInfo Value="False"/>
         <DebugInfoType Value="dsDwarf2Set"/>
       </Debugging>
       <Options>

@@ -6,7 +6,7 @@ interface
 
 uses
   Classes, SysUtils, SQLite3Conn, SQLDB, DB, Forms, Controls, Graphics, Dialogs,
-  DBGrids, StdCtrls, Grids, GenerateSampleName, fpSpreadsheet, fpsTypes,
+  DBGrids, StdCtrls, Grids, dataModule, GenerateSampleName, fpSpreadsheet, fpsTypes,
   Clipbrd, ExtCtrls, Buttons, Menus, Spin, fpsallformats, DetailForm,
   InsertStatementForm, savedsettings, dataexport;
 
@@ -15,16 +15,17 @@ type
   { TformMain }
 
   TformMain = class(TForm)
+    btnMultipleCities: TBitBtn;
     btnGenerate: TBitBtn;
     btnClose: TBitBtn;
     btnClipboard: TBitBtn;
     btnExport: TBitBtn;
+    chkMultipleCities: TCheckBox;
     chkIncludeNearby: TCheckBox;
     chkRandomGDist: TCheckBox;
     comboCountry: TComboBox;
     comboStates: TComboBox;
     comboCities: TComboBox;
-    connectionMain: TSQLite3Connection;
     dialogExport: TSaveDialog;
     grpRowCount: TGroupBox;
     grpGenderDisttribution: TGroupBox;
@@ -50,10 +51,7 @@ type
     lblState: TLabel;
     lblCities: TLabel;
     lblSampleNames: TLabel;
-    queryStates: TSQLQuery;
-    queryCities: TSQLQuery;
     gridResults: TStringGrid;
-    transactionMain: TSQLTransaction;
     txtNumRows: TEdit;
     procedure btnClipboardClick(Sender: TObject);
     procedure btnCloseClick(Sender: TObject);
@@ -97,11 +95,8 @@ implementation
 procedure TformMain.FormCreate(Sender: TObject);
 begin
   countryCode := 'US';
-  connectionMain.DatabaseName := 'SampleNames.db';
-  connectionMain.Open;
-  queryStates.Open;
   SavedSettings := TSavedSettings.Create;
-  SamplesGenerator := TSampleNamesGenerator.Create(connectionMain);
+  SamplesGenerator := TSampleNamesGenerator.Create();
   SelectSavedCountry;
   PopulateStatesCombo;
 end;
@@ -215,8 +210,8 @@ begin
   state_id := GetStateCodeFromCombo();
 
   if (not String.IsNullOrEmpty(state_id)) then begin
-    if (queryCities.Active) then begin
-      queryCities.Close;
+    if (dataModule.dataModuleMain.queryCities.Active) then begin
+      dataModule.dataModuleMain.queryCities.Close;
     end;
     sql := TStringList.Create;
     if (countryCode = 'US') then begin
@@ -229,14 +224,14 @@ begin
       sql.Add('WHERE PROVINCE = :state ');
       sql.Add('ORDER BY CITY');
     end;
-    queryCities.SQL := sql;
-    queryCities.Params[0].Value := state_id;
-    queryCities.Open;
-    queryCities.First;
+    dataModule.dataModuleMain.queryCities.SQL := sql;
+    dataModule.dataModuleMain.queryCities.Params[0].Value := state_id;
+    dataModule.dataModuleMain.queryCities.Open;
+    dataModule.dataModuleMain.queryCities.First;
     comboCities.Items.Clear;
-    while (not queryCities.EOF) do begin
-      comboCities.Items.Add(queryCities.FieldByName('city').AsString);
-      queryCities.Next;
+    while (not dataModule.dataModuleMain.queryCities.EOF) do begin
+      comboCities.Items.Add(dataModule.dataModuleMain.queryCities.FieldByName('city').AsString);
+      dataModule.dataModuleMain.queryCities.Next;
     end;
   end;
 end;
@@ -294,9 +289,9 @@ begin
     countryCode:= 'US'
   else
     countryCode := 'CA';
-  queryStates.Params[0].Value := countryCode;
-  queryStates.Close;
-  queryStates.Open;
+  dataModule.dataModuleMain.queryStates.Params[0].Value := countryCode;
+  dataModule.dataModuleMain.queryStates.Close;
+  dataModule.dataModuleMain.queryStates.Open;
   PopulateStatesCombo;
 end;
 
@@ -364,10 +359,10 @@ end;
 procedure TformMain.PopulateStatesCombo;
 begin
   comboStates.Items.Clear;
-  QueryStates.First;
-  while (not QueryStates.EOF) do begin
-    comboStates.Items.Add(QueryStates.FieldByName('state_name').AsString);
-    QueryStates.Next;
+  dataModule.dataModuleMain.QueryStates.First;
+  while (not dataModule.dataModuleMain.QueryStates.EOF) do begin
+    comboStates.Items.Add(dataModule.dataModuleMain.QueryStates.FieldByName('state_name').AsString);
+    dataModule.dataModuleMain.QueryStates.Next;
   end;
   if (SavedSettings.StateName <> String.Empty) then
 	  SetSavedStateName;
@@ -381,29 +376,29 @@ begin
   savedStateCode:= SavedSettings.StateName;
   savedCityName:= SavedSettings.CityName;
   idx := 0;
-  queryStates.First;
-  while (not queryStates.EOF) do begin
-    currentStateCode := queryStates.FieldByName('state_code').AsString;
-    if (queryStates.FieldByName('state_code').AsString = savedStateCode) then begin
+  dataModule.dataModuleMain.queryStates.First;
+  while (not dataModule.dataModuleMain.queryStates.EOF) do begin
+    currentStateCode := dataModule.dataModuleMain.queryStates.FieldByName('state_code').AsString;
+    if (dataModule.dataModuleMain.queryStates.FieldByName('state_code').AsString = savedStateCode) then begin
       comboStates.ItemIndex:= idx;
       Break;
     end;
     Inc(idx);
-    queryStates.Next;
+    dataModule.dataModuleMain.queryStates.Next;
   end;
   //Populate combo box for cities.
   PopulateCitiesCombo;
   //Set city to saved value.
-  if (queryCities.Active) then begin
-    queryCities.First;
+  if (dataModule.dataModuleMain.queryCities.Active) then begin
+    dataModule.dataModuleMain.queryCities.First;
     idx := 0;
-    while (not queryCities.EOF) do begin
-      if (queryCities.FieldByName('city').AsString = savedCityName) then begin
+    while (not dataModule.dataModuleMain.queryCities.EOF) do begin
+      if (dataModule.dataModuleMain.queryCities.FieldByName('city').AsString = savedCityName) then begin
         comboCities.ItemIndex:= idx;
         break;
       end;
       Inc(idx);
-      queryCities.Next;
+      dataModule.dataModuleMain.queryCities.Next;
     end;
   end;
   //Set value for number of rows
@@ -423,13 +418,13 @@ begin
   state_name := String.Empty;
   if (comboStates.ItemIndex >= 0) then begin
     state_name := comboStates.Items[comboStates.ItemIndex];
-    queryStates.First;
-    while (not queryStates.EOF) do begin
-      if (queryStates.FieldByName('state_name').AsString = state_name) then begin
-        state_code := queryStates.FieldByName('state_code').AsString;
+    dataModule.dataModuleMain.queryStates.First;
+    while (not dataModule.dataModuleMain.queryStates.EOF) do begin
+      if (dataModule.dataModuleMain.queryStates.FieldByName('state_name').AsString = state_name) then begin
+        state_code := dataModule.dataModuleMain.queryStates.FieldByName('state_code').AsString;
         Break;
       end;
-      queryStates.Next;
+      dataModule.dataModuleMain.queryStates.Next;
     end;
   end;
   Result := state_code;

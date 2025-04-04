@@ -5,7 +5,8 @@ unit GenerateSampleName;
 interface
 
 uses
-  Classes, SysUtils, SQLDB, DB, Generics.Collections, SQLite3Conn, Math, fgl;
+  Classes, SysUtils, SQLDB, DB, Generics.Collections, SQLite3Conn, Math, fgl,
+  dataModule;
 
 const
   CommonLetters: array[0..19] of Char = ('A','B','C','D','E','F','G','H',
@@ -47,7 +48,7 @@ type
   TZipCodesList = specialize TObjectList<TZipCode>;
 
   TSampleNamesGenerator = Class(TObject)
-    constructor Create(db: TSQLite3Connection);
+    constructor Create();
   public
     CountryCode: String;
     StateCode: String;
@@ -56,7 +57,7 @@ type
     function GenerateSampleSet(country, state, cityName: String; numRows, mdist, fdist: Integer;
         rdist, nearbyCities: Boolean): TSampleNamesList;
   private
-    DBConnection : TSQLite3Connection;
+    //DBConnection : TSQLite3Connection;
     DataRetrieveQuery : TSQLQuery;
     FemaleFirstNames: TStringList;
     MaleFirstNames: TStringList;
@@ -148,12 +149,11 @@ begin
   self.StateCode:= state;
 end;
 
-constructor TSampleNamesGenerator.Create(db: TSQLite3Connection);
+constructor TSampleNamesGenerator.Create();
 begin
-  DBConnection:= db;
   DataRetrieveQuery := TSQLQuery.Create(Nil);
-  DataRetrieveQuery.DataBase := DBConnection;
-  DataRetrieveQuery.Transaction := DBConnection.Transaction;
+  DataRetrieveQuery.DataBase := dataModule.dataModuleMain.connectionMain;
+  DataRetrieveQuery.Transaction := dataModule.dataModuleMain.transactionMain;
   FemaleFirstNames := TStringList.Create;
   MaleFirstNames := TStringList.Create;
   LastNames := TStringList.Create;

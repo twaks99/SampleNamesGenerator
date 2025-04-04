@@ -1,10 +1,10 @@
 object formMain: TformMain
   Left = 311
-  Height = 679
-  Top = 121
+  Height = 743
+  Top = 57
   Width = 1060
   Caption = 'Sample Names Generator'
-  ClientHeight = 679
+  ClientHeight = 743
   ClientWidth = 1060
   Menu = MainMenu1
   OnClose = FormClose
@@ -49,8 +49,8 @@ object formMain: TformMain
   end
   object gridResults: TStringGrid
     Left = 16
-    Height = 485
-    Top = 144
+    Height = 517
+    Top = 176
     Width = 1026
     AlternateColor = clBtnFace
     Anchors = [akTop, akLeft, akRight, akBottom]
@@ -82,7 +82,7 @@ object formMain: TformMain
       end    
       item
         Title.Caption = 'Address'
-        Width = 215
+        Width = 210
       end    
       item
         Title.Caption = 'City'
@@ -114,7 +114,7 @@ object formMain: TformMain
   object lblSampleNames: TLabel
     Left = 16
     Height = 21
-    Top = 120
+    Top = 152
     Width = 76
     Caption = 'Names List'
     ParentColor = False
@@ -123,7 +123,7 @@ object formMain: TformMain
     Left = 16
     Height = 65
     Hint = 'Select the delimited character when copying results to the clipboard.'
-    Top = 48
+    Top = 80
     Width = 208
     AutoFill = True
     Caption = 'Delimiter for Clipboard Copy'
@@ -149,7 +149,7 @@ object formMain: TformMain
   object btnExport: TBitBtn
     Left = 192
     Height = 30
-    Top = 637
+    Top = 701
     Width = 96
     Anchors = [akLeft, akBottom]
     Caption = 'Export'
@@ -196,7 +196,7 @@ object formMain: TformMain
     Left = 16
     Height = 30
     Hint = 'Copy results to clipboard using the delimiter specified above.'
-    Top = 637
+    Top = 701
     Width = 160
     Anchors = [akLeft, akBottom]
     Caption = 'Copy to Clipboard'
@@ -242,9 +242,9 @@ object formMain: TformMain
     TabOrder = 5
   end
   object btnClose: TBitBtn
-    Left = 517
+    Left = 496
     Height = 30
-    Top = 637
+    Top = 701
     Width = 91
     Anchors = [akRight, akBottom]
     DefaultCaption = True
@@ -301,7 +301,7 @@ object formMain: TformMain
   object grpGenderDisttribution: TGroupBox
     Left = 232
     Height = 64
-    Top = 48
+    Top = 80
     Width = 440
     Caption = 'Gender Distribution'
     ClientHeight = 42
@@ -383,16 +383,16 @@ object formMain: TformMain
     ParentColor = False
   end
   object grpRowCount: TGroupBox
-    Left = 680
+    Left = 679
     Height = 64
-    Top = 48
+    Top = 80
     Width = 360
     Caption = 'Other'
     ClientHeight = 42
     ClientWidth = 358
     TabOrder = 10
     object lblNumRows: TLabel
-      Left = 0
+      Left = 8
       Height = 21
       Top = 8
       Width = 98
@@ -400,7 +400,7 @@ object formMain: TformMain
       ParentColor = False
     end
     object txtNumRows: TEdit
-      Left = 104
+      Left = 112
       Height = 33
       Hint = 'The number of rows that will be generated'
       Top = 4
@@ -409,7 +409,7 @@ object formMain: TformMain
       Text = '50'
     end
     object chkIncludeNearby: TCheckBox
-      Left = 168
+      Left = 176
       Height = 23
       Hint = 'Include addresses for nearby cities as well'
       Top = 6
@@ -418,75 +418,67 @@ object formMain: TformMain
       TabOrder = 1
     end
   end
-  object connectionMain: TSQLite3Connection
-    Connected = False
-    LoginPrompt = False
-    DatabaseName = '/home/tomk/Working/Delphi/SampleNamesGenerator/SampleNames.db'
-    KeepConnection = False
-    Transaction = transactionMain
-    AlwaysUseBigint = False
-    Left = 960
-    Top = 544
+  object chkMultipleCities: TCheckBox
+    Left = 80
+    Height = 23
+    Top = 48
+    Width = 121
+    Caption = 'Multiple Cities'
+    TabOrder = 11
   end
-  object queryStates: TSQLQuery
-    FieldDefs = <>
-    Database = connectionMain
-    Transaction = transactionMain
-    SQL.Strings = (
-      'select STATE_CODE, STATE_NAME'
-      'from States'
-      'where official_state = 1'
-      '  AND country_code = :Country'
-      'order by state_name'
-      ''
-    )
-    Params = <    
-      item
-        DataType = ftString
-        Name = 'Country'
-        ParamType = ptInput
-        Value = 'US'
-      end>
-    Macros = <>
-    Left = 880
-    Top = 544
-  end
-  object transactionMain: TSQLTransaction
-    Active = False
-    Database = connectionMain
-    Left = 920
-    Top = 544
-  end
-  object queryCities: TSQLQuery
-    FieldDefs = <>
-    Database = connectionMain
-    Transaction = transactionMain
-    SQL.Strings = (
-      'SELECT DISTINCT city FROM zipcodes'
-      'WHERE state = :state'
-      'ORDER BY city'
-      ''
-    )
-    Params = <    
-      item
-        DataType = ftString
-        Name = 'state'
-        ParamType = ptInput
-        Value = 'MD'
-      end>
-    Macros = <>
-    Left = 832
-    Top = 544
+  object btnMultipleCities: TBitBtn
+    Left = 248
+    Height = 30
+    Top = 48
+    Width = 216
+    Caption = 'Specify Multiple Cities'
+    Glyph.Data = {
+      36040000424D3604000000000000360000002800000010000000100000000100
+      20000000000000040000640000006400000000000000000000000000006F0000
+      00AF000000AA000000AA000000AA000000AA000000AA000000AA000000AA0000
+      00AA000000A40000000600000000000000000000000000000000000000AF0000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000650000004900000000000000000000000000000000000000AA0000
+      0000000000000000000000000000000000000000000000000000000000000000
+      000000000071000000C6000000880000000D0000000000000000000000AA0000
+      0000000000000000000000000000000000000000000000000000000000000000
+      000000000055000000550000003D000000880000000000000000000000AA0000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000550000005500000000000000C40000004900000006000000AA0000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000550000005500000000000000C400000065000000A5000000AA0000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000550000005500000000000000AA00000000000000AA000000AA0000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000550000005500000000000000AA00000000000000AA000000AA0000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000550000005500000000000000AA00000000000000AA000000AA0000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000580000005200000000000000AA00000000000000AA000000A70000
+      0064000000700000005500000055000000550000005500000055000000550000
+      0058000000B40000001A00000000000000AA00000000000000AA000000070000
+      004A000000C60000005500000055000000550000005500000055000000550000
+      00520000001B0000000000000000000000AA00000000000000AA000000000000
+      00000000008A0000003A00000000000000000000000000000000000000000000
+      000000000000000000000000003C0000008800000000000000AA000000000000
+      00000000000E0000008A000000C4000000C3000000AA000000AA000000AA0000
+      00AA000000AA000000AA000000890000000D00000000000000AA000000000000
+      000000000000000000000000004A000000640000000000000000000000000000
+      00000000000000000000000000000000000000000000000000AF000000000000
+      0000000000000000000000000007000000A7000000AA000000AA000000AA0000
+      00AA000000AA000000AA000000AA000000AA000000AF0000006F
+    }
+    TabOrder = 12
   end
   object dialogExport: TSaveDialog
     DefaultExt = '.xlsx'
     Filter = 'Excel Spreadsheet|*.xlsx|Opendocument Spreadsheet|*.ods|Comma Separated Values|*.csv|XML Document|*.xml|JSON Document|*.json'
-    Left = 776
-    Top = 544
+    Left = 784
+    Top = 704
   end
   object MainMenu1: TMainMenu
-    Left = 112
-    Top = 216
+    Left = 712
+    Top = 704
     object menugroupFile: TMenuItem
       Caption = 'File'
       object menuitemExport: TMenuItem
@@ -519,8 +511,8 @@ object formMain: TformMain
     end
   end
   object popupNamesGrid: TPopupMenu
-    Left = 899
-    Top = 253
+    Left = 872
+    Top = 704
     object menuItemShowDetails: TMenuItem
       Caption = 'Show Details'
       OnClick = menuItemShowDetailsClick
