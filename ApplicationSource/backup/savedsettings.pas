@@ -5,7 +5,7 @@ unit savedsettings;
 interface
 
 uses
-  Classes, SysUtils, DOM, XMLRead, XMLWrite, Generics.Collections;
+  Classes, SysUtils, DOM, XMLRead, XMLWrite, Generics.Collections, dataModule, CityRecords;
 
 const
 	SettingsFileName : String = 'savedsettings.xml';
@@ -33,6 +33,7 @@ type
       MalePercentage : Integer;
       FemalePercentage : Integer;
       DBTableName : String;
+      MultipleCities : Boolean;
 			SavedColumnMappings : TSavedColumnMappingList;
       procedure SaveSettingsToFile;
     private
@@ -57,6 +58,7 @@ begin
   NumRows := 0;
   RandomGenderDistribution := true;
   IncludeNearbyCities := false;
+  MultipleCities := false;
   MalePercentage := 0;
   FemalePercentage := 0;
   SavedColumnMappings := TSavedColumnMappingList.Create;
@@ -66,9 +68,11 @@ end;
 procedure TSavedSettings.ReadSettingsFromFile;
 var
 	doc : TXMLDocument;
-  fldListNode, fldItemNode, testNode : TDOMNode;
+  fldListNode, fldItemNode : TDOMNode;
   sourceColumn, dbColumn, useMapStr, nodeValueStr : String;
+  cName, stateCode, countryCode : String;
   useThisMap : Boolean;
+  cityRecord : TCityRecord;
 begin
   if (FileExists(SettingsFileName)) then begin
 	  ReadXMLFile(doc, SettingsFileName);
@@ -82,7 +86,6 @@ begin
       NumRows := StrToInt(doc.DocumentElement.FindNode('NumRecords').FirstChild.NodeValue);
       DBTableName := doc.DocumentElement.FindNode('DBTableName').FirstChild.NodeValue;
       //Random Gender Distribution
-      //testNode := doc.FindNode('RandomGenderDistribution');
       if (doc.DocumentElement.FindNode('RandomGenderDistribution') <> nil) then begin
         nodeValueStr := doc.DocumentElement.FindNode('RandomGenderDistribution').FirstChild.NodeValue;
         RandomGenderDistribution := (nodeValueStr = 'true');
@@ -95,6 +98,27 @@ begin
       if (doc.DocumentElement.FindNode('IncludeNearbyCities') <> nil) then begin
         nodeValueStr := doc.DocumentElement.FindNode('IncludeNearbyCities').FirstChild.NodeValue;
         IncludeNearbyCities := (nodeValueStr = 'true');
+      end;
+      //Multiple Cities
+      if (doc.DocumentElement.FindNode('MultipleCities') <> nil) then begin
+        nodeValueStr := doc.DocumentElement.FindNode('MultipleCities').FirstChild.NodeValue;
+        MultipleCities := (nodeValueStr = 'true')
+      end
+      else begin
+        MultipleCities := false;
+      end;
+      //List of Cities
+      if (doc.DocumentElement.FindNode('CitiesList') <> nil) then begin
+        dataModule.dataModuleMain.MasterCitiesList.Clear;
+        fldListNode := doc.DocumentElement.FindNode('CitiesList');
+        fldItemNode := fldListNode.FirstChild;
+        while Assigned(fldItemNode) do begin
+          cName := fldItemNode.FindNode('CityName').FirstChild.NodeValue;
+          stateCode := fldItemNode.FindNode('StateCode').FirstChild.NodeValue;
+          countryCode := fldItemNode.FindNode('CountryCode').FirstChild.NodeValue;
+          cityRecord := TCityRecord.Create(cName, stateCode, countryCode);
+          dataModule.dataModuleMain.MasterCitiesList.Add(cityRecord);
+        end;
       end;
       //Get Fields List.
       fldListNode := doc.DocumentElement.FindNode('FieldsList');
@@ -130,6 +154,7 @@ var
   rootNode, parentNode, txtValueNode, fldListNode, fldItemNode, itemNode : TDOMNode;
   i : Integer;
   useColStr : String;
+  cityRecord : TCityRecord;
 begin
   try
     doc := TXMLDocument.Create;
@@ -162,6 +187,26 @@ begin
     else
       useColStr := 'false';
     rootNode.AppendChild(CreateXMLValueNode(doc, 'IncludeNearbyCities', useColStr));
+    //Multiple Cities
+    if (MultipleCities) then
+      useColStr := 'true'
+    else
+      useColStr := 'false';
+    rootNode.AppendChild(CreateXMLValueNode(doc, 'MultipleCities', useColStr));
+    //List of Cities
+    if (dataModule.dataModuleMain.MasterCitiesList.Count > 0) then begin
+      fldListNode := doc.CreateElement('CitiesList');
+      rootNode.AppendChild(fldListNode);
+      for i := 0 to dataModule.dataModuleMain.MasterCitiesList.Count - 1 do begin
+        cityRecord:= dataModule.dataModuleMain.MasterCitiesList[i];
+        fldItemNode := doc.CreateElement('CityRecord');
+        fldItemNode.AppendChild(CreateXMLValueNode(doc, 'CityName', cityRecord.CityName));
+        fldItemNode.AppendChild(CreateXMLValueNode(doc, 'StateCode', cityRecord.StateName));
+        fldItemNode.AppendChild(CreateXMLValueNode(doc, 'CountryCode', cityRecord.CountryCode));
+        fldListNode.AppendChild(fldItemNode);
+      end;
+    end;
+
     //column mapping list
     fldListNode := doc.CreateElement('FieldsList');
     rootNode.AppendChild(fldListNode);

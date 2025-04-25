@@ -11,7 +11,7 @@ uses
   {$ENDIF}
   Interfaces, // this includes the LCL widgetset
   Forms, dataModule, main, GenerateSampleName, DetailForm, InsertStatementForm,
-savedsettings, dataexport, MultipleCitiesSelect
+  savedsettings, dataexport, MultipleCitiesSelect, CityRecords
   { you can add units after this };
 
 {$R *.res}
@@ -24,7 +24,7 @@ begin
   Application.CreateForm(TformMain, formMain);
   Application.CreateForm(TNameDetailForm, NameDetailForm);
   Application.CreateForm(TInsertStatementForm, FormInsertStatement);
-  Application.CreateForm(TMultipleCitiesSelect, MultipleCitiesSelect);
+  Application.CreateForm(TCitiesSelectForm, CitiesSelectForm);
   Application.Run;
 end.
 

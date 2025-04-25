@@ -1,4 +1,5 @@
 object dataModuleMain: TdataModuleMain
+  OnCreate = DataModuleCreate
   OldCreateOrder = False
   Height = 246
   HorizontalOffset = 370
@@ -47,9 +48,10 @@ object dataModuleMain: TdataModuleMain
     )
     Params = <    
       item
-        DataType = ftUnknown
+        DataType = ftString
         Name = 'Country'
         ParamType = ptInput
+        Value = 'US'
       end>
     Macros = <>
     Left = 48
@@ -74,9 +76,10 @@ object dataModuleMain: TdataModuleMain
     )
     Params = <    
       item
-        DataType = ftUnknown
+        DataType = ftString
         Name = 'state'
         ParamType = ptInput
+        Value = 'MD'
       end>
     Macros = <>
     Left = 160

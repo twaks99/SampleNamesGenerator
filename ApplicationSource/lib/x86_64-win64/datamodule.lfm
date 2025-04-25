@@ -1,0 +1,88 @@
+object dataModuleMain: TdataModuleMain
+  OnCreate = DataModuleCreate
+  OldCreateOrder = False
+  Height = 246
+  HorizontalOffset = 370
+  VerticalOffset = 221
+  Width = 390
+  object connectionMain: TSQLite3Connection
+    Connected = False
+    LoginPrompt = False
+    DatabaseName = '/home/tomk/Source/SampleNamesGenerator/ApplicationSource/SampleNames.db'
+    KeepConnection = False
+    Transaction = transactionMain
+    AlwaysUseBigint = False
+    Left = 48
+    Top = 24
+  end
+  object transactionMain: TSQLTransaction
+    Active = False
+    Database = connectionMain
+    Left = 160
+    Top = 24
+  end
+  object queryStates: TSQLQuery
+    MaxIndexesCount = 4
+    FieldDefs = <    
+      item
+        Name = 'STATE_CODE'
+        DataType = ftFixedChar
+        Precision = -1
+        Size = 2
+      end    
+      item
+        Name = 'STATE_NAME'
+        DataType = ftString
+        Precision = -1
+        Size = 100
+      end>
+    Database = connectionMain
+    Transaction = transactionMain
+    SQL.Strings = (
+      'select STATE_CODE, STATE_NAME'
+      'from States'
+      'where official_state = 1'
+      '  AND country_code = :Country'
+      'order by state_name'
+      ''
+    )
+    Params = <    
+      item
+        DataType = ftString
+        Name = 'Country'
+        ParamType = ptInput
+        Value = 'US'
+      end>
+    Macros = <>
+    Left = 48
+    Top = 104
+  end
+  object queryCities: TSQLQuery
+    MaxIndexesCount = 4
+    FieldDefs = <    
+      item
+        Name = 'CITY'
+        DataType = ftString
+        Precision = -1
+        Size = 100
+      end>
+    Database = connectionMain
+    Transaction = transactionMain
+    SQL.Strings = (
+      'SELECT DISTINCT city FROM zipcodes'
+      'WHERE state = :state'
+      'ORDER BY city'
+      ''
+    )
+    Params = <    
+      item
+        DataType = ftString
+        Name = 'state'
+        ParamType = ptInput
+        Value = 'MD'
+      end>
+    Macros = <>
+    Left = 160
+    Top = 104
+  end
+end

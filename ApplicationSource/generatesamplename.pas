@@ -6,7 +6,7 @@ interface
 
 uses
   Classes, SysUtils, SQLDB, DB, Generics.Collections, SQLite3Conn, Math, fgl,
-  dataModule;
+  dataModule, CityRecords;
 
 const
   CommonLetters: array[0..19] of Char = ('A','B','C','D','E','F','G','H',
@@ -54,8 +54,9 @@ type
     StateCode: String;
     City: String;
     NumRowsGenerate: Integer;
-    function GenerateSampleSet(country, state, cityName: String; numRows, mdist, fdist: Integer;
-        rdist, nearbyCities: Boolean): TSampleNamesList;
+    function GenerateSampleSet(country, state, cityName: String;
+      numRows, mdist, fdist: Integer; rdist, nearbyCities: Boolean;
+      multCities: Boolean; ctList: TCityRecordsList) : TSampleNamesList;
   private
     //DBConnection : TSQLite3Connection;
     DataRetrieveQuery : TSQLQuery;
@@ -71,13 +72,15 @@ type
     MaleCount: Integer;
     FemaleCount: Integer;
     RandomGenderDist: Boolean;
+    MultipleCities: Boolean;
+    ListCities: TCityRecordsList;
     function GenerateRandomFixedDigitNumber(numDigits: Integer): Int64;
-    function CreateSampleName(gender : char) : TSampleName;
+    function CreateSampleName(gender : char; country : String) : TSampleName;
     procedure CalculateGenderDistribution(malePct, femalePct, numRows : Integer);
-    procedure RetrieveZipCodeListIncludingNearbyCities;
-    procedure RetrieveZipCodeListSelectedCity;
+    procedure RetrieveZipCodeListIncludingNearbyCities(cityName, stateName, ctryCode : String);
+    procedure RetrieveZipCodeListSelectedCity(cityName, stateName, ctryCode : String);
     procedure LoadLists;
-    procedure GetAreaCodesForState(state: String);
+    procedure GetAreaCodesForState(state, country: String);
     procedure RunQuery(Sql: TStringList);
   end;
 
@@ -169,11 +172,14 @@ begin
   LoadLists;
 end;
 
+
 function TSampleNamesGenerator.GenerateSampleSet(country, state, cityName: String;
-      numRows, mdist, fdist: Integer; rdist, nearbyCities: Boolean) : TSampleNamesList;
+      numRows, mdist, fdist: Integer; rdist, nearbyCities: Boolean;
+      multCities: Boolean; ctList: TCityRecordsList) : TSampleNamesList;
 var
-  i, genNumber, maleCntr, femaleCntr : Integer;
+  i, cityCntr, genNumber, maleCntr, femaleCntr : Integer;
   gndr : Char;
+  cityRecord: TCityRecord;
 begin
   CountryCode := country;
   StateCode:= state;
@@ -181,37 +187,50 @@ begin
   NumRowsGenerate:= numRows;
   CurrentRecordId := 0;
   RandomGenderDist := rdist;
+  MultipleCities := multCities;
+  ListCities := ctList;
   Result := TSampleNamesList.Create;
-  if (nearbyCities) then begin
-    RetrieveZipCodeListIncludingNearbyCities;
-  end
-  else begin
-    RetrieveZipCodeListSelectedCity;
+  //If multiple cities is not specified, then create one entry.
+  if (not multCities) then begin
+    ListCities.Clear;
+    cityRecord := TCityRecord.Create(City, StateCode, CountryCode);
+    ListCities.Add(cityRecord);
   end;
-  CalculateGenderDistribution(mdist, fdist, numRows);
-  maleCntr := 0;
-  femaleCntr := 0;
-  //Generate list of sample names
-  for i := 1 to numRows do begin
-    //Get Gender.
-    if (RandomGenderDist) then begin
-      genNumber:= Random(2);
-      if (genNumber = 0) then
-        gndr := 'M'
-      else
-        gndr := 'F';
+
+  for cityCntr := 0 to ListCities.Count - 1 do begin;
+    cityRecord := ListCities[cityCntr];
+    if (nearbyCities) then begin
+      RetrieveZipCodeListIncludingNearbyCities(cityRecord.CityName, cityRecord.StateName, cityRecord.CountryCode);
     end
     else begin
-      if (maleCntr < MaleCount) then begin
-        gndr := 'M';
-        Inc(maleCntr);
+      RetrieveZipCodeListSelectedCity(cityRecord.CityName, cityRecord.StateName, cityRecord.CountryCode);
+    end;
+    CalculateGenderDistribution(mdist, fdist, numRows);
+    maleCntr := 0;
+    femaleCntr := 0;
+    //Generate list of sample names
+    for i := 1 to NumRowsGenerate do begin
+      //Get Gender.
+      if (RandomGenderDist) then begin
+        genNumber:= Random(2);
+        if (genNumber = 0) then
+          gndr := 'M'
+        else
+          gndr := 'F';
       end
       else begin
-        gndr := 'F';
-        Inc(femaleCntr);
+        if (maleCntr < MaleCount) then begin
+          gndr := 'M';
+          Inc(maleCntr);
+        end
+        else begin
+          gndr := 'F';
+          Inc(femaleCntr);
+        end;
       end;
+      Result.Add(CreateSampleName(gndr, cityRecord.CountryCode));
     end;
-    Result.Add(CreateSampleName(gndr));
+
   end;
 end;
 
@@ -233,7 +252,7 @@ begin
   end;
 end;
 
-function TSampleNamesGenerator.CreateSampleName(gender : char) : TSampleName;
+function TSampleNamesGenerator.CreateSampleName(gender : char; country : String) : TSampleName;
 var
   SampleName: TSampleName;
   ZipCode: TZipCode;
@@ -275,7 +294,7 @@ begin
   SampleName.StateCode:= ZipCode.StateCode;
   SampleName.ZipCode:= ZipCode.ZipCode;
   //Area Code & telephone Number
-  GetAreaCodesForState(ZipCode.StateCode);
+  GetAreaCodesForState(ZipCode.StateCode, country);
   genNumber:= Random(AreaCodes.Count);
   SampleName.PhoneNumber:= '(' + AreaCodes[genNumber] + ') ' + IntToStr(GenerateRandomFixedDigitNumber(3))
     + '-' + IntToStr(GenerateRandomFixedDigitNumber(4));
@@ -286,7 +305,7 @@ begin
   Result := SampleName;
 end;
 
-procedure TSampleNamesGenerator.RetrieveZipCodeListIncludingNearbyCities;
+procedure TSampleNamesGenerator.RetrieveZipCodeListIncludingNearbyCities(cityName, stateName, ctryCode : String);
 var
   MinLatt, MaxLatt, MinLong, MaxLong: Float;
   PtExpand: Float;
@@ -295,15 +314,15 @@ begin
   //Get max lattitude & longitude for city
   PtExpand := 0.15;
   SqlList := TStringList.Create;
-  if (CountryCode = 'US') then begin
+  if (ctryCode = 'US') then begin
     SqlList.Add('SELECT MIN(ABS(LATTITUDE)) AS Min_Lattitude, MAX(ABS(LATTITUDE)) AS Max_Lattitude, ');
     SqlList.Add('MIN(ABS(LONGITUDE)) AS Min_Longitude, MAX(ABS(LONGITUDE)) AS Max_Longitude ');
-    SqlList.Add('FROM ZipCodes WHERE STATE = ''' + StateCode + ''' AND CITY = ''' + City + '''');
+    SqlList.Add('FROM ZipCodes WHERE STATE = ''' + stateName + ''' AND CITY = ''' + cityName + '''');
   end
   else begin
     SqlList.Add('SELECT MIN(ABS(LATTITUDE)) AS Min_Lattitude, MAX(ABS(LATTITUDE)) AS Max_Lattitude, ');
     SqlList.Add('MIN(ABS(LONGITUDE)) AS Min_Longitude, MAX(ABS(LONGITUDE)) AS Max_Longitude ');
-    SqlList.Add('FROM CanadaZipCodes WHERE PROVINCE = ''' + StateCode + ''' AND CITY = ''' + City + '''');
+    SqlList.Add('FROM CanadaZipCodes WHERE PROVINCE = ''' + stateName + ''' AND CITY = ''' + cityName + '''');
   end;
   RunQuery(SqlList);
   while (not DataRetrieveQuery.EOF) do begin
@@ -317,7 +336,7 @@ begin
 
   //Now get list of nearby zip codes.
   SqlList.Clear;
-  if (CountryCode = 'US') then begin
+  if (ctryCode = 'US') then begin
     SqlList.Add('SELECT city, state, zip_code ');
     SqlList.Add('FROM zipcodes ');
     SqlList.Add('WHERE ABS(lattitude) BETWEEN ' + FloatToStr(MinLatt - PtExpand) + ' AND ' + FloatToStr(MaxLatt + PtExpand) + ' ');
@@ -343,24 +362,24 @@ begin
   DataRetrieveQuery.Close;
 end;
 
-procedure TSampleNamesGenerator.RetrieveZipCodeListSelectedCity;
+procedure TSampleNamesGenerator.RetrieveZipCodeListSelectedCity(cityName, stateName, ctryCode : String);
 var
   MinLatt, MaxLatt, MinLong, MaxLong: Float;
   PtExpand: Float;
   SqlList: TStringList;
 begin
   SqlList := TStringList.Create;
-  if (CountryCode = 'US') then begin
+  if (ctryCode = 'US') then begin
     SqlList.Add('SELECT city, state, zip_code ');
     SqlList.Add('FROM zipcodes ');
-    SqlList.Add('WHERE state = ''' + StateCode + ''' ');
-    SqlList.Add('  AND city = ''' + City + ''' ');
+    SqlList.Add('WHERE state = ''' + stateName + ''' ');
+    SqlList.Add('  AND city = ''' + cityName + ''' ');
   end
   else begin
     SqlList.Add('SELECT CITY, PROVINCE AS state, POSTAL_CODE AS zip_code ');
     SqlList.Add('FROM CanadaZipCodes ');
-    SqlList.Add('WHERE PROVINCE = ''' + StateCode + ''' ');
-    SqlList.Add('  AND city = ''' + City + ''' ');
+    SqlList.Add('WHERE PROVINCE = ''' + stateName + ''' ');
+    SqlList.Add('  AND city = ''' + cityName + ''' ');
   end;
   RunQuery(SqlList);
   ZipCodes.Clear;
@@ -374,14 +393,14 @@ begin
   DataRetrieveQuery.Close;
 end;
 
-procedure TSampleNamesGenerator.GetAreaCodesForState(state: String);
+procedure TSampleNamesGenerator.GetAreaCodesForState(state, country: String);
 var
   SqlList: TStringList;
 begin
   if (not StateLoaded.Equals(state)) then begin
     SqlList := TStringList.Create;
     SqlList.Add('SELECT AREA_CODE FROM AreaCodes ');
-    SqlList.Add('WHERE STATE_CODE = ''' + state + ''' AND COUNTRY_CODE = ''' + CountryCode + ''' ');
+    SqlList.Add('WHERE STATE_CODE = ''' + state + ''' AND COUNTRY_CODE = ''' + country + ''' ');
     RunQuery(SqlList);
     AreaCodes.Clear;
     while (not DataRetrieveQuery.EOF) do begin

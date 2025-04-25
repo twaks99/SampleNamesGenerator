@@ -5,7 +5,7 @@ unit dataModule;
 interface
 
 uses
-  Classes, SysUtils, SQLite3Conn, SQLDB;
+  Classes, SysUtils, SQLite3Conn, SQLDB, CityRecords;
 
 type
 
@@ -20,7 +20,7 @@ type
   private
 
   public
-
+    MasterCitiesList: TCityRecordsList;
   end;
 
 var
@@ -34,6 +34,7 @@ implementation
 
 procedure TdataModuleMain.DataModuleCreate(Sender: TObject);
 begin
+  MasterCitiesList := TCityRecordsList.Create;
   connectionMain.DatabaseName := 'SampleNames.db';
   connectionMain.Open;
   queryStates.Open;

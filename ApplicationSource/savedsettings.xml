@@ -3,12 +3,75 @@
   <CountryName>US</CountryName>
   <StateName>MD</StateName>
   <CityName>Beltsville</CityName>
-  <NumRecords>50</NumRecords>
+  <NumRecords>20</NumRecords>
   <DBTableName>customer_list</DBTableName>
   <RandomGenderDistribution>true</RandomGenderDistribution>
   <MalePercentage>50</MalePercentage>
   <FemalePercentage>50</FemalePercentage>
   <IncludeNearbyCities>true</IncludeNearbyCities>
+  <MultipleCities>true</MultipleCities>
+  <CitiesList>
+    <CityRecord>
+      <CityName>Baltimore</CityName>
+      <StateCode>MD</StateCode>
+      <CountryCode>US</CountryCode>
+    </CityRecord>
+    <CityRecord>
+      <CityName>Canton</CityName>
+      <StateCode>CT</StateCode>
+      <CountryCode>US</CountryCode>
+    </CityRecord>
+    <CityRecord>
+      <CityName>New York</CityName>
+      <StateCode>NY</StateCode>
+      <CountryCode>US</CountryCode>
+    </CityRecord>
+    <CityRecord>
+      <CityName>Trenton</CityName>
+      <StateCode>NJ</StateCode>
+      <CountryCode>US</CountryCode>
+    </CityRecord>
+    <CityRecord>
+      <CityName>Orlando</CityName>
+      <StateCode>FL</StateCode>
+      <CountryCode>US</CountryCode>
+    </CityRecord>
+    <CityRecord>
+      <CityName>Boulder</CityName>
+      <StateCode>CO</StateCode>
+      <CountryCode>US</CountryCode>
+    </CityRecord>
+    <CityRecord>
+      <CityName>Austin</CityName>
+      <StateCode>TX</StateCode>
+      <CountryCode>US</CountryCode>
+    </CityRecord>
+    <CityRecord>
+      <CityName>Los Angeles</CityName>
+      <StateCode>CA</StateCode>
+      <CountryCode>US</CountryCode>
+    </CityRecord>
+    <CityRecord>
+      <CityName>Portland</CityName>
+      <StateCode>OR</StateCode>
+      <CountryCode>US</CountryCode>
+    </CityRecord>
+    <CityRecord>
+      <CityName>Seattle</CityName>
+      <StateCode>WA</StateCode>
+      <CountryCode>US</CountryCode>
+    </CityRecord>
+    <CityRecord>
+      <CityName>Anchorage</CityName>
+      <StateCode>AK</StateCode>
+      <CountryCode>US</CountryCode>
+    </CityRecord>
+    <CityRecord>
+      <CityName>Toronto</CityName>
+      <StateCode>ON</StateCode>
+      <CountryCode>CA</CountryCode>
+    </CityRecord>
+  </CitiesList>
   <FieldsList>
     <Field>
       <SourceColumn>ID</SourceColumn>

@@ -9,8 +9,7 @@
         <Filename Value="SampleNamesGenerator.lpr"/>
         <IsPartOfProject Value="True"/>
         <EditorIndex Value="-1"/>
-        <TopLine Value="4"/>
-        <CursorPos X="71" Y="27"/>
+        <CursorPos X="3" Y="14"/>
         <UsageCount Value="200"/>
       </Unit>
       <Unit>
@@ -19,8 +18,8 @@
         <ComponentName Value="formMain"/>
         <HasResources Value="True"/>
         <ResourceBaseClass Value="Form"/>
-        <TopLine Value="194"/>
-        <CursorPos X="72" Y="298"/>
+        <TopLine Value="249"/>
+        <CursorPos Y="251"/>
         <UsageCount Value="200"/>
         <Loaded Value="True"/>
         <LoadedDesigner Value="True"/>
@@ -29,9 +28,9 @@
         <Filename Value="generatesamplename.pas"/>
         <IsPartOfProject Value="True"/>
         <UnitName Value="GenerateSampleName"/>
-        <EditorIndex Value="2"/>
-        <TopLine Value="45"/>
-        <CursorPos Y="180"/>
+        <EditorIndex Value="5"/>
+        <TopLine Value="245"/>
+        <CursorPos X="63" Y="255"/>
         <UsageCount Value="201"/>
         <Loaded Value="True"/>
       </Unit>
@@ -42,10 +41,12 @@
         <HasResources Value="True"/>
         <ResourceBaseClass Value="Form"/>
         <UnitName Value="DetailForm"/>
-        <EditorIndex Value="-1"/>
-        <TopLine Value="45"/>
-        <CursorPos Y="47"/>
+        <EditorIndex Value="4"/>
+        <TopLine Value="54"/>
+        <CursorPos X="5" Y="57"/>
         <UsageCount Value="200"/>
+        <Loaded Value="True"/>
+        <LoadedDesigner Value="True"/>
       </Unit>
       <Unit>
         <Filename Value="insertstatementform.pas"/>
@@ -54,8 +55,8 @@
         <HasResources Value="True"/>
         <ResourceBaseClass Value="Form"/>
         <UnitName Value="InsertStatementForm"/>
-        <EditorIndex Value="4"/>
-        <TopLine Value="22"/>
+        <EditorIndex Value="7"/>
+        <TopLine Value="37"/>
         <CursorPos X="25" Y="78"/>
         <UsageCount Value="206"/>
         <Loaded Value="True"/>
@@ -63,18 +64,19 @@
       <Unit>
         <Filename Value="savedsettings.pas"/>
         <IsPartOfProject Value="True"/>
-        <EditorIndex Value="-1"/>
-        <TopLine Value="128"/>
-        <CursorPos X="18" Y="135"/>
-        <UsageCount Value="157"/>
+        <EditorIndex Value="1"/>
+        <TopLine Value="95"/>
+        <CursorPos Y="103"/>
+        <UsageCount Value="204"/>
+        <Loaded Value="True"/>
       </Unit>
       <Unit>
         <Filename Value="dataexport.pas"/>
         <IsPartOfProject Value="True"/>
-        <EditorIndex Value="5"/>
+        <EditorIndex Value="8"/>
         <TopLine Value="35"/>
         <CursorPos X="17" Y="59"/>
-        <UsageCount Value="75"/>
+        <UsageCount Value="165"/>
         <Loaded Value="True"/>
       </Unit>
       <Unit>
@@ -84,19 +86,36 @@
         <HasResources Value="True"/>
         <ResourceBaseClass Value="DataModule"/>
         <UnitName Value="dataModule"/>
-        <EditorIndex Value="3"/>
-        <CursorPos X="10" Y="5"/>
-        <UsageCount Value="40"/>
+        <EditorIndex Value="6"/>
+        <TopLine Value="14"/>
+        <CursorPos X="23" Y="39"/>
+        <UsageCount Value="130"/>
         <Loaded Value="True"/>
         <LoadedDesigner Value="True"/>
       </Unit>
       <Unit>
-        <Filename Value="C:\lazarus\components\fpspreadsheet\source\common\fpspreadsheet.pas"/>
-        <UnitName Value="fpSpreadsheet"/>
-        <EditorIndex Value="-1"/>
-        <TopLine Value="1026"/>
-        <CursorPos X="52" Y="1030"/>
-        <UsageCount Value="1"/>
+        <Filename Value="multiplecitiesselect.pas"/>
+        <IsPartOfProject Value="True"/>
+        <ComponentName Value="CitiesSelectForm"/>
+        <HasResources Value="True"/>
+        <ResourceBaseClass Value="Form"/>
+        <UnitName Value="MultipleCitiesSelect"/>
+        <IsVisibleTab Value="True"/>
+        <EditorIndex Value="3"/>
+        <TopLine Value="93"/>
+        <CursorPos X="33" Y="99"/>
+        <UsageCount Value="112"/>
+        <Loaded Value="True"/>
+        <LoadedDesigner Value="True"/>
+      </Unit>
+      <Unit>
+        <Filename Value="cityrecords.pas"/>
+        <IsPartOfProject Value="True"/>
+        <UnitName Value="CityRecords"/>
+        <EditorIndex Value="2"/>
+        <CursorPos X="40" Y="51"/>
+        <UsageCount Value="98"/>
+        <Loaded Value="True"/>
       </Unit>
       <Unit>
         <Filename Value="C:\usr\share\lazarus\2.2.4\components\fpreport\lclfpreportbuild.pp"/>
@@ -104,158 +123,144 @@
         <WindowIndex Value="-1"/>
         <TopLine Value="4"/>
         <CursorPos X="2" Y="5"/>
-        <UsageCount Value="4"/>
+        <UsageCount Value="6"/>
       </Unit>
       <Unit>
         <Filename Value="C:\lazarus\fpc\3.2.2\source\packages\rtl-generics\src\generics.collections.pas"/>
         <UnitName Value="Generics.Collections"/>
         <EditorIndex Value="-1"/>
-        <TopLine Value="1423"/>
-        <CursorPos Y="1439"/>
-        <UsageCount Value="8"/>
+        <TopLine Value="1172"/>
+        <CursorPos X="20" Y="1186"/>
+        <UsageCount Value="3"/>
       </Unit>
       <Unit>
-        <Filename Value="SampleNamesGenerator.lpi"/>
+        <Filename Value="C:\lazarus\lcl\include\control.inc"/>
         <EditorIndex Value="-1"/>
-        <TopLine Value="16"/>
-        <UsageCount Value="8"/>
-        <DefaultSyntaxHighlighter Value="XML"/>
-      </Unit>
-      <Unit>
-        <Filename Value="multiplecitiesselect.pas"/>
-        <IsPartOfProject Value="True"/>
-        <ComponentName Value="MultipleCitiesSelect"/>
-        <ResourceBaseClass Value="Form"/>
-        <UnitName Value="MultipleCitiesSelect"/>
-        <IsVisibleTab Value="True"/>
-        <EditorIndex Value="1"/>
-        <TopLine Value="32"/>
-        <CursorPos X="26" Y="51"/>
-        <UsageCount Value="22"/>
-        <Loaded Value="True"/>
-        <LoadedDesigner Value="True"/>
+        <TopLine Value="2933"/>
+        <CursorPos Y="2976"/>
+        <UsageCount Value="10"/>
       </Unit>
     </Units>
     <JumpHistory HistoryIndex="29">
       <Position>
         <Filename Value="main.pas"/>
-        <Caret Line="100" Column="34" TopLine="86"/>
+        <Caret Line="251" TopLine="243"/>
       </Position>
       <Position>
         <Filename Value="main.pas"/>
-        <Caret Line="97" TopLine="86"/>
+        <Caret Line="252" TopLine="243"/>
       </Position>
       <Position>
         <Filename Value="main.pas"/>
-        <Caret Line="9" Column="40"/>
+        <Caret Line="253" TopLine="243"/>
       </Position>
       <Position>
         <Filename Value="main.pas"/>
-        <Caret Line="97" TopLine="85"/>
+        <Caret Line="254" TopLine="243"/>
       </Position>
       <Position>
         <Filename Value="main.pas"/>
-        <Caret Line="8" Column="15"/>
+        <Caret Line="255" TopLine="243"/>
       </Position>
       <Position>
         <Filename Value="main.pas"/>
-        <Caret Line="97" TopLine="85"/>
+        <Caret Line="256" TopLine="243"/>
       </Position>
       <Position>
         <Filename Value="main.pas"/>
-        <Caret Line="97" TopLine="79"/>
+        <Caret Line="257" TopLine="243"/>
+      </Position>
+      <Position>
+        <Filename Value="main.pas"/>
+        <Caret Line="258" TopLine="243"/>
+      </Position>
+      <Position>
+        <Filename Value="main.pas"/>
+        <Caret Line="259" TopLine="243"/>
+      </Position>
+      <Position>
+        <Filename Value="main.pas"/>
+        <Caret Line="260" TopLine="243"/>
+      </Position>
+      <Position>
+        <Filename Value="main.pas"/>
+        <Caret Line="259" TopLine="243"/>
+      </Position>
+      <Position>
+        <Filename Value="main.pas"/>
+        <Caret Line="250" TopLine="243"/>
+      </Position>
+      <Position>
+        <Filename Value="main.pas"/>
+        <Caret Line="282" TopLine="267"/>
+      </Position>
+      <Position>
+        <Filename Value="main.pas"/>
+        <Caret Line="250" TopLine="233"/>
+      </Position>
+      <Position>
+        <Filename Value="main.pas"/>
+        <Caret Line="282" TopLine="267"/>
       </Position>
       <Position>
         <Filename Value="generatesamplename.pas"/>
-        <Caret Line="289" TopLine="265"/>
+        <Caret Line="203" Column="20" TopLine="191"/>
       </Position>
       <Position>
-        <Filename Value="main.pas"/>
-        <Caret Line="97" TopLine="79"/>
+        <Filename Value="generatesamplename.pas"/>
+        <Caret Line="308" Column="11" TopLine="103"/>
       </Position>
       <Position>
-        <Filename Value="main.pas"/>
-        <Caret Line="98" TopLine="79"/>
+        <Filename Value="generatesamplename.pas"/>
+        <Caret Line="176" Column="10" TopLine="268"/>
       </Position>
       <Position>
-        <Filename Value="main.pas"/>
-        <Caret Line="93" TopLine="88"/>
+        <Filename Value="generatesamplename.pas"/>
+        <Caret Line="396" Column="11" TopLine="383"/>
       </Position>
       <Position>
-        <Filename Value="multiplecitiesselect.pas"/>
-        <Caret Line="18" Column="4"/>
+        <Filename Value="generatesamplename.pas"/>
+        <Caret Line="297" Column="41" TopLine="208"/>
       </Position>
       <Position>
-        <Filename Value="multiplecitiesselect.pas"/>
-        <Caret Line="22" Column="4"/>
+        <Filename Value="generatesamplename.pas"/>
+        <Caret Line="255" Column="96" TopLine="234"/>
       </Position>
       <Position>
-        <Filename Value="multiplecitiesselect.pas"/>
-        <Caret Line="11"/>
+        <Filename Value="generatesamplename.pas"/>
+        <Caret Line="78" Column="14" TopLine="64"/>
       </Position>
       <Position>
-        <Filename Value="multiplecitiesselect.pas"/>
-        <Caret Line="19" Column="20"/>
+        <Filename Value="generatesamplename.pas"/>
+        <Caret Line="297" Column="50" TopLine="273"/>
       </Position>
       <Position>
-        <Filename Value="multiplecitiesselect.pas"/>
-        <Caret Line="18" Column="19"/>
+        <Filename Value="generatesamplename.pas"/>
+        <Caret Line="396" Column="78" TopLine="374"/>
       </Position>
       <Position>
-        <Filename Value="main.pas"/>
-        <Caret Line="277" Column="49" TopLine="278"/>
+        <Filename Value="generatesamplename.pas"/>
+        <Caret Line="83" Column="15" TopLine="68"/>
       </Position>
       <Position>
-        <Filename Value="main.pas"/>
-        <Caret Line="78" Column="15" TopLine="66"/>
+        <Filename Value="generatesamplename.pas"/>
+        <Caret Line="405" Column="21" TopLine="382"/>
       </Position>
       <Position>
-        <Filename Value="main.pas"/>
-        <Caret Line="371" Column="38" TopLine="360"/>
-      </Position>
-      <Position>
-        <Filename Value="main.pas"/>
-        <Caret Line="63" Column="15" TopLine="51"/>
+        <Filename Value="generatesamplename.pas"/>
+        <Caret Line="78" Column="45" TopLine="64"/>
       </Position>
       <Position>
         <Filename Value="multiplecitiesselect.pas"/>
-        <Caret Line="24" Column="15" TopLine="20"/>
-      </Position>
-      <Position>
-        <Filename Value="main.pas"/>
-        <Caret Line="198" Column="23" TopLine="182"/>
-      </Position>
-      <Position>
-        <Filename Value="main.pas"/>
-        <Caret Line="63" Column="15" TopLine="61"/>
-      </Position>
-      <Position>
-        <Filename Value="main.pas"/>
-        <Caret Line="196" Column="11" TopLine="182"/>
-      </Position>
-      <Position>
-        <Filename Value="main.pas"/>
-        <Caret Line="81" Column="15" TopLine="69"/>
-      </Position>
-      <Position>
-        <Filename Value="main.pas"/>
-        <Caret Line="203" Column="36" TopLine="198"/>
-      </Position>
-      <Position>
-        <Filename Value="main.pas"/>
-        <Caret Line="425" Column="37" TopLine="415"/>
+        <Caret Line="93" Column="24" TopLine="107"/>
       </Position>
       <Position>
         <Filename Value="multiplecitiesselect.pas"/>
-        <Caret Line="19" Column="13" TopLine="7"/>
+        <Caret Line="100" Column="33" TopLine="94"/>
       </Position>
       <Position>
-        <Filename Value="main.pas"/>
-        <Caret Line="15" Column="16" TopLine="7"/>
-      </Position>
-      <Position>
-        <Filename Value="main.pas"/>
-        <Caret Line="62" Column="15" TopLine="50"/>
+        <Filename Value="multiplecitiesselect.pas"/>
+        <Caret Line="99" Column="33" TopLine="93"/>
       </Position>
     </JumpHistory>
     <RunParams>
@@ -276,6 +281,9 @@
       </Item>
       <Item>
         <Expression Value="dbColumn"/>
+      </Item>
+      <Item>
+        <Expression Value="SqlList"/>
       </Item>
     </Watches>
   </Debugging>

@@ -16,6 +16,7 @@ type
     queryStates: TSQLQuery;
     queryCities: TSQLQuery;
     transactionMain: TSQLTransaction;
+    procedure DataModuleCreate(Sender: TObject);
   private
 
   public
@@ -28,6 +29,15 @@ var
 implementation
 
 {$R *.lfm}
+
+{ TdataModuleMain }
+
+procedure TdataModuleMain.DataModuleCreate(Sender: TObject);
+begin
+  connectionMain.DatabaseName := 'SampleNames.db';
+  connectionMain.Open;
+  queryStates.Open;
+end;
 
 end.
 

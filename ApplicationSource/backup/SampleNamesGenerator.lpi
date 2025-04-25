@@ -14,15 +14,11 @@
       </XPManifest>
       <Icon Value="0"/>
     </General>
-    <MacroValues Count="2">
-      <Macro1 Name="LCLWidgetType" Value="qt5"/>
-      <Macro2 Name="LCLWidgetType" Value="gtk2"/>
-    </MacroValues>
     <BuildModes>
       <Item Name="Default" Default="True"/>
       <SharedMatrixOptions Count="2">
-        <Item1 ID="039266134583" Modes="Default" Type="IDEMacro" MacroName="LCLWidgetType" Value="qt5"/>
-        <Item2 ID="627319347561" Modes="Default" Type="IDEMacro" MacroName="LCLWidgetType" Value="gtk2"/>
+        <Item1 ID="039266134583" Type="IDEMacro" MacroName="LCLWidgetType" Value="qt5"/>
+        <Item2 ID="627319347561" Type="IDEMacro" MacroName="LCLWidgetType" Value="gtk2"/>
       </SharedMatrixOptions>
     </BuildModes>
     <PublishOptions>
@@ -101,9 +97,15 @@
       <Unit>
         <Filename Value="multiplecitiesselect.pas"/>
         <IsPartOfProject Value="True"/>
-        <ComponentName Value="MultipleCitiesSelect"/>
+        <ComponentName Value="CitiesSelectForm"/>
+        <HasResources Value="True"/>
         <ResourceBaseClass Value="Form"/>
         <UnitName Value="MultipleCitiesSelect"/>
+      </Unit>
+      <Unit>
+        <Filename Value="cityrecords.pas"/>
+        <IsPartOfProject Value="True"/>
+        <UnitName Value="CityRecords"/>
       </Unit>
     </Units>
   </ProjectOptions>
@@ -120,6 +122,7 @@
     <Linking>
       <Debugging>
         <DebugInfoType Value="dsDwarf2Set"/>
+        <UseValgrind Value="True"/>
       </Debugging>
       <Options>
         <Win32>

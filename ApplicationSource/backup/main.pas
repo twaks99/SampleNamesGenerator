@@ -8,7 +8,7 @@ uses
   Classes, SysUtils, SQLite3Conn, SQLDB, DB, Forms, Controls, Graphics, Dialogs,
   DBGrids, StdCtrls, Grids, dataModule, GenerateSampleName, fpSpreadsheet, fpsTypes,
   Clipbrd, ExtCtrls, Buttons, Menus, Spin, fpsallformats, DetailForm,
-  InsertStatementForm, savedsettings, dataexport;
+  InsertStatementForm, savedsettings, dataexport, MultipleCitiesSelect, CityRecords;
 
 type
 
@@ -57,6 +57,7 @@ type
     procedure btnCloseClick(Sender: TObject);
     procedure btnExportClick(Sender: TObject);
     procedure btnGenerateClick(Sender: TObject);
+    procedure btnMultipleCitiesClick(Sender: TObject);
     procedure chkRandomGDistChange(Sender: TObject);
     procedure comboCountrySelect(Sender: TObject);
     procedure comboStatesSelect(Sender: TObject);
@@ -72,7 +73,9 @@ type
     SamplesGenerator: TSampleNamesGenerator;
     SampleNamesList: TSampleNamesList;
     SavedSettings: TSavedSettings;
-    countryCode: String;
+    CountryCode: String;
+    //CitiesList: TCityRecordsList;
+    //MultipleCities: Boolean;
     function GetStateCodeFromCombo : String;
     procedure PopulateStatesCombo;
     procedure PopulateSampleNamesGrid;
@@ -94,9 +97,11 @@ implementation
 
 procedure TformMain.FormCreate(Sender: TObject);
 begin
-  countryCode := 'US';
+  CountryCode := 'US';
   SavedSettings := TSavedSettings.Create;
   SamplesGenerator := TSampleNamesGenerator.Create();
+  //CitiesList := TCityRecordsList.Create;
+  //MultipleCities := SavedSettings.MultipleCities;
   SelectSavedCountry;
   PopulateStatesCombo;
 end;
@@ -104,7 +109,7 @@ end;
 procedure TformMain.SelectSavedCountry;
 begin
   if (not String.IsNullOrEmpty(SavedSettings.CountryName)) then begin
-    countryCode := SavedSettings.CountryName;
+    CountryCode := SavedSettings.CountryName;
     if (SavedSettings.CountryName = 'US') then
       comboCountry.ItemIndex := 0
     else
@@ -194,6 +199,7 @@ end;
 
 procedure TformMain.comboStatesSelect(Sender: TObject);
 begin
+  comboCities.Caption := '';
   PopulateCitiesCombo;
 end;
 
@@ -214,7 +220,7 @@ begin
       dataModule.dataModuleMain.queryCities.Close;
     end;
     sql := TStringList.Create;
-    if (countryCode = 'US') then begin
+    if (CountryCode = 'US') then begin
       sql.Add('SELECT DISTINCT city FROM zipcodes ');
       sql.Add('WHERE state = :state ');
       sql.Add('ORDER BY city');
@@ -240,21 +246,27 @@ procedure TformMain.btnGenerateClick(Sender: TObject);
 var
   state_code, city_name, row_count: String;
   num_rows, maleDist, femaleDist: Integer;
-  randomGenderDist, includeNearbyCities : Boolean;
+  randomGenderDist, includeNearbyCities, multCities : Boolean;
 begin
   row_count:= Trim(txtNumRows.Text);
-	if ((comboStates.ItemIndex >= 0) and (comboCities.ItemIndex >= 0) and (not (row_count.Equals(String.Empty)))) then begin
+  num_rows := StrToInt(txtNumRows.Text);
+  maleDist := spinMaleDist.Value;
+  femaleDist := spinFemaleDist.Value;
+  randomGenderDist := chkRandomGDist.Checked;
+  includeNearbyCities := chkIncludeNearby.Checked;
+  multCities := chkMultipleCities.Checked;
+  if (multCities) then begin
+    SampleNamesList := SamplesGenerator.GenerateSampleSet(CountryCode, '', '', num_rows,
+      maleDist, femaleDist, randomGenderDist, includeNearbyCities, multCities, dataModule.dataModuleMain.MasterCitiesList);
+  end
+  else if ((comboStates.ItemIndex >= 0) and (comboCities.ItemIndex >= 0) and (not (row_count.Equals(String.Empty)))) then begin
   	state_code := GetStateCodeFromCombo();
 	  city_name := comboCities.Items[comboCities.ItemIndex];
-  	num_rows := StrToInt(txtNumRows.Text);
-    maleDist := spinMaleDist.Value;
-    femaleDist := spinFemaleDist.Value;
-    randomGenderDist := chkRandomGDist.Checked;
-    includeNearbyCities := chkIncludeNearby.Checked;
-	  SampleNamesList := SamplesGenerator.GenerateSampleSet(countryCode, state_code, city_name, num_rows,
-      maleDist, femaleDist, randomGenderDist, includeNearbyCities);
+
+	  SampleNamesList := SamplesGenerator.GenerateSampleSet(CountryCode, state_code, city_name, num_rows,
+      maleDist, femaleDist, randomGenderDist, includeNearbyCities, multCities, dataModule.dataModuleMain.MasterCitiesList);
 		PopulateSampleNamesGrid;
-    SavedSettings.CountryName:= countryCode;
+    SavedSettings.CountryName:= CountryCode;
     SavedSettings.StateName:= GetStateCodeFromCombo;
     SavedSettings.CityName := city_name;
     SavedSettings.NumRows := num_rows;
@@ -262,10 +274,17 @@ begin
     SavedSettings.FemalePercentage := femaleDist;
     SavedSettings.RandomGenderDistribution := randomGenderDist;
     SavedSettings.IncludeNearbyCities := chkIncludeNearby.Checked;
+    SavedSettings.MultipleCities := chkMultipleCities.Checked;
   end
 	else begin
 		MessageDlg('Message', 'State, City, and Number of rows are required fields.', TMsgDlgType.mtInformation, [mbOK], '');
   end;
+end;
+
+procedure TformMain.btnMultipleCitiesClick(Sender: TObject);
+begin
+  CitiesSelectForm.InitForm(CountryCode, dataModule.dataModuleMain.MasterCitiesList);
+  CitiesSelectForm.ShowModal;
 end;
 
 procedure TformMain.chkRandomGDistChange(Sender: TObject);
@@ -286,10 +305,10 @@ var
 begin
   countrySelected := comboCountry.Items[comboCountry.ItemIndex];
   if (countrySelected = 'United States') then
-    countryCode:= 'US'
+    CountryCode:= 'US'
   else
-    countryCode := 'CA';
-  dataModule.dataModuleMain.queryStates.Params[0].Value := countryCode;
+    CountryCode := 'CA';
+  dataModule.dataModuleMain.queryStates.Params[0].Value := CountryCode;
   dataModule.dataModuleMain.queryStates.Close;
   dataModule.dataModuleMain.queryStates.Open;
   PopulateStatesCombo;
@@ -408,6 +427,7 @@ begin
   chkIncludeNearby.Checked := SavedSettings.IncludeNearbyCities;
   spinMaleDist.Value := SavedSettings.MalePercentage;
   spinFemaleDist.Value := SavedSettings.FemalePercentage;
+  chkMultipleCities.Checked := SavedSettings.MultipleCities;
 end;
 
 function TformMain.GetStateCodeFromCombo : String;
