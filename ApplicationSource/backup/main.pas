@@ -257,15 +257,16 @@ begin
   multCities := chkMultipleCities.Checked;
   if (multCities) then begin
     SampleNamesList := SamplesGenerator.GenerateSampleSet(CountryCode, '', '', num_rows,
-      maleDist, femaleDist, randomGenderDist, includeNearbyCities, multCities, dataModule.dataModuleMain.MasterCitiesList);
+      maleDist, femaleDist, randomGenderDist, includeNearbyCities, multCities, CitiesSelectForm.GroupSelected);
+    PopulateSampleNamesGrid;
   end
   else if ((comboStates.ItemIndex >= 0) and (comboCities.ItemIndex >= 0) and (not (row_count.Equals(String.Empty)))) then begin
-  	state_code := GetStateCodeFromCombo();
-	  city_name := comboCities.Items[comboCities.ItemIndex];
+    state_code := GetStateCodeFromCombo();
+    city_name := comboCities.Items[comboCities.ItemIndex];
 
-	  SampleNamesList := SamplesGenerator.GenerateSampleSet(CountryCode, state_code, city_name, num_rows,
+    SampleNamesList := SamplesGenerator.GenerateSampleSet(CountryCode, state_code, city_name, num_rows,
       maleDist, femaleDist, randomGenderDist, includeNearbyCities, multCities, dataModule.dataModuleMain.MasterCitiesList);
-		PopulateSampleNamesGrid;
+    PopulateSampleNamesGrid;
     SavedSettings.CountryName:= CountryCode;
     SavedSettings.StateName:= GetStateCodeFromCombo;
     SavedSettings.CityName := city_name;
@@ -276,14 +277,14 @@ begin
     SavedSettings.IncludeNearbyCities := chkIncludeNearby.Checked;
     SavedSettings.MultipleCities := chkMultipleCities.Checked;
   end
-	else begin
-		MessageDlg('Message', 'State, City, and Number of rows are required fields.', TMsgDlgType.mtInformation, [mbOK], '');
+  else begin
+    MessageDlg('Message', 'State, City, and Number of rows are required fields.', TMsgDlgType.mtInformation, [mbOK], '');
   end;
 end;
 
 procedure TformMain.btnMultipleCitiesClick(Sender: TObject);
 begin
-  CitiesSelectForm.InitForm(CountryCode, dataModule.dataModuleMain.MasterCitiesList);
+  CitiesSelectForm.InitForm;
   CitiesSelectForm.ShowModal;
 end;
 
@@ -384,7 +385,7 @@ begin
     dataModule.dataModuleMain.QueryStates.Next;
   end;
   if (SavedSettings.StateName <> String.Empty) then
-	  SetSavedStateName;
+    SetSavedStateName;
 end;
 
 procedure TformMain.SetSavedStateName;

@@ -16,26 +16,34 @@ type
     btnSave: TBitBtn;
     btnRemove: TBitBtn;
     btnAddCity: TBitBtn;
+    comboCountry: TComboBox;
     comboState: TComboBox;
     comboCity: TComboBox;
+    comboGroup: TComboBox;
+    lblCountry: TLabel;
     lblCitiesList: TLabel;
     lblState: TLabel;
     lblCity: TLabel;
+    lblGroup: TLabel;
     listCities: TListBox;
     procedure btnAddCityClick(Sender: TObject);
     procedure btnCancelClick(Sender: TObject);
     procedure btnRemoveClick(Sender: TObject);
     procedure btnSaveClick(Sender: TObject);
+    procedure comboCountrySelect(Sender: TObject);
+    procedure comboGroupSelect(Sender: TObject);
     procedure comboStateSelect(Sender: TObject);
   private
+    procedure PopulateCityGroupsCombo;
     procedure PopulateStatesCombo;
     procedure PopulateCitiesCombo;
     procedure PopulateStateListBox;
     function GetStateCodeFromCombo : String;
   public
     CountryCode: String;
-    CitiesList: TCityRecordsList;
-    procedure InitForm(cntryCode: String; ctList: TCityRecordsList);
+    Cities: TCityRecordsList;
+    GroupSelected : String;
+    procedure InitForm;
   end;
 
 var
@@ -58,7 +66,7 @@ begin
   if (listCities.ItemIndex >= 0) then begin
     selectedIdx := listCities.ItemIndex;
     listCities.Items.Delete(selectedIdx);
-    CitiesList.Delete(selectedIdx);
+    Cities.Delete(selectedIdx);
   end;
 end;
 
@@ -75,22 +83,65 @@ begin
   cityName := comboCity.Items[comboCity.ItemIndex];
   stateName := comboState.Items[comboState.ItemIndex];
   selectedCity := TCityRecord.Create(cityName, GetStateCodeFromCombo, CountryCode);
-  CitiesList.Add(selectedCity);
+  Cities.Add(selectedCity);
   listCities.Items.Add(selectedCity.ToString);
 end;
 
 procedure TCitiesSelectForm.btnSaveClick(Sender: TObject);
+var
+  grpName : String;
+  i : Integer;
 begin
-  dataModule.dataModuleMain.MasterCitiesList := CitiesList;
+  grpName:= comboGroup.Items[comboGroup.ItemIndex];
+  dataModuleMain.UpdateCitiesListByGroupName(grpName, Cities);
   self.Hide;
 end;
 
-procedure TCitiesSelectForm.InitForm(cntryCode: String; ctList: TCityRecordsList);
+procedure TCitiesSelectForm.comboCountrySelect(Sender: TObject);
+var
+  countrySelected: String;
 begin
-  self.CountryCode := cntryCode;
-  self.CitiesList := ctList;
+  countrySelected := comboCountry.Items[comboCountry.ItemIndex];
+  if (countrySelected = 'United States') then
+    CountryCode:= 'US'
+  else
+    CountryCode := 'CA';
+  dataModule.dataModuleMain.queryStates.Params[0].Value := CountryCode;
+  dataModule.dataModuleMain.queryStates.Close;
+  dataModule.dataModuleMain.queryStates.Open;
+  PopulateStatesCombo;
+end;
+
+procedure TCitiesSelectForm.comboGroupSelect(Sender: TObject);
+var
+  i : Integer;
+  grpName : String;
+begin
+  grpName:= comboGroup.Items[comboGroup.ItemIndex];
+  GroupSelected := grpName;
+  if (grpName <> '') then begin
+    Cities := dataModuleMain.GetCitiesListByGroupName(grpName);
+    PopulateStateListBox;
+  end;
+end;
+
+procedure TCitiesSelectForm.InitForm;
+begin
+  self.CountryCode := 'US';
+  self.Cities := TCityRecordsList.Create;
+  PopulateCityGroupsCombo;
   PopulateStatesCombo;
   PopulateStateListBox;
+end;
+
+procedure TCitiesSelectForm.PopulateCityGroupsCombo;
+var
+  i : Integer;
+begin
+  comboGroup.Items.Clear;
+  for i := 0 to dataModuleMain.CityGroupsList.Count - 1 do begin
+    comboGroup.Items.Add(dataModuleMain.CityGroupsList[i].GroupName);
+  end;
 end;
 
 procedure TCitiesSelectForm.PopulateStatesCombo;
@@ -111,8 +162,8 @@ var
   i : Integer;
 begin
   listCities.Items.Clear;
-  for i := 0 to CitiesList.Count - 1 do begin
-    listCities.Items.Add(CitiesList[i].ToString);
+  for i := 0 to Cities.Count - 1 do begin
+    listCities.Items.Add(Cities[i].ToString);
   end;
 end;
 
@@ -169,6 +220,7 @@ begin
   end;
   Result := state_code;
 end;
+
 
 end.
 

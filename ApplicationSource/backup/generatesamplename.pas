@@ -56,7 +56,7 @@ type
     NumRowsGenerate: Integer;
     function GenerateSampleSet(country, state, cityName: String;
       numRows, mdist, fdist: Integer; rdist, nearbyCities: Boolean;
-      multCities: Boolean; ctList: TCityRecordsList) : TSampleNamesList;
+      multCities: Boolean; cityGroup: String) : TSampleNamesList;
   private
     //DBConnection : TSQLite3Connection;
     DataRetrieveQuery : TSQLQuery;
@@ -75,7 +75,7 @@ type
     MultipleCities: Boolean;
     ListCities: TCityRecordsList;
     function GenerateRandomFixedDigitNumber(numDigits: Integer): Int64;
-    function CreateSampleName(gender : char, country : String) : TSampleName;
+    function CreateSampleName(gender : char; country : String) : TSampleName;
     procedure CalculateGenderDistribution(malePct, femalePct, numRows : Integer);
     procedure RetrieveZipCodeListIncludingNearbyCities(cityName, stateName, ctryCode : String);
     procedure RetrieveZipCodeListSelectedCity(cityName, stateName, ctryCode : String);
@@ -175,7 +175,7 @@ end;
 
 function TSampleNamesGenerator.GenerateSampleSet(country, state, cityName: String;
       numRows, mdist, fdist: Integer; rdist, nearbyCities: Boolean;
-      multCities: Boolean; ctList: TCityRecordsList) : TSampleNamesList;
+      multCities: Boolean; cityGroup: String) : TSampleNamesList;
 var
   i, cityCntr, genNumber, maleCntr, femaleCntr : Integer;
   gndr : Char;
@@ -188,7 +188,13 @@ begin
   CurrentRecordId := 0;
   RandomGenderDist := rdist;
   MultipleCities := multCities;
-  ListCities := ctList;
+  ListCities := TCityGroupsList.Create;
+  for i := 0 to dataModuleMain.CityGroupsList.Count - 1 do begin
+    if (dataModuleMain.CityGroupsList[i].GroupName = cityGroup) then begin
+      ListCities := dataModuleMain.CityGroupsList[i].CitiesList;
+      break;
+    end;
+  end;
   Result := TSampleNamesList.Create;
   //If multiple cities is not specified, then create one entry.
   if (not multCities) then begin
@@ -252,7 +258,7 @@ begin
   end;
 end;
 
-function TSampleNamesGenerator.CreateSampleName(gender : char, country : String) : TSampleName;
+function TSampleNamesGenerator.CreateSampleName(gender : char; country : String) : TSampleName;
 var
   SampleName: TSampleName;
   ZipCode: TZipCode;

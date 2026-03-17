@@ -21,6 +21,14 @@ type
 
   TCityRecordsList = specialize TObjectList<TCityRecord>;
 
+  TCityListGroup = Class(TObject)
+    constructor Create(grpName : String);
+  public
+    GroupName : String;
+    CitiesList : TCityRecordsList;
+  end;
+
+  TCityGroupsList = specialize TObjectList<TCityListGroup>;
 
 implementation
 
@@ -56,6 +64,12 @@ end;
 function TCityRecord.ToString : String;
 begin
   Result := self.CityName + '; ' + self.StateName + '; ' + self.countryCode;
+end;
+
+constructor TCityListGroup.Create(grpName : String);
+begin
+  self.GroupName:= grpName;
+  self.CitiesList := TCityRecordsList.Create;
 end;
 
 end.

@@ -20,7 +20,9 @@ type
   private
 
   public
-    MasterCitiesList: TCityRecordsList;
+    CityGroupsList: TCityGroupsList;
+    function GetCitiesListByGroupName(grpName : String) : TCityRecordsList;
+    procedure UpdateCitiesListByGroupName(grpName : String; ctList : TCityRecordsList);
   end;
 
 var
@@ -34,10 +36,37 @@ implementation
 
 procedure TdataModuleMain.DataModuleCreate(Sender: TObject);
 begin
-  MasterCitiesList := TCityRecordsList.Create;
+  CityGroupsList := TCityGroupsList.Create;
   connectionMain.DatabaseName := 'SampleNames.db';
   connectionMain.Open;
   queryStates.Open;
+end;
+
+function TdataModuleMain.GetCitiesListByGroupName(grpName : String) : TCityRecordsList;
+var
+  i : Integer;
+  ctList : TCityRecordsList;
+begin
+  ctList := TCityRecordsList.Create;
+  for i := 0 to CityGroupsList.Count - 1 do begin
+    if (CityGroupsList[i].GroupName.ToUpper = grpName.ToUpper) then begin
+      ctList := CityGroupsList[i].CitiesList;
+      break;
+    end;
+  end;
+  Result := ctList;
+end;
+
+procedure TdataModuleMain.UpdateCitiesListByGroupName(grpName : String; ctList : TCityRecordsList);
+var
+  i : Integer;
+begin
+  for i := 0 to CityGroupsList.Count - 1 do begin
+    if (CityGroupsList[i].GroupName.ToUpper = grpName.ToUpper) then begin
+      CityGroupsList[i].CitiesList := ctList;
+      break;
+    end;
+  end;
 end;
 
 end.

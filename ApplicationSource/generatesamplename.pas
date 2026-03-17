@@ -56,7 +56,7 @@ type
     NumRowsGenerate: Integer;
     function GenerateSampleSet(country, state, cityName: String;
       numRows, mdist, fdist: Integer; rdist, nearbyCities: Boolean;
-      multCities: Boolean; ctList: TCityRecordsList) : TSampleNamesList;
+      multCities: Boolean; cityGroup: String) : TSampleNamesList;
   private
     //DBConnection : TSQLite3Connection;
     DataRetrieveQuery : TSQLQuery;
@@ -175,7 +175,7 @@ end;
 
 function TSampleNamesGenerator.GenerateSampleSet(country, state, cityName: String;
       numRows, mdist, fdist: Integer; rdist, nearbyCities: Boolean;
-      multCities: Boolean; ctList: TCityRecordsList) : TSampleNamesList;
+      multCities: Boolean; cityGroup: String) : TSampleNamesList;
 var
   i, cityCntr, genNumber, maleCntr, femaleCntr : Integer;
   gndr : Char;
@@ -188,7 +188,13 @@ begin
   CurrentRecordId := 0;
   RandomGenderDist := rdist;
   MultipleCities := multCities;
-  ListCities := ctList;
+  ListCities := TCityRecordsList.Create;
+  for i := 0 to dataModuleMain.CityGroupsList.Count - 1 do begin
+    if (dataModuleMain.CityGroupsList[i].GroupName = cityGroup) then begin
+      ListCities := dataModuleMain.CityGroupsList[i].CitiesList;
+      break;
+    end;
+  end;
   Result := TSampleNamesList.Create;
   //If multiple cities is not specified, then create one entry.
   if (not multCities) then begin
