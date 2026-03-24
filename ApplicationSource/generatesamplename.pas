@@ -119,11 +119,14 @@ begin
   self.BirthDate:= Now;
 end;
 
+// Returns birth date in YYYY-MM-DD format.
 function TSampleName.BirthDateString : String;
 begin
   Result := FormatDateTime('YYYY-MM-DD', BirthDate);
 end;
 
+// Generates a dictionary with column name as key and value as value for 
+// the sample name record. This is used for template based generation.
 function TSampleName.GenerateDictionary : TNameMap;
 var
   nameDictionary : TNameMap;
@@ -143,7 +146,6 @@ begin
   nameDictionary.Add('BirthDate', self.BirthDateString);
   Result := nameDictionary;
 end;
-
 
 constructor TZipCode.Create(zip, city, state : String);
 begin
@@ -172,7 +174,8 @@ begin
   LoadLists;
 end;
 
-
+// This is the main function that generates the list of sample names based on the 
+// input parameters.
 function TSampleNamesGenerator.GenerateSampleSet(country, state, cityName: String;
       numRows, mdist, fdist: Integer; rdist, nearbyCities: Boolean;
       multCities: Boolean; cityGroup: String) : TSampleNamesList;
@@ -240,6 +243,8 @@ begin
   end;
 end;
 
+// This procedure calculates the number of male and female records based on the 
+// input percentage and total number of records to be generated.
 procedure TSampleNamesGenerator.CalculateGenderDistribution(malePct, femalePct, numRows : Integer);
 var
   diff : Integer;
@@ -258,6 +263,9 @@ begin
   end;
 end;
 
+// This function generates a sample name record based on the input gender and country. 
+// It randomly picks first name, last name, street name, email domain etc. from the 
+// lists loaded from the database.
 function TSampleNamesGenerator.CreateSampleName(gender : char; country : String) : TSampleName;
 var
   SampleName: TSampleName;
@@ -311,6 +319,9 @@ begin
   Result := SampleName;
 end;
 
+// This procedure retrieves the list of zip codes for the input city and state. It also 
+// retrieves zip codes for nearby cities based on the lattitude and longitude of the city. 
+// The retrieved zip codes are stored in the ZipCodes list.
 procedure TSampleNamesGenerator.RetrieveZipCodeListIncludingNearbyCities(cityName, stateName, ctryCode : String);
 var
   MinLatt, MaxLatt, MinLong, MaxLong: Float;
@@ -368,6 +379,8 @@ begin
   DataRetrieveQuery.Close;
 end;
 
+// This procedure retrieves the list of zip codes for the input city and state. 
+// The retrieved zip codes are stored in the ZipCodes list.
 procedure TSampleNamesGenerator.RetrieveZipCodeListSelectedCity(cityName, stateName, ctryCode : String);
 var
   MinLatt, MaxLatt, MinLong, MaxLong: Float;
@@ -399,6 +412,8 @@ begin
   DataRetrieveQuery.Close;
 end;
 
+// This procedure calculates the list of area codes for the input state and country. The
+// retrieved area codes are stored in the AreaCodes list.
 procedure TSampleNamesGenerator.GetAreaCodesForState(state, country: String);
 var
   SqlList: TStringList;
@@ -418,6 +433,8 @@ begin
   end;
 end;
 
+// This procedure loads the lists for first names, last names, street names, email 
+// domains etc. from the database.
 procedure TSampleNamesGenerator.LoadLists;
 var
   SqlList: TStringList;
@@ -470,6 +487,8 @@ begin
   DataRetrieveQuery.Close;
 end;
 
+// This function generates a random number with the specified number of digits. 
+// The generated number is returned as an Int64.
 function TSampleNamesGenerator.GenerateRandomFixedDigitNumber(numDigits: Integer): Int64;
 var
   baseNum, randSeed: Int64;
@@ -484,6 +503,8 @@ begin
   end;
 end;
 
+// This procedure executes the input SQL query and opens the DataRetrieveQuery with the 
+// result set.
 procedure TSampleNamesGenerator.RunQuery(Sql: TStringList);
 var
   i: Integer;

@@ -134,8 +134,8 @@ object formMain: TformMain
     ChildSizing.ShrinkVertical = crsScaleChilds
     ChildSizing.Layout = cclLeftToRightThenTopToBottom
     ChildSizing.ControlsPerLine = 2
-    ClientHeight = 45
-    ClientWidth = 204
+    ClientHeight = 43
+    ClientWidth = 206
     Columns = 2
     ItemIndex = 0
     Items.Strings = (
@@ -304,8 +304,8 @@ object formMain: TformMain
     Top = 80
     Width = 440
     Caption = 'Gender Distribution'
-    ClientHeight = 44
-    ClientWidth = 436
+    ClientHeight = 42
+    ClientWidth = 438
     TabOrder = 8
     object lblMaleDist: TLabel
       Left = 8
@@ -388,8 +388,8 @@ object formMain: TformMain
     Top = 80
     Width = 360
     Caption = 'Other'
-    ClientHeight = 44
-    ClientWidth = 356
+    ClientHeight = 42
+    ClientWidth = 358
     TabOrder = 10
     object lblNumRows: TLabel
       Left = 8

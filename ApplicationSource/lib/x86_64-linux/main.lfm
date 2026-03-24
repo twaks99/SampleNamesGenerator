@@ -7,9 +7,9 @@ object formMain: TformMain
   ClientHeight = 743
   ClientWidth = 1060
   Menu = MainMenu1
+  LCLVersion = '4.6.0.0'
   OnClose = FormClose
   OnCreate = FormCreate
-  LCLVersion = '3.6.0.0'
   object comboStates: TComboBox
     Left = 320
     Height = 33
@@ -49,8 +49,8 @@ object formMain: TformMain
   end
   object gridResults: TStringGrid
     Left = 16
-    Height = 517
-    Top = 176
+    Height = 501
+    Top = 192
     Width = 1026
     AlternateColor = clBtnFace
     Anchors = [akTop, akLeft, akRight, akBottom]
@@ -114,7 +114,7 @@ object formMain: TformMain
   object lblSampleNames: TLabel
     Left = 16
     Height = 21
-    Top = 152
+    Top = 168
     Width = 76
     Caption = 'Names List'
     ParentColor = False
@@ -123,7 +123,7 @@ object formMain: TformMain
     Left = 16
     Height = 65
     Hint = 'Select the delimited character when copying results to the clipboard.'
-    Top = 80
+    Top = 96
     Width = 208
     AutoFill = True
     Caption = 'Delimiter for Clipboard Copy'
@@ -189,8 +189,8 @@ object formMain: TformMain
       0000000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000
     }
-    OnClick = btnExportClick
     TabOrder = 6
+    OnClick = btnExportClick
   end
   object btnClipboard: TBitBtn
     Left = 16
@@ -236,10 +236,10 @@ object formMain: TformMain
       000000000000000000000000000000000000000000006358FC626153FB8B0000
       0000000000000000000000000000000000000000000000000000
     }
-    OnClick = btnClipboardClick
     ParentShowHint = False
     ShowHint = True
     TabOrder = 5
+    OnClick = btnClipboardClick
   end
   object btnClose: TBitBtn
     Left = 496
@@ -250,8 +250,8 @@ object formMain: TformMain
     DefaultCaption = True
     Kind = bkClose
     ModalResult = 11
-    OnClick = btnCloseClick
     TabOrder = 7
+    OnClick = btnCloseClick
   end
   object btnGenerate: TBitBtn
     Left = 928
@@ -295,13 +295,13 @@ object formMain: TformMain
       0000000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000
     }
-    OnClick = btnGenerateClick
     TabOrder = 2
+    OnClick = btnGenerateClick
   end
   object grpGenderDisttribution: TGroupBox
     Left = 232
     Height = 64
-    Top = 80
+    Top = 96
     Width = 440
     Caption = 'Gender Distribution'
     ClientHeight = 42
@@ -324,8 +324,8 @@ object formMain: TformMain
       Width = 58
       Enabled = False
       MaxValue = 100
-      OnChange = spinMaleDistChange
       TabOrder = 0
+      OnChange = spinMaleDistChange
     end
     object lblFemaleDist: TLabel
       Left = 136
@@ -343,8 +343,8 @@ object formMain: TformMain
       Width = 58
       Enabled = False
       MaxValue = 100
-      OnChange = spinFemaleDistChange
       TabOrder = 1
+      OnChange = spinFemaleDistChange
     end
     object chkRandomGDist: TCheckBox
       Left = 264
@@ -385,7 +385,7 @@ object formMain: TformMain
   object grpRowCount: TGroupBox
     Left = 679
     Height = 64
-    Top = 80
+    Top = 96
     Width = 360
     Caption = 'Other'
     ClientHeight = 42
@@ -419,17 +419,17 @@ object formMain: TformMain
     end
   end
   object chkMultipleCities: TCheckBox
-    Left = 80
+    Left = 72
     Height = 23
-    Top = 48
+    Top = 56
     Width = 121
     Caption = 'Multiple Cities'
     TabOrder = 11
   end
   object btnMultipleCities: TBitBtn
-    Left = 248
+    Left = 224
     Height = 30
-    Top = 48
+    Top = 56
     Width = 216
     Caption = 'Specify Multiple Cities'
     Glyph.Data = {
@@ -469,6 +469,7 @@ object formMain: TformMain
       00AA000000AA000000AA000000AA000000AA000000AF0000006F
     }
     TabOrder = 12
+    OnClick = btnMultipleCitiesClick
   end
   object dialogExport: TSaveDialog
     DefaultExt = '.xlsx'

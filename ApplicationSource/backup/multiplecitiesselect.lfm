@@ -7,35 +7,36 @@ object CitiesSelectForm: TCitiesSelectForm
   ClientHeight = 395
   ClientWidth = 730
   LCLVersion = '4.6.0.0'
+  OnCreate = FormCreate
   object comboState: TComboBox
     Left = 32
-    Height = 23
+    Height = 33
     Top = 192
-    Width = 272
-    ItemHeight = 15
+    Width = 342
+    ItemHeight = 0
     TabOrder = 0
     OnSelect = comboStateSelect
   end
   object comboCity: TComboBox
     Left = 32
-    Height = 23
+    Height = 33
     Top = 256
-    Width = 272
-    ItemHeight = 15
+    Width = 342
+    ItemHeight = 0
     TabOrder = 1
   end
   object lblState: TLabel
     Left = 32
-    Height = 15
+    Height = 21
     Top = 168
-    Width = 29
+    Width = 38
     Caption = 'State:'
   end
   object lblCity: TLabel
     Left = 32
-    Height = 15
+    Height = 21
     Top = 232
-    Width = 24
+    Width = 30
     Caption = 'City:'
   end
   object listCities: TListBox
@@ -45,19 +46,21 @@ object CitiesSelectForm: TCitiesSelectForm
     Width = 296
     ItemHeight = 0
     TabOrder = 2
+    TopIndex = -1
+    OnSelectionChange = listCitiesSelectionChange
   end
   object lblCitiesList: TLabel
     Left = 416
-    Height = 15
+    Height = 21
     Top = 16
-    Width = 50
+    Width = 65
     Caption = 'Cities List'
   end
   object btnAddCity: TBitBtn
     Left = 32
     Height = 30
     Top = 304
-    Width = 131
+    Width = 150
     Caption = '&Add City'
     Glyph.Data = {
       36040000424D3604000000000000360000002800000010000000100000000100
@@ -101,8 +104,8 @@ object CitiesSelectForm: TCitiesSelectForm
   object btnRemove: TBitBtn
     Left = 224
     Height = 30
-    Top = 304
-    Width = 131
+    Top = 303
+    Width = 150
     Caption = '&Remove Selected'
     Glyph.Data = {
       36040000424D3604000000000000360000002800000010000000100000000100
@@ -147,7 +150,7 @@ object CitiesSelectForm: TCitiesSelectForm
     Left = 160
     Height = 30
     Top = 352
-    Width = 75
+    Width = 90
     Caption = '&Save'
     Glyph.Data = {
       36040000424D3604000000000000360000002800000010000000100000000100
@@ -190,10 +193,10 @@ object CitiesSelectForm: TCitiesSelectForm
     OnClick = btnSaveClick
   end
   object btnCancel: TBitBtn
-    Left = 408
+    Left = 456
     Height = 30
     Top = 352
-    Width = 88
+    Width = 90
     Caption = '&Cancel'
     Glyph.Data = {
       36040000424D3604000000000000360000002800000010000000100000000100
@@ -237,33 +240,33 @@ object CitiesSelectForm: TCitiesSelectForm
   end
   object lblGroup: TLabel
     Left = 32
-    Height = 15
+    Height = 21
     Top = 24
-    Width = 36
+    Width = 48
     Caption = 'Group:'
   end
   object comboGroup: TComboBox
     Left = 32
-    Height = 23
+    Height = 33
     Top = 48
-    Width = 272
-    ItemHeight = 15
+    Width = 342
+    ItemHeight = 0
     TabOrder = 7
     OnSelect = comboGroupSelect
   end
   object lblCountry: TLabel
     Left = 35
-    Height = 15
+    Height = 21
     Top = 96
-    Width = 46
+    Width = 59
     Caption = 'Country:'
   end
   object comboCountry: TComboBox
     Left = 32
-    Height = 23
+    Height = 33
     Top = 120
-    Width = 272
-    ItemHeight = 15
+    Width = 342
+    ItemHeight = 0
     Items.Strings = (
       'United States'
       'Canada'

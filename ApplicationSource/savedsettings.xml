@@ -92,6 +92,11 @@
         <StateCode>UT</StateCode>
         <CountryCode>US</CountryCode>
       </CityRecord>
+      <CityRecord>
+        <CityName>Dallas</CityName>
+        <StateCode>TX</StateCode>
+        <CountryCode>US</CountryCode>
+      </CityRecord>
     </CityGroup>
     <CityGroup name="Canadian Cities">
       <CityRecord>

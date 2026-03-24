@@ -104,6 +104,7 @@ begin
   //MultipleCities := SavedSettings.MultipleCities;
   SelectSavedCountry;
   PopulateStatesCombo;
+  //CitiesSelectForm.InitForm;
 end;
 
 procedure TformMain.SelectSavedCountry;
@@ -265,7 +266,7 @@ begin
     city_name := comboCities.Items[comboCities.ItemIndex];
 
     SampleNamesList := SamplesGenerator.GenerateSampleSet(CountryCode, state_code, city_name, num_rows,
-      maleDist, femaleDist, randomGenderDist, includeNearbyCities, multCities, dataModule.dataModuleMain.MasterCitiesList);
+      maleDist, femaleDist, randomGenderDist, includeNearbyCities, multCities, CitiesSelectForm.GroupSelected);
     PopulateSampleNamesGrid;
     SavedSettings.CountryName:= CountryCode;
     SavedSettings.StateName:= GetStateCodeFromCombo;
@@ -284,7 +285,7 @@ end;
 
 procedure TformMain.btnMultipleCitiesClick(Sender: TObject);
 begin
-  CitiesSelectForm.InitForm;
+  //CitiesSelectForm.InitForm;
   CitiesSelectForm.ShowModal;
 end;
 

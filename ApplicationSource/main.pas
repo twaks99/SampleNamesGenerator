@@ -104,6 +104,7 @@ begin
   //MultipleCities := SavedSettings.MultipleCities;
   SelectSavedCountry;
   PopulateStatesCombo;
+  //CitiesSelectForm.InitForm;
 end;
 
 procedure TformMain.SelectSavedCountry;
@@ -284,7 +285,7 @@ end;
 
 procedure TformMain.btnMultipleCitiesClick(Sender: TObject);
 begin
-  CitiesSelectForm.InitForm;
+  //CitiesSelectForm.InitForm;
   CitiesSelectForm.ShowModal;
 end;
 

@@ -65,6 +65,8 @@ begin
 	ReadSettingsFromFile;
 end;
 
+//Reads settings from the XML file and populates the properties of this class. 
+//If the file does not exist, default values are used for all properties.
 procedure TSavedSettings.ReadSettingsFromFile;
 var
   doc : TXMLDocument;
@@ -160,6 +162,9 @@ begin
   end;
 end;
 
+//Saves the current settings to an XML file. This includes all properties of 
+//this class, as well as the list of column mappings and the list of cities 
+//(if multiple cities option is selected).
 procedure TSavedSettings.SaveSettingsToFile;
 var
   doc : TXMLDocument;
@@ -249,6 +254,8 @@ begin
   end;
 end;
 
+//Helper function to create an XML node with a text value. This is used to 
+//simplify the process of adding new nodes to the XML document.
 function TSavedSettings.CreateXMLValueNode(doc: TXMLDocument; nodeName, nodeValue : String) : TDOMNode;
 var
   parentNode, txtValueNode : TDOMNode;
