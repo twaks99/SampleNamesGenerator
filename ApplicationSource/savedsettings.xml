@@ -2,111 +2,36 @@
 <SavedSettings>
   <CountryName>US</CountryName>
   <StateName>MD</StateName>
-  <CityName>Beltsville</CityName>
-  <NumRecords>20</NumRecords>
+  <CityName>Bowie</CityName>
+  <NumRecords>50</NumRecords>
   <DBTableName>customer_list</DBTableName>
   <RandomGenderDistribution>true</RandomGenderDistribution>
   <MalePercentage>50</MalePercentage>
   <FemalePercentage>50</FemalePercentage>
   <IncludeNearbyCities>true</IncludeNearbyCities>
-  <MultipleCities>true</MultipleCities>
+  <MultipleCities>false</MultipleCities>
   <CitiesList>
     <CityGroup name="US Cities">
       <CityRecord>
-        <CityName>Baltimore</CityName>
+        <CityName>Bowie</CityName>
         <StateCode>MD</StateCode>
-        <CountryCode>US</CountryCode>
-      </CityRecord>
-      <CityRecord>
-        <CityName>Canton</CityName>
-        <StateCode>CT</StateCode>
-        <CountryCode>US</CountryCode>
-      </CityRecord>
-      <CityRecord>
-        <CityName>New York</CityName>
-        <StateCode>NY</StateCode>
-        <CountryCode>US</CountryCode>
-      </CityRecord>
-      <CityRecord>
-        <CityName>Trenton</CityName>
-        <StateCode>NJ</StateCode>
-        <CountryCode>US</CountryCode>
-      </CityRecord>
-      <CityRecord>
-        <CityName>Orlando</CityName>
-        <StateCode>FL</StateCode>
-        <CountryCode>US</CountryCode>
-      </CityRecord>
-      <CityRecord>
-        <CityName>Boulder</CityName>
-        <StateCode>CO</StateCode>
-        <CountryCode>US</CountryCode>
-      </CityRecord>
-      <CityRecord>
-        <CityName>Austin</CityName>
-        <StateCode>TX</StateCode>
-        <CountryCode>US</CountryCode>
-      </CityRecord>
-      <CityRecord>
-        <CityName>Los Angeles</CityName>
-        <StateCode>CA</StateCode>
-        <CountryCode>US</CountryCode>
-      </CityRecord>
-      <CityRecord>
-        <CityName>Portland</CityName>
-        <StateCode>OR</StateCode>
-        <CountryCode>US</CountryCode>
-      </CityRecord>
-      <CityRecord>
-        <CityName>Seattle</CityName>
-        <StateCode>WA</StateCode>
-        <CountryCode>US</CountryCode>
-      </CityRecord>
-      <CityRecord>
-        <CityName>Anchorage</CityName>
-        <StateCode>AK</StateCode>
-        <CountryCode>US</CountryCode>
-      </CityRecord>
-      <CityRecord>
-        <CityName>Phoenix</CityName>
-        <StateCode>AZ</StateCode>
-        <CountryCode>US</CountryCode>
-      </CityRecord>
-      <CityRecord>
-        <CityName>Wilmington</CityName>
-        <StateCode>DE</StateCode>
-        <CountryCode>US</CountryCode>
-      </CityRecord>
-      <CityRecord>
-        <CityName>Detroit</CityName>
-        <StateCode>MI</StateCode>
-        <CountryCode>US</CountryCode>
-      </CityRecord>
-      <CityRecord>
-        <CityName>Bloomfield</CityName>
-        <StateCode>IN</StateCode>
-        <CountryCode>US</CountryCode>
-      </CityRecord>
-      <CityRecord>
-        <CityName>Salt Lake City</CityName>
-        <StateCode>UT</StateCode>
-        <CountryCode>US</CountryCode>
-      </CityRecord>
-      <CityRecord>
-        <CityName>Dallas</CityName>
-        <StateCode>TX</StateCode>
         <CountryCode>US</CountryCode>
       </CityRecord>
     </CityGroup>
     <CityGroup name="Canadian Cities">
       <CityRecord>
-        <CityName>Toronto</CityName>
-        <StateCode>ON</StateCode>
+        <CityName>Calgary</CityName>
+        <StateCode>AB</StateCode>
         <CountryCode>CA</CountryCode>
       </CityRecord>
       <CityRecord>
-        <CityName>Calgary</CityName>
+        <CityName>Edmonton</CityName>
         <StateCode>AB</StateCode>
+        <CountryCode>CA</CountryCode>
+      </CityRecord>
+      <CityRecord>
+        <CityName>Vancouver</CityName>
+        <StateCode>BC</StateCode>
         <CountryCode>CA</CountryCode>
       </CityRecord>
       <CityRecord>
@@ -120,13 +45,23 @@
         <CountryCode>CA</CountryCode>
       </CityRecord>
       <CityRecord>
+        <CityName>Ottawa</CityName>
+        <StateCode>ON</StateCode>
+        <CountryCode>CA</CountryCode>
+      </CityRecord>
+      <CityRecord>
+        <CityName>Toronto</CityName>
+        <StateCode>ON</StateCode>
+        <CountryCode>CA</CountryCode>
+      </CityRecord>
+      <CityRecord>
         <CityName>Montreal</CityName>
         <StateCode>QC</StateCode>
         <CountryCode>CA</CountryCode>
       </CityRecord>
       <CityRecord>
-        <CityName>Ottawa</CityName>
-        <StateCode>ON</StateCode>
+        <CityName>Regina</CityName>
+        <StateCode>SK</StateCode>
         <CountryCode>CA</CountryCode>
       </CityRecord>
     </CityGroup>

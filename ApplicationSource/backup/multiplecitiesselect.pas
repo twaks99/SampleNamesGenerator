@@ -12,6 +12,7 @@ type
   { TCitiesSelectForm }
 
   TCitiesSelectForm = class(TForm)
+    btnSortList: TBitBtn;
     btnCancel: TBitBtn;
     btnSave: TBitBtn;
     btnRemove: TBitBtn;
@@ -30,6 +31,7 @@ type
     procedure btnCancelClick(Sender: TObject);
     procedure btnRemoveClick(Sender: TObject);
     procedure btnSaveClick(Sender: TObject);
+    procedure btnSortListClick(Sender: TObject);
     procedure comboCountrySelect(Sender: TObject);
     procedure comboGroupSelect(Sender: TObject);
     procedure comboStateSelect(Sender: TObject);
@@ -40,6 +42,7 @@ type
     procedure PopulateStatesCombo;
     procedure PopulateCitiesCombo;
     procedure PopulateStateListBox;
+    procedure SaveCityList;
     function GetStateCodeFromCombo : String;
     function GetStateNameFromCode(state_code : String) : String;
     function IsCityRecordDuplicate(cityRecord : TCityRecord) : Boolean;
@@ -87,8 +90,8 @@ begin
       comboCountry.ItemIndex := i;
       PopulateStatesCombo;
       break;
-		end;
-	end;
+    end;
+  end;
   //select state
   state_name := GetStateNameFromCode(selCityRecord.StateName);
   for i := 0 to comboState.Items.Count - 1 do begin
@@ -96,15 +99,15 @@ begin
       comboState.ItemIndex:= i;
       PopulateCitiesCombo;
       break;
-		end;
-	end;
+    end;
+  end;
   //select city
   for i := 0 to comboCity.Items.Count - 1 do begin
     if (comboCity.Items[i] = selCityRecord.CityName) then begin
       comboCity.ItemIndex := i;
       break;
-		end;
-	end;
+    end;
+  end;
 end;
 
 procedure TCitiesSelectForm.btnRemoveClick(Sender: TObject);
@@ -131,18 +134,34 @@ begin
   cityName := comboCity.Items[comboCity.ItemIndex];
   stateName := comboState.Items[comboState.ItemIndex];
   selectedCity := TCityRecord.Create(cityName, GetStateCodeFromCombo, CountryCode);
-  Cities.Add(selectedCity);
-  listCities.Items.Add(selectedCity.ToString);
+  if (not IsCityRecordDuplicate(selectedCity)) then begin
+    Cities.Add(selectedCity);
+    listCities.Items.Add(selectedCity.ToString);
+  end;
 end;
 
 procedure TCitiesSelectForm.btnSaveClick(Sender: TObject);
+begin
+  SaveCityList;
+  self.Hide;
+end;
+
+procedure TCitiesSelectForm.SaveCityList;
 var
   grpName : String;
-  i : Integer;
 begin
-  grpName:= comboGroup.Items[comboGroup.ItemIndex];
+  grpName := comboGroup.Items[comboGroup.ItemIndex];
   dataModuleMain.UpdateCitiesListByGroupName(grpName, Cities);
-  self.Hide;
+end;
+
+procedure TCitiesSelectForm.btnSortListClick(Sender: TObject);
+var
+  OrderedCitiesList : TCityRecordsList;
+begin
+  OrderedCitiesList := dataModuleMain.OrderCitiesListByState(Cities);
+  Cities := OrderedCitiesList;
+  PopulateStateListBox;
+  SaveCityList;
 end;
 
 procedure TCitiesSelectForm.comboCountrySelect(Sender: TObject);
@@ -246,6 +265,9 @@ begin
   end;
 end;
 
+// gets the state code from the state name selected in the state combo box by looping 
+//through the states query and comparing the state name of each record with the state 
+// name selected in the combo box
 function TCitiesSelectForm.GetStateCodeFromCombo : String;
 var
   state_name, state_code: String;
@@ -266,6 +288,11 @@ begin
   Result := state_code;
 end;
 
+// gets the state name from the state code by looping through the states query and 
+// comparing the state code of each record with the state code passed as a parameter
+// returns the state name if a match is found, an empty string otherwise
+// this function is used to get the state name to display in the state combo box 
+// when a city record is selected from the list of cities.
 function TCitiesSelectForm.GetStateNameFromCode(state_code : String) : String;
 var
   state_name : String;
@@ -282,6 +309,11 @@ begin
   Result := state_name;
 end;
 
+// checks if the city record already exists in the list of cities to prevent duplicates
+// returns true if the city record already exists in the list, false otherwise
+// the check is based on the country code, state name and city name of the city record
+// this function is called when the user tries to add a new city record to the list of 
+// cities.
 function TCitiesSelectForm.IsCityRecordDuplicate(cityRecord : TCityRecord) : Boolean;
 var
   i : Integer;

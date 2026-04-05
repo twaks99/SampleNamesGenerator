@@ -12,6 +12,7 @@ type
   { TCitiesSelectForm }
 
   TCitiesSelectForm = class(TForm)
+    btnSortList: TBitBtn;
     btnCancel: TBitBtn;
     btnSave: TBitBtn;
     btnRemove: TBitBtn;
@@ -30,16 +31,18 @@ type
     procedure btnCancelClick(Sender: TObject);
     procedure btnRemoveClick(Sender: TObject);
     procedure btnSaveClick(Sender: TObject);
+    procedure btnSortListClick(Sender: TObject);
     procedure comboCountrySelect(Sender: TObject);
     procedure comboGroupSelect(Sender: TObject);
     procedure comboStateSelect(Sender: TObject);
-		procedure FormCreate(Sender: TObject);
+    procedure FormCreate(Sender: TObject);
     procedure listCitiesSelectionChange(Sender: TObject; User: boolean);
   private
     procedure PopulateCityGroupsCombo;
     procedure PopulateStatesCombo;
     procedure PopulateCitiesCombo;
     procedure PopulateStateListBox;
+    procedure SaveCityList;
     function GetStateCodeFromCombo : String;
     function GetStateNameFromCode(state_code : String) : String;
     function IsCityRecordDuplicate(cityRecord : TCityRecord) : Boolean;
@@ -87,8 +90,8 @@ begin
       comboCountry.ItemIndex := i;
       PopulateStatesCombo;
       break;
-		end;
-	end;
+    end;
+  end;
   //select state
   state_name := GetStateNameFromCode(selCityRecord.StateName);
   for i := 0 to comboState.Items.Count - 1 do begin
@@ -96,15 +99,15 @@ begin
       comboState.ItemIndex:= i;
       PopulateCitiesCombo;
       break;
-		end;
-	end;
+    end;
+  end;
   //select city
   for i := 0 to comboCity.Items.Count - 1 do begin
     if (comboCity.Items[i] = selCityRecord.CityName) then begin
       comboCity.ItemIndex := i;
       break;
-		end;
-	end;
+    end;
+  end;
 end;
 
 procedure TCitiesSelectForm.btnRemoveClick(Sender: TObject);
@@ -134,17 +137,31 @@ begin
   if (not IsCityRecordDuplicate(selectedCity)) then begin
     Cities.Add(selectedCity);
     listCities.Items.Add(selectedCity.ToString);
-	end;
+  end;
 end;
 
 procedure TCitiesSelectForm.btnSaveClick(Sender: TObject);
+begin
+  SaveCityList;
+  self.Hide;
+end;
+
+procedure TCitiesSelectForm.SaveCityList;
 var
   grpName : String;
-  i : Integer;
 begin
-  grpName:= comboGroup.Items[comboGroup.ItemIndex];
+  grpName := comboGroup.Items[comboGroup.ItemIndex];
   dataModuleMain.UpdateCitiesListByGroupName(grpName, Cities);
-  self.Hide;
+end;
+
+procedure TCitiesSelectForm.btnSortListClick(Sender: TObject);
+var
+  OrderedCitiesList : TCityRecordsList;
+begin
+  OrderedCitiesList := dataModuleMain.OrderCitiesListByState(Cities);
+  Cities := OrderedCitiesList;
+  PopulateStateListBox;
+  SaveCityList;
 end;
 
 procedure TCitiesSelectForm.comboCountrySelect(Sender: TObject);
@@ -286,9 +303,9 @@ begin
     if (dataModule.dataModuleMain.queryStates.FieldByName('state_code').AsString = state_code) then begin
       state_name := dataModule.dataModuleMain.queryStates.FieldByName('state_name').AsString;
       break;
-		end;
+    end;
     dataModule.dataModuleMain.queryStates.Next;
-	end;
+  end;
   Result := state_name;
 end;
 
@@ -309,8 +326,8 @@ begin
         (Cities[i].CityName = cityRecord.CityName)) then begin
       InList := True;
       break;
-		end;
-	end;
+    end;
+  end;
   Result := InList;
 end;
 
