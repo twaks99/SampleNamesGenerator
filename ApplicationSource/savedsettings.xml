@@ -13,12 +13,287 @@
   <CitiesList>
     <CityGroup name="US Cities">
       <CityRecord>
-        <CityName>Bowie</CityName>
+        <CityName>Anchorage</CityName>
+        <StateCode>AK</StateCode>
+        <CountryCode>US</CountryCode>
+      </CityRecord>
+      <CityRecord>
+        <CityName>Montgomery</CityName>
+        <StateCode>AL</StateCode>
+        <CountryCode>US</CountryCode>
+      </CityRecord>
+      <CityRecord>
+        <CityName>Little Rock</CityName>
+        <StateCode>AR</StateCode>
+        <CountryCode>US</CountryCode>
+      </CityRecord>
+      <CityRecord>
+        <CityName>Phoenix</CityName>
+        <StateCode>AZ</StateCode>
+        <CountryCode>US</CountryCode>
+      </CityRecord>
+      <CityRecord>
+        <CityName>Los Angeles</CityName>
+        <StateCode>CA</StateCode>
+        <CountryCode>US</CountryCode>
+      </CityRecord>
+      <CityRecord>
+        <CityName>San Francisco</CityName>
+        <StateCode>CA</StateCode>
+        <CountryCode>US</CountryCode>
+      </CityRecord>
+      <CityRecord>
+        <CityName>Boulder</CityName>
+        <StateCode>CO</StateCode>
+        <CountryCode>US</CountryCode>
+      </CityRecord>
+      <CityRecord>
+        <CityName>Hartford</CityName>
+        <StateCode>CT</StateCode>
+        <CountryCode>US</CountryCode>
+      </CityRecord>
+      <CityRecord>
+        <CityName>Washington</CityName>
+        <StateCode>DC</StateCode>
+        <CountryCode>US</CountryCode>
+      </CityRecord>
+      <CityRecord>
+        <CityName>Wilmington</CityName>
+        <StateCode>DE</StateCode>
+        <CountryCode>US</CountryCode>
+      </CityRecord>
+      <CityRecord>
+        <CityName>Miami</CityName>
+        <StateCode>FL</StateCode>
+        <CountryCode>US</CountryCode>
+      </CityRecord>
+      <CityRecord>
+        <CityName>Orlando</CityName>
+        <StateCode>FL</StateCode>
+        <CountryCode>US</CountryCode>
+      </CityRecord>
+      <CityRecord>
+        <CityName>Atlanta</CityName>
+        <StateCode>GA</StateCode>
+        <CountryCode>US</CountryCode>
+      </CityRecord>
+      <CityRecord>
+        <CityName>Honolulu</CityName>
+        <StateCode>HI</StateCode>
+        <CountryCode>US</CountryCode>
+      </CityRecord>
+      <CityRecord>
+        <CityName>Des Moines</CityName>
+        <StateCode>IA</StateCode>
+        <CountryCode>US</CountryCode>
+      </CityRecord>
+      <CityRecord>
+        <CityName>Boise</CityName>
+        <StateCode>ID</StateCode>
+        <CountryCode>US</CountryCode>
+      </CityRecord>
+      <CityRecord>
+        <CityName>Chicago</CityName>
+        <StateCode>IL</StateCode>
+        <CountryCode>US</CountryCode>
+      </CityRecord>
+      <CityRecord>
+        <CityName>Indianapolis</CityName>
+        <StateCode>IN</StateCode>
+        <CountryCode>US</CountryCode>
+      </CityRecord>
+      <CityRecord>
+        <CityName>Kansas City</CityName>
+        <StateCode>KS</StateCode>
+        <CountryCode>US</CountryCode>
+      </CityRecord>
+      <CityRecord>
+        <CityName>Louisville</CityName>
+        <StateCode>KY</StateCode>
+        <CountryCode>US</CountryCode>
+      </CityRecord>
+      <CityRecord>
+        <CityName>New Orleans</CityName>
+        <StateCode>LA</StateCode>
+        <CountryCode>US</CountryCode>
+      </CityRecord>
+      <CityRecord>
+        <CityName>Boston</CityName>
+        <StateCode>MA</StateCode>
+        <CountryCode>US</CountryCode>
+      </CityRecord>
+      <CityRecord>
+        <CityName>Baltimore</CityName>
         <StateCode>MD</StateCode>
+        <CountryCode>US</CountryCode>
+      </CityRecord>
+      <CityRecord>
+        <CityName>Portland</CityName>
+        <StateCode>ME</StateCode>
+        <CountryCode>US</CountryCode>
+      </CityRecord>
+      <CityRecord>
+        <CityName>Detroit</CityName>
+        <StateCode>MI</StateCode>
+        <CountryCode>US</CountryCode>
+      </CityRecord>
+      <CityRecord>
+        <CityName>Minneapolis</CityName>
+        <StateCode>MN</StateCode>
+        <CountryCode>US</CountryCode>
+      </CityRecord>
+      <CityRecord>
+        <CityName>Saint Louis</CityName>
+        <StateCode>MO</StateCode>
+        <CountryCode>US</CountryCode>
+      </CityRecord>
+      <CityRecord>
+        <CityName>Jackson</CityName>
+        <StateCode>MS</StateCode>
+        <CountryCode>US</CountryCode>
+      </CityRecord>
+      <CityRecord>
+        <CityName>Billings</CityName>
+        <StateCode>MT</StateCode>
+        <CountryCode>US</CountryCode>
+      </CityRecord>
+      <CityRecord>
+        <CityName>Charlotte</CityName>
+        <StateCode>NC</StateCode>
+        <CountryCode>US</CountryCode>
+      </CityRecord>
+      <CityRecord>
+        <CityName>Bismarck</CityName>
+        <StateCode>ND</StateCode>
+        <CountryCode>US</CountryCode>
+      </CityRecord>
+      <CityRecord>
+        <CityName>Omaha</CityName>
+        <StateCode>NE</StateCode>
+        <CountryCode>US</CountryCode>
+      </CityRecord>
+      <CityRecord>
+        <CityName>Concord</CityName>
+        <StateCode>NH</StateCode>
+        <CountryCode>US</CountryCode>
+      </CityRecord>
+      <CityRecord>
+        <CityName>Trenton</CityName>
+        <StateCode>NJ</StateCode>
+        <CountryCode>US</CountryCode>
+      </CityRecord>
+      <CityRecord>
+        <CityName>Albuquerque</CityName>
+        <StateCode>NM</StateCode>
+        <CountryCode>US</CountryCode>
+      </CityRecord>
+      <CityRecord>
+        <CityName>Las Vegas</CityName>
+        <StateCode>NV</StateCode>
+        <CountryCode>US</CountryCode>
+      </CityRecord>
+      <CityRecord>
+        <CityName>Buffalo</CityName>
+        <StateCode>NY</StateCode>
+        <CountryCode>US</CountryCode>
+      </CityRecord>
+      <CityRecord>
+        <CityName>New York</CityName>
+        <StateCode>NY</StateCode>
+        <CountryCode>US</CountryCode>
+      </CityRecord>
+      <CityRecord>
+        <CityName>Columbus</CityName>
+        <StateCode>OH</StateCode>
+        <CountryCode>US</CountryCode>
+      </CityRecord>
+      <CityRecord>
+        <CityName>Oklahoma City</CityName>
+        <StateCode>OK</StateCode>
+        <CountryCode>US</CountryCode>
+      </CityRecord>
+      <CityRecord>
+        <CityName>Portland</CityName>
+        <StateCode>OR</StateCode>
+        <CountryCode>US</CountryCode>
+      </CityRecord>
+      <CityRecord>
+        <CityName>Pittsburgh</CityName>
+        <StateCode>PA</StateCode>
+        <CountryCode>US</CountryCode>
+      </CityRecord>
+      <CityRecord>
+        <CityName>Providence</CityName>
+        <StateCode>RI</StateCode>
+        <CountryCode>US</CountryCode>
+      </CityRecord>
+      <CityRecord>
+        <CityName>Charleston</CityName>
+        <StateCode>SC</StateCode>
+        <CountryCode>US</CountryCode>
+      </CityRecord>
+      <CityRecord>
+        <CityName>Sioux Falls</CityName>
+        <StateCode>SD</StateCode>
+        <CountryCode>US</CountryCode>
+      </CityRecord>
+      <CityRecord>
+        <CityName>Nashville</CityName>
+        <StateCode>TN</StateCode>
+        <CountryCode>US</CountryCode>
+      </CityRecord>
+      <CityRecord>
+        <CityName>Austin</CityName>
+        <StateCode>TX</StateCode>
+        <CountryCode>US</CountryCode>
+      </CityRecord>
+      <CityRecord>
+        <CityName>Dallas</CityName>
+        <StateCode>TX</StateCode>
+        <CountryCode>US</CountryCode>
+      </CityRecord>
+      <CityRecord>
+        <CityName>Salt Lake City</CityName>
+        <StateCode>UT</StateCode>
+        <CountryCode>US</CountryCode>
+      </CityRecord>
+      <CityRecord>
+        <CityName>Richmond</CityName>
+        <StateCode>VA</StateCode>
+        <CountryCode>US</CountryCode>
+      </CityRecord>
+      <CityRecord>
+        <CityName>Burlington</CityName>
+        <StateCode>VT</StateCode>
+        <CountryCode>US</CountryCode>
+      </CityRecord>
+      <CityRecord>
+        <CityName>Seattle</CityName>
+        <StateCode>WA</StateCode>
+        <CountryCode>US</CountryCode>
+      </CityRecord>
+      <CityRecord>
+        <CityName>Milwaukee</CityName>
+        <StateCode>WI</StateCode>
+        <CountryCode>US</CountryCode>
+      </CityRecord>
+      <CityRecord>
+        <CityName>Charleston</CityName>
+        <StateCode>WV</StateCode>
+        <CountryCode>US</CountryCode>
+      </CityRecord>
+      <CityRecord>
+        <CityName>Casper</CityName>
+        <StateCode>WY</StateCode>
         <CountryCode>US</CountryCode>
       </CityRecord>
     </CityGroup>
     <CityGroup name="Canadian Cities">
+      <CityRecord>
+        <CityName>Banff</CityName>
+        <StateCode>AB</StateCode>
+        <CountryCode>CA</CountryCode>
+      </CityRecord>
       <CityRecord>
         <CityName>Calgary</CityName>
         <StateCode>AB</StateCode>
@@ -40,12 +315,27 @@
         <CountryCode>CA</CountryCode>
       </CityRecord>
       <CityRecord>
+        <CityName>Saint John</CityName>
+        <StateCode>NB</StateCode>
+        <CountryCode>CA</CountryCode>
+      </CityRecord>
+      <CityRecord>
+        <CityName>St. John's</CityName>
+        <StateCode>NL</StateCode>
+        <CountryCode>CA</CountryCode>
+      </CityRecord>
+      <CityRecord>
         <CityName>Halifax</CityName>
         <StateCode>NS</StateCode>
         <CountryCode>CA</CountryCode>
       </CityRecord>
       <CityRecord>
         <CityName>Ottawa</CityName>
+        <StateCode>ON</StateCode>
+        <CountryCode>CA</CountryCode>
+      </CityRecord>
+      <CityRecord>
+        <CityName>Thunder Bay</CityName>
         <StateCode>ON</StateCode>
         <CountryCode>CA</CountryCode>
       </CityRecord>
@@ -61,6 +351,11 @@
       </CityRecord>
       <CityRecord>
         <CityName>Regina</CityName>
+        <StateCode>SK</StateCode>
+        <CountryCode>CA</CountryCode>
+      </CityRecord>
+      <CityRecord>
+        <CityName>Saskatoon</CityName>
         <StateCode>SK</StateCode>
         <CountryCode>CA</CountryCode>
       </CityRecord>

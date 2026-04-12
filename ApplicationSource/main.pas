@@ -72,7 +72,7 @@ type
   private
     SamplesGenerator: TSampleNamesGenerator;
     SampleNamesList: TSampleNamesList;
-    SavedSettings: TSavedSettings;
+    settings: TSavedSettings;
     CountryCode: String;
     //CitiesList: TCityRecordsList;
     //MultipleCities: Boolean;
@@ -98,20 +98,17 @@ implementation
 procedure TformMain.FormCreate(Sender: TObject);
 begin
   CountryCode := 'US';
-  SavedSettings := TSavedSettings.Create;
+  Settings := dataModuleMain.SavedSettings;
   SamplesGenerator := TSampleNamesGenerator.Create();
-  //CitiesList := TCityRecordsList.Create;
-  //MultipleCities := SavedSettings.MultipleCities;
   SelectSavedCountry;
   PopulateStatesCombo;
-  //CitiesSelectForm.InitForm;
 end;
 
 procedure TformMain.SelectSavedCountry;
 begin
-  if (not String.IsNullOrEmpty(SavedSettings.CountryName)) then begin
-    CountryCode := SavedSettings.CountryName;
-    if (SavedSettings.CountryName = 'US') then
+  if (not String.IsNullOrEmpty(Settings.CountryName)) then begin
+    CountryCode := Settings.CountryName;
+    if (Settings.CountryName = 'US') then
       comboCountry.ItemIndex := 0
     else
       comboCountry.ItemIndex := 1;
@@ -172,7 +169,7 @@ begin
     ShowMessage('There is no list available.');
   end
   else begin
-    FormInsertStatement.SetNamesList(SampleNamesList, SavedSettings);
+    FormInsertStatement.SetNamesList(SampleNamesList, Settings);
     FormInsertStatement.ShowModal;
   end;
 end;
@@ -206,7 +203,7 @@ end;
 
 procedure TformMain.FormClose(Sender: TObject; var CloseAction: TCloseAction);
 begin
-  SavedSettings.SaveSettingsToFile;
+  Settings.SaveSettingsToFile;
 end;
 
 procedure TformMain.PopulateCitiesCombo;
@@ -259,7 +256,12 @@ begin
   if (multCities) then begin
     SampleNamesList := SamplesGenerator.GenerateSampleSet(CountryCode, '', '', num_rows,
       maleDist, femaleDist, randomGenderDist, includeNearbyCities, multCities, CitiesSelectForm.GroupSelected);
-    PopulateSampleNamesGrid;
+    if (SamplesGenerator.Successful) then begin
+      PopulateSampleNamesGrid;
+    end
+    else begin
+      ShowMessage(SamplesGenerator.ErrorMsg);
+    end;
   end
   else if ((comboStates.ItemIndex >= 0) and (comboCities.ItemIndex >= 0) and (not (row_count.Equals(String.Empty)))) then begin
     state_code := GetStateCodeFromCombo();
@@ -268,15 +270,15 @@ begin
     SampleNamesList := SamplesGenerator.GenerateSampleSet(CountryCode, state_code, city_name, num_rows,
       maleDist, femaleDist, randomGenderDist, includeNearbyCities, multCities, CitiesSelectForm.GroupSelected);
     PopulateSampleNamesGrid;
-    SavedSettings.CountryName:= CountryCode;
-    SavedSettings.StateName:= GetStateCodeFromCombo;
-    SavedSettings.CityName := city_name;
-    SavedSettings.NumRows := num_rows;
-    SavedSettings.MalePercentage := maleDist;
-    SavedSettings.FemalePercentage := femaleDist;
-    SavedSettings.RandomGenderDistribution := randomGenderDist;
-    SavedSettings.IncludeNearbyCities := chkIncludeNearby.Checked;
-    SavedSettings.MultipleCities := chkMultipleCities.Checked;
+    Settings.CountryName:= CountryCode;
+    Settings.StateName:= GetStateCodeFromCombo;
+    Settings.CityName := city_name;
+    Settings.NumRows := num_rows;
+    Settings.MalePercentage := maleDist;
+    Settings.FemalePercentage := femaleDist;
+    Settings.RandomGenderDistribution := randomGenderDist;
+    Settings.IncludeNearbyCities := chkIncludeNearby.Checked;
+    Settings.MultipleCities := chkMultipleCities.Checked;
   end
   else begin
     MessageDlg('Message', 'State, City, and Number of rows are required fields.', TMsgDlgType.mtInformation, [mbOK], '');
@@ -310,9 +312,9 @@ begin
     CountryCode:= 'US'
   else
     CountryCode := 'CA';
-  dataModule.dataModuleMain.queryStates.Params[0].Value := CountryCode;
-  dataModule.dataModuleMain.queryStates.Close;
-  dataModule.dataModuleMain.queryStates.Open;
+  dataModuleMain.queryStates.Params[0].Value := CountryCode;
+  dataModuleMain.queryStates.Close;
+  dataModuleMain.queryStates.Open;
   PopulateStatesCombo;
 end;
 
@@ -380,12 +382,12 @@ end;
 procedure TformMain.PopulateStatesCombo;
 begin
   comboStates.Items.Clear;
-  dataModule.dataModuleMain.QueryStates.First;
-  while (not dataModule.dataModuleMain.QueryStates.EOF) do begin
-    comboStates.Items.Add(dataModule.dataModuleMain.QueryStates.FieldByName('state_name').AsString);
-    dataModule.dataModuleMain.QueryStates.Next;
+  dataModuleMain.QueryStates.First;
+  while (not dataModuleMain.QueryStates.EOF) do begin
+    comboStates.Items.Add(dataModuleMain.QueryStates.FieldByName('state_name').AsString);
+    dataModuleMain.QueryStates.Next;
   end;
-  if (SavedSettings.StateName <> String.Empty) then
+  if (Settings.StateName <> String.Empty) then
     SetSavedStateName;
 end;
 
@@ -394,18 +396,18 @@ var
   savedStateCode, savedCityName, currentStateCode : String;
   idx : Integer;
 begin
-  savedStateCode:= SavedSettings.StateName;
-  savedCityName:= SavedSettings.CityName;
+  savedStateCode:= Settings.StateName;
+  savedCityName:= Settings.CityName;
   idx := 0;
-  dataModule.dataModuleMain.queryStates.First;
-  while (not dataModule.dataModuleMain.queryStates.EOF) do begin
-    currentStateCode := dataModule.dataModuleMain.queryStates.FieldByName('state_code').AsString;
-    if (dataModule.dataModuleMain.queryStates.FieldByName('state_code').AsString = savedStateCode) then begin
+  dataModuleMain.queryStates.First;
+  while (not dataModuleMain.queryStates.EOF) do begin
+    currentStateCode := dataModuleMain.queryStates.FieldByName('state_code').AsString;
+    if (dataModuleMain.queryStates.FieldByName('state_code').AsString = savedStateCode) then begin
       comboStates.ItemIndex:= idx;
       Break;
     end;
     Inc(idx);
-    dataModule.dataModuleMain.queryStates.Next;
+    dataModuleMain.queryStates.Next;
   end;
   //Populate combo box for cities.
   PopulateCitiesCombo;
@@ -423,13 +425,13 @@ begin
     end;
   end;
   //Set value for number of rows
-  txtNumRows.Text := IntToStr(SavedSettings.NumRows);
+  txtNumRows.Text := IntToStr(Settings.NumRows);
   //Set Gender distribution parameters.
-  chkRandomGDist.Checked := SavedSettings.RandomGenderDistribution;
-  chkIncludeNearby.Checked := SavedSettings.IncludeNearbyCities;
-  spinMaleDist.Value := SavedSettings.MalePercentage;
-  spinFemaleDist.Value := SavedSettings.FemalePercentage;
-  chkMultipleCities.Checked := SavedSettings.MultipleCities;
+  chkRandomGDist.Checked := Settings.RandomGenderDistribution;
+  chkIncludeNearby.Checked := Settings.IncludeNearbyCities;
+  spinMaleDist.Value := Settings.MalePercentage;
+  spinFemaleDist.Value := Settings.FemalePercentage;
+  chkMultipleCities.Checked := Settings.MultipleCities;
 end;
 
 function TformMain.GetStateCodeFromCombo : String;
@@ -440,7 +442,7 @@ begin
   state_name := String.Empty;
   if (comboStates.ItemIndex >= 0) then begin
     state_name := comboStates.Items[comboStates.ItemIndex];
-    dataModule.dataModuleMain.queryStates.First;
+    dataModuleMain.queryStates.First;
     while (not dataModule.dataModuleMain.queryStates.EOF) do begin
       if (dataModule.dataModuleMain.queryStates.FieldByName('state_name').AsString = state_name) then begin
         state_code := dataModule.dataModuleMain.queryStates.FieldByName('state_code').AsString;

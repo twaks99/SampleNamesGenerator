@@ -5,7 +5,8 @@ unit MultipleCitiesSelect;
 interface
 
 uses
-  Classes, SysUtils, Forms, Controls, Graphics, Dialogs, StdCtrls, Buttons, dataModule, CityRecords;
+  Classes, SysUtils, Forms, Controls, Graphics, Dialogs, StdCtrls, Buttons,
+  ListFilterEdit, dataModule, CityRecords, savedsettings;
 
 type
 
@@ -46,6 +47,12 @@ type
     function GetStateCodeFromCombo : String;
     function GetStateNameFromCode(state_code : String) : String;
     function IsCityRecordDuplicate(cityRecord : TCityRecord) : Boolean;
+    function GetCitiesListByGroupName(grpName : String) : TCityRecordsList;
+    function OrderCitiesListByState(ctList : TCityRecordsList) : TCityRecordsList;
+    procedure UpdateCitiesListByGroupName(grpName : String; ctList : TCityRecordsList);
+    function GetListOfCountries(ctList : TCityRecordsList) : TStringList;
+    function GetListOfStates(ctList : TCityRecordsList; cntryName : String) : TStringList;
+    function GetListOfCities(ctList : TCityRecordsList; cntryName, stName : String) : TStringList;
   public
     CountryCode: String;
     Cities: TCityRecordsList;
@@ -151,14 +158,14 @@ var
   grpName : String;
 begin
   grpName := comboGroup.Items[comboGroup.ItemIndex];
-  dataModuleMain.UpdateCitiesListByGroupName(grpName, Cities);
+  UpdateCitiesListByGroupName(grpName, Cities);
 end;
 
 procedure TCitiesSelectForm.btnSortListClick(Sender: TObject);
 var
   OrderedCitiesList : TCityRecordsList;
 begin
-  OrderedCitiesList := dataModuleMain.OrderCitiesListByState(Cities);
+  OrderedCitiesList := OrderCitiesListByState(Cities);
   Cities := OrderedCitiesList;
   PopulateStateListBox;
   SaveCityList;
@@ -184,7 +191,7 @@ begin
   grpName:= comboGroup.Items[comboGroup.ItemIndex];
   GroupSelected := grpName;
   if (grpName <> '') then begin
-    Cities := dataModuleMain.GetCitiesListByGroupName(grpName);
+    Cities := GetCitiesListByGroupName(grpName);
     PopulateStateListBox;
   end;
 end;
@@ -203,8 +210,8 @@ var
   i : Integer;
 begin
   comboGroup.Items.Clear;
-  for i := 0 to dataModuleMain.CityGroupsList.Count - 1 do begin
-    comboGroup.Items.Add(dataModuleMain.CityGroupsList[i].GroupName);
+  for i := 0 to dataModuleMain.SavedSettings.CityGroupsList.Count - 1 do begin
+    comboGroup.Items.Add(dataModuleMain.SavedSettings.CityGroupsList[i].GroupName);
   end;
 end;
 
@@ -330,6 +337,110 @@ begin
   end;
   Result := InList;
 end;
+
+function TCitiesSelectForm.GetCitiesListByGroupName(grpName : String) : TCityRecordsList;
+var
+  i : Integer;
+  ctList : TCityRecordsList;
+begin
+  ctList := TCityRecordsList.Create;
+  for i := 0 to dataModuleMain.SavedSettings.CityGroupsList.Count - 1 do begin
+    if (dataModuleMain.SavedSettings.CityGroupsList[i].GroupName.ToUpper = grpName.ToUpper) then begin
+      ctList := dataModuleMain.SavedSettings.CityGroupsList[i].CitiesList;
+      break;
+    end;
+  end;
+  Result := ctList;
+end;
+
+procedure TCitiesSelectForm.UpdateCitiesListByGroupName(grpName : String; ctList : TCityRecordsList);
+var
+  i : Integer;
+begin
+  for i := 0 to dataModuleMain.SavedSettings.CityGroupsList.Count - 1 do begin
+    if (dataModuleMain.SavedSettings.CityGroupsList[i].GroupName.ToUpper = grpName.ToUpper) then begin
+      dataModuleMain.SavedSettings.CityGroupsList[i].CitiesList.Clear;
+      dataModuleMain.SavedSettings.CityGroupsList[i].CitiesList := ctList;
+      break;
+    end;
+  end;
+end;
+
+function TCitiesSelectForm.OrderCitiesListByState(ctList : TCityRecordsList) : TCityRecordsList;
+var
+  OrderedRecords : TCityRecordsList;
+  countries, states, theseCities : TStringList;
+  i, j, k : Integer;
+  cityRecord : TCityRecord;
+begin
+  OrderedRecords := TCityRecordsList.Create;
+
+  countries := GetListOfCountries(ctList);
+  for i := 0 to countries.Count - 1 do begin
+    //Get List of states and sort.
+    states := GetListOfStates(ctList, countries[i]);
+    states.Sort;
+    //For each state, find list of cities.
+    for j := 0 to states.Count - 1 do begin
+      theseCities := GetListOfCities(ctList, countries[i], states[j]);
+      theseCities.Sort;
+      //For each city, add a record to the city/state list
+      for k := 0 to theseCities.Count - 1 do begin
+        cityRecord := TCityRecord.Create(theseCities[k], states[j], countries[i]);
+        OrderedRecords.Add(cityRecord);
+      end;
+    end;
+  end;
+  Result := OrderedRecords;
+end;
+
+function TCitiesSelectForm.GetListOfCountries(ctList : TCityRecordsList) : TStringList;
+var
+  countryList : TStringList;
+  i : Integer;
+begin
+  countryList := TStringList.Create;
+  for i := 0 to ctList.Count - 1 do begin
+    if (countryList.IndexOf(ctList[i].CountryCode) < 0) then begin
+      countryList.Add(ctList[i].CountryCode);
+    end;
+  end;
+  Result := countryList;
+end;
+
+function TCitiesSelectForm.GetListOfStates(ctList : TCityRecordsList; cntryName : String) : TStringList;
+var
+  stateList : TStringList;
+  i : Integer;
+begin
+  stateList := TStringList.Create;
+  for i := 0 to ctList.Count - 1 do begin
+    if (ctList[i].CountryCode = cntryName) then begin
+      if (stateList.IndexOf(ctList[i].StateName) < 0) then begin
+        stateList.Add(ctList[i].StateName);
+      end;
+    end;
+  end;
+  Result := stateList;
+end;
+
+function TCitiesSelectForm.GetListOfCities(ctList : TCityRecordsList; cntryName, stName : String) : TStringList;
+var
+  cityList : TStringList;
+  i : Integer;
+begin
+  cityList := TStringList.Create;
+  for i := 0 to ctList.Count - 1 do begin
+    if ((ctList[i].CountryCode = cntryName) And (ctList[i].StateName = stName)) then begin
+      if (cityList.IndexOf(ctList[i].CityName) < 0) then begin
+        cityList.Add(ctList[i].CityName);
+      end;
+    end;
+  end;
+  Result := cityList;
+end;
+
+
 
 end.
 

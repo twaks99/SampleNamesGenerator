@@ -6,7 +6,7 @@ interface
 
 uses
   Classes, SysUtils, SQLDB, DB, Generics.Collections, SQLite3Conn, Math, fgl,
-  dataModule, CityRecords;
+  dataModule, CityRecords, savedsettings;
 
 const
   CommonLetters: array[0..19] of Char = ('A','B','C','D','E','F','G','H',
@@ -54,6 +54,8 @@ type
     StateCode: String;
     City: String;
     NumRowsGenerate: Integer;
+    Successful : Boolean;
+    ErrorMsg : String;
     function GenerateSampleSet(country, state, cityName: String;
       numRows, mdist, fdist: Integer; rdist, nearbyCities: Boolean;
       multCities: Boolean; cityGroup: String) : TSampleNamesList;
@@ -171,6 +173,8 @@ begin
   MaleCount := 0;
   FemaleCount := 0;
   RandomGenderDist := true;
+  Successful := True;
+  ErrorMsg := String.Empty;
   LoadLists;
 end;
 
@@ -180,7 +184,7 @@ function TSampleNamesGenerator.GenerateSampleSet(country, state, cityName: Strin
       numRows, mdist, fdist: Integer; rdist, nearbyCities: Boolean;
       multCities: Boolean; cityGroup: String) : TSampleNamesList;
 var
-  i, cityCntr, genNumber, maleCntr, femaleCntr : Integer;
+  i, j, cityCntr, genNumber, maleCntr, femaleCntr : Integer;
   gndr : Char;
   cityRecord: TCityRecord;
 begin
@@ -192,10 +196,15 @@ begin
   RandomGenderDist := rdist;
   MultipleCities := multCities;
   ListCities := TCityRecordsList.Create;
-  for i := 0 to dataModuleMain.CityGroupsList.Count - 1 do begin
-    if (dataModuleMain.CityGroupsList[i].GroupName = cityGroup) then begin
-      ListCities := dataModuleMain.CityGroupsList[i].CitiesList;
-      break;
+  if (multCities) then begin
+    for i := 0 to  dataModuleMain.SavedSettings.CityGroupsList.Count - 1 do begin
+      if (dataModuleMain.SavedSettings.CityGroupsList[i].GroupName = cityGroup) then begin
+        for j := 0 to dataModuleMain.SavedSettings.CityGroupsList[i].CitiesList.Count - 1 do begin
+          cityRecord := dataModuleMain.SavedSettings.CityGroupsList[i].CitiesList[j];
+          ListCities.Add(TCityRecord.Create(cityRecord.CityName, cityRecord.StateName, cityRecord.CountryCode));
+        end;
+        break;
+      end;
     end;
   end;
   Result := TSampleNamesList.Create;
@@ -339,10 +348,10 @@ begin
   else begin
     SqlList.Add('SELECT MIN(ABS(LATTITUDE)) AS Min_Lattitude, MAX(ABS(LATTITUDE)) AS Max_Lattitude, ');
     SqlList.Add('MIN(ABS(LONGITUDE)) AS Min_Longitude, MAX(ABS(LONGITUDE)) AS Max_Longitude ');
-    SqlList.Add('FROM CanadaZipCodes WHERE PROVINCE = ''' + stateName + ''' AND CITY = ''' + cityName + '''');
+    SqlList.Add('FROM CanadaZipCodes WHERE PROVINCE = ''' + stateName + ''' AND CITY = ''' + cityName.Replace('''', '''''') + '''');
   end;
   RunQuery(SqlList);
-  while (not DataRetrieveQuery.EOF) do begin
+  while (not DataRetrieveQuery.EOF and Successful) do begin
     MinLatt := DataRetrieveQuery.FieldByName('Min_Lattitude').AsFloat;
     MaxLatt := DataRetrieveQuery.FieldByName('Max_Lattitude').AsFloat;
     MinLong := DataRetrieveQuery.FieldByName('Min_Longitude').AsFloat;
@@ -398,7 +407,7 @@ begin
     SqlList.Add('SELECT CITY, PROVINCE AS state, POSTAL_CODE AS zip_code ');
     SqlList.Add('FROM CanadaZipCodes ');
     SqlList.Add('WHERE PROVINCE = ''' + stateName + ''' ');
-    SqlList.Add('  AND city = ''' + cityName + ''' ');
+    SqlList.Add('  AND city = ''' + cityName.Replace('''', '''''') + ''' ');
   end;
   RunQuery(SqlList);
   ZipCodes.Clear;
@@ -509,14 +518,24 @@ procedure TSampleNamesGenerator.RunQuery(Sql: TStringList);
 var
   i: Integer;
 begin
-  DataRetrieveQuery.Close;
-  DataRetrieveQuery.SQL.Clear;
-  for i := 0 to Sql.Count - 1 do begin
-    DataRetrieveQuery.SQL.Add(Sql[i]);
+  try
+    DataRetrieveQuery.Close;
+    DataRetrieveQuery.SQL.Clear;
+    for i := 0 to Sql.Count - 1 do begin
+      DataRetrieveQuery.SQL.Add(Sql[i]);
+    end;
+    DataRetrieveQuery.Open;
+    DataRetrieveQuery.First;
+    Successful := True;
+  except
+    on EDatabaseError do begin
+      Successful := False;
+      ErrorMsg := 'Problem Executing Query: ' + Sql.ToString;
+      DataRetrieveQuery.Close;
+    end;
   end;
-  DataRetrieveQuery.Open;
-  DataRetrieveQuery.First;
 end;
+
 
 end.
 

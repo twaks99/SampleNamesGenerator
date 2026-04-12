@@ -6,7 +6,7 @@ interface
 
 uses
   Classes, SysUtils, SQLDB, DB, Generics.Collections, SQLite3Conn, Math, fgl,
-  dataModule, CityRecords;
+  dataModule, CityRecords, savedsettings;
 
 const
   CommonLetters: array[0..19] of Char = ('A','B','C','D','E','F','G','H',
@@ -54,6 +54,8 @@ type
     StateCode: String;
     City: String;
     NumRowsGenerate: Integer;
+    Successful : Boolean;
+    ErrorMsg : String;
     function GenerateSampleSet(country, state, cityName: String;
       numRows, mdist, fdist: Integer; rdist, nearbyCities: Boolean;
       multCities: Boolean; cityGroup: String) : TSampleNamesList;
@@ -119,11 +121,14 @@ begin
   self.BirthDate:= Now;
 end;
 
+// Returns birth date in YYYY-MM-DD format.
 function TSampleName.BirthDateString : String;
 begin
   Result := FormatDateTime('YYYY-MM-DD', BirthDate);
 end;
 
+// Generates a dictionary with column name as key and value as value for 
+// the sample name record. This is used for template based generation.
 function TSampleName.GenerateDictionary : TNameMap;
 var
   nameDictionary : TNameMap;
@@ -143,7 +148,6 @@ begin
   nameDictionary.Add('BirthDate', self.BirthDateString);
   Result := nameDictionary;
 end;
-
 
 constructor TZipCode.Create(zip, city, state : String);
 begin
@@ -169,15 +173,18 @@ begin
   MaleCount := 0;
   FemaleCount := 0;
   RandomGenderDist := true;
+  Successful := True;
+  ErrorMsg := String.Empty;
   LoadLists;
 end;
 
-
+// This is the main function that generates the list of sample names based on the 
+// input parameters.
 function TSampleNamesGenerator.GenerateSampleSet(country, state, cityName: String;
       numRows, mdist, fdist: Integer; rdist, nearbyCities: Boolean;
       multCities: Boolean; cityGroup: String) : TSampleNamesList;
 var
-  i, cityCntr, genNumber, maleCntr, femaleCntr : Integer;
+  i, j, cityCntr, genNumber, maleCntr, femaleCntr : Integer;
   gndr : Char;
   cityRecord: TCityRecord;
 begin
@@ -188,11 +195,16 @@ begin
   CurrentRecordId := 0;
   RandomGenderDist := rdist;
   MultipleCities := multCities;
-  ListCities := TCityGroupsList.Create;
-  for i := 0 to dataModuleMain.CityGroupsList.Count - 1 do begin
-    if (dataModuleMain.CityGroupsList[i].GroupName = cityGroup) then begin
-      ListCities := dataModuleMain.CityGroupsList[i].CitiesList;
-      break;
+  ListCities := TCityRecordsList.Create;
+  if (multCities) then begin
+    for i := 0 to  dataModuleMain.SavedSettings.CityGroupsList.Count - 1 do begin
+      if (dataModuleMain.SavedSettings.CityGroupsList[i].GroupName = cityGroup) then begin
+        for j := 0 to dataModuleMain.SavedSettings.CityGroupsList[i].CitiesList.Count - 1 do begin
+          cityRecord := dataModuleMain.SavedSettings.CityGroupsList[i].CitiesList[j];
+          ListCities.Add(cityRecord.CityName, cityRecord.StateName, cityRecord.CountryCode);
+        end;
+        break;
+      end;
     end;
   end;
   Result := TSampleNamesList.Create;
@@ -240,6 +252,8 @@ begin
   end;
 end;
 
+// This procedure calculates the number of male and female records based on the 
+// input percentage and total number of records to be generated.
 procedure TSampleNamesGenerator.CalculateGenderDistribution(malePct, femalePct, numRows : Integer);
 var
   diff : Integer;
@@ -258,6 +272,9 @@ begin
   end;
 end;
 
+// This function generates a sample name record based on the input gender and country. 
+// It randomly picks first name, last name, street name, email domain etc. from the 
+// lists loaded from the database.
 function TSampleNamesGenerator.CreateSampleName(gender : char; country : String) : TSampleName;
 var
   SampleName: TSampleName;
@@ -311,6 +328,9 @@ begin
   Result := SampleName;
 end;
 
+// This procedure retrieves the list of zip codes for the input city and state. It also 
+// retrieves zip codes for nearby cities based on the lattitude and longitude of the city. 
+// The retrieved zip codes are stored in the ZipCodes list.
 procedure TSampleNamesGenerator.RetrieveZipCodeListIncludingNearbyCities(cityName, stateName, ctryCode : String);
 var
   MinLatt, MaxLatt, MinLong, MaxLong: Float;
@@ -328,10 +348,10 @@ begin
   else begin
     SqlList.Add('SELECT MIN(ABS(LATTITUDE)) AS Min_Lattitude, MAX(ABS(LATTITUDE)) AS Max_Lattitude, ');
     SqlList.Add('MIN(ABS(LONGITUDE)) AS Min_Longitude, MAX(ABS(LONGITUDE)) AS Max_Longitude ');
-    SqlList.Add('FROM CanadaZipCodes WHERE PROVINCE = ''' + stateName + ''' AND CITY = ''' + cityName + '''');
+    SqlList.Add('FROM CanadaZipCodes WHERE PROVINCE = ''' + stateName + ''' AND CITY = ''' + cityName.Replace('''', '''''') + '''');
   end;
   RunQuery(SqlList);
-  while (not DataRetrieveQuery.EOF) do begin
+  while (not DataRetrieveQuery.EOF and Successful) do begin
     MinLatt := DataRetrieveQuery.FieldByName('Min_Lattitude').AsFloat;
     MaxLatt := DataRetrieveQuery.FieldByName('Max_Lattitude').AsFloat;
     MinLong := DataRetrieveQuery.FieldByName('Min_Longitude').AsFloat;
@@ -368,6 +388,8 @@ begin
   DataRetrieveQuery.Close;
 end;
 
+// This procedure retrieves the list of zip codes for the input city and state. 
+// The retrieved zip codes are stored in the ZipCodes list.
 procedure TSampleNamesGenerator.RetrieveZipCodeListSelectedCity(cityName, stateName, ctryCode : String);
 var
   MinLatt, MaxLatt, MinLong, MaxLong: Float;
@@ -385,7 +407,7 @@ begin
     SqlList.Add('SELECT CITY, PROVINCE AS state, POSTAL_CODE AS zip_code ');
     SqlList.Add('FROM CanadaZipCodes ');
     SqlList.Add('WHERE PROVINCE = ''' + stateName + ''' ');
-    SqlList.Add('  AND city = ''' + cityName + ''' ');
+    SqlList.Add('  AND city = ''' + cityName.Replace('''', '''''') + ''' ');
   end;
   RunQuery(SqlList);
   ZipCodes.Clear;
@@ -399,6 +421,8 @@ begin
   DataRetrieveQuery.Close;
 end;
 
+// This procedure calculates the list of area codes for the input state and country. The
+// retrieved area codes are stored in the AreaCodes list.
 procedure TSampleNamesGenerator.GetAreaCodesForState(state, country: String);
 var
   SqlList: TStringList;
@@ -418,6 +442,8 @@ begin
   end;
 end;
 
+// This procedure loads the lists for first names, last names, street names, email 
+// domains etc. from the database.
 procedure TSampleNamesGenerator.LoadLists;
 var
   SqlList: TStringList;
@@ -470,6 +496,8 @@ begin
   DataRetrieveQuery.Close;
 end;
 
+// This function generates a random number with the specified number of digits. 
+// The generated number is returned as an Int64.
 function TSampleNamesGenerator.GenerateRandomFixedDigitNumber(numDigits: Integer): Int64;
 var
   baseNum, randSeed: Int64;
@@ -484,18 +512,30 @@ begin
   end;
 end;
 
+// This procedure executes the input SQL query and opens the DataRetrieveQuery with the 
+// result set.
 procedure TSampleNamesGenerator.RunQuery(Sql: TStringList);
 var
   i: Integer;
 begin
-  DataRetrieveQuery.Close;
-  DataRetrieveQuery.SQL.Clear;
-  for i := 0 to Sql.Count - 1 do begin
-    DataRetrieveQuery.SQL.Add(Sql[i]);
+  try
+    DataRetrieveQuery.Close;
+    DataRetrieveQuery.SQL.Clear;
+    for i := 0 to Sql.Count - 1 do begin
+      DataRetrieveQuery.SQL.Add(Sql[i]);
+    end;
+    DataRetrieveQuery.Open;
+    DataRetrieveQuery.First;
+    Successful := True;
+  except
+    on EDatabaseError do begin
+      Successful := False;
+      ErrorMsg := 'Problem Executing Query: ' + Sql.ToString;
+      DataRetrieveQuery.Close;
+    end;
   end;
-  DataRetrieveQuery.Open;
-  DataRetrieveQuery.First;
 end;
+
 
 end.
 

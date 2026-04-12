@@ -35,6 +35,7 @@ type
       DBTableName : String;
       MultipleCities : Boolean;
       SavedColumnMappings : TSavedColumnMappingList;
+      CityGroupsList: TCityGroupsList;
       procedure SaveSettingsToFile;
     private
       procedure ReadSettingsFromFile;
@@ -62,9 +63,12 @@ begin
   MalePercentage := 0;
   FemalePercentage := 0;
   SavedColumnMappings := TSavedColumnMappingList.Create;
-	ReadSettingsFromFile;
+  CityGroupsList := TCityGroupsList.Create;
+  ReadSettingsFromFile;
 end;
 
+//Reads settings from the XML file and populates the properties of this class. 
+//If the file does not exist, default values are used for all properties.
 procedure TSavedSettings.ReadSettingsFromFile;
 var
   doc : TXMLDocument;
@@ -110,13 +114,13 @@ begin
       end;
       //List of Cities
       if (doc.DocumentElement.FindNode('CitiesList') <> nil) then begin
-        dataModule.dataModuleMain.CityGroupsList.Clear;
+        CityGroupsList.Clear;
         fldListNode := doc.DocumentElement.FindNode('CitiesList');
-        fldItemNode := fldListNode.FirstChild;
+        grpNode := fldListNode.FirstChild;
 
-        while Assigned(fldItemNode) do begin
+        while Assigned(grpNode) do begin
           //Get city group node.
-          grpNode := fldListNode.FindNode('CityGroup');
+          //grpNode := fldListNode.FindNode('CityGroup');
           grpName:= grpNode.Attributes.GetNamedItem('name').NodeValue;
           cityGroup := TCityListGroup.Create(grpName);
           grpItemNode := grpNode.FirstChild;
@@ -128,7 +132,7 @@ begin
             cityGroup.CitiesList.Add(cityrecord);
             grpItemNode := grpItemNode.NextSibling;
           end;
-          dataModule.dataModuleMain.CityGroupsList.Add(cityGroup);
+          CityGroupsList.Add(cityGroup);
           grpNode := grpNode.NextSibling;
         end;
       end;
@@ -160,6 +164,9 @@ begin
   end;
 end;
 
+//Saves the current settings to an XML file. This includes all properties of 
+//this class, as well as the list of column mappings and the list of cities 
+//(if multiple cities option is selected).
 procedure TSavedSettings.SaveSettingsToFile;
 var
   doc : TXMLDocument;
@@ -207,11 +214,11 @@ begin
       useColStr := 'false';
     rootNode.AppendChild(CreateXMLValueNode(doc, 'MultipleCities', useColStr));
     //List of Cities
-    if (dataModule.dataModuleMain.CityGroupsList.Count > 0) then begin
+    if (CityGroupsList.Count > 0) then begin
       fldListNode := doc.CreateElement('CitiesList');
       rootNode.AppendChild(fldListNode);
-      for i := 0 to dataModule.dataModuleMain.CityGroupsList.Count - 1 do begin
-        cityGroup := dataModule.dataModuleMain.CityGroupsList[i];
+      for i := 0 to CityGroupsList.Count - 1 do begin
+        cityGroup := CityGroupsList[i];
         grpNode := doc.CreateElement('CityGroup');
         TDOMElement(grpNode).SetAttribute('name', cityGroup.GroupName);
         fldListNode.AppendChild(grpNode);
@@ -249,6 +256,8 @@ begin
   end;
 end;
 
+//Helper function to create an XML node with a text value. This is used to 
+//simplify the process of adding new nodes to the XML document.
 function TSavedSettings.CreateXMLValueNode(doc: TXMLDocument; nodeName, nodeValue : String) : TDOMNode;
 var
   parentNode, txtValueNode : TDOMNode;

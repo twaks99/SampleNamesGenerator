@@ -49,8 +49,8 @@ object formMain: TformMain
   end
   object gridResults: TStringGrid
     Left = 16
-    Height = 517
-    Top = 176
+    Height = 501
+    Top = 192
     Width = 1026
     AlternateColor = clBtnFace
     Anchors = [akTop, akLeft, akRight, akBottom]
@@ -114,7 +114,7 @@ object formMain: TformMain
   object lblSampleNames: TLabel
     Left = 16
     Height = 15
-    Top = 152
+    Top = 168
     Width = 58
     Caption = 'Names List'
     ParentColor = False
@@ -123,7 +123,7 @@ object formMain: TformMain
     Left = 16
     Height = 65
     Hint = 'Select the delimited character when copying results to the clipboard.'
-    Top = 80
+    Top = 96
     Width = 208
     AutoFill = True
     Caption = 'Delimiter for Clipboard Copy'
@@ -134,8 +134,8 @@ object formMain: TformMain
     ChildSizing.ShrinkVertical = crsScaleChilds
     ChildSizing.Layout = cclLeftToRightThenTopToBottom
     ChildSizing.ControlsPerLine = 2
-    ClientHeight = 43
-    ClientWidth = 206
+    ClientHeight = 45
+    ClientWidth = 204
     Columns = 2
     ItemIndex = 0
     Items.Strings = (
@@ -301,11 +301,11 @@ object formMain: TformMain
   object grpGenderDisttribution: TGroupBox
     Left = 232
     Height = 64
-    Top = 80
+    Top = 96
     Width = 440
     Caption = 'Gender Distribution'
-    ClientHeight = 42
-    ClientWidth = 438
+    ClientHeight = 44
+    ClientWidth = 436
     TabOrder = 8
     object lblMaleDist: TLabel
       Left = 8
@@ -385,11 +385,11 @@ object formMain: TformMain
   object grpRowCount: TGroupBox
     Left = 679
     Height = 64
-    Top = 80
+    Top = 96
     Width = 360
     Caption = 'Other'
-    ClientHeight = 42
-    ClientWidth = 358
+    ClientHeight = 44
+    ClientWidth = 356
     TabOrder = 10
     object lblNumRows: TLabel
       Left = 8
@@ -421,15 +421,15 @@ object formMain: TformMain
   object chkMultipleCities: TCheckBox
     Left = 72
     Height = 19
-    Top = 48
+    Top = 56
     Width = 94
     Caption = 'Multiple Cities'
     TabOrder = 11
   end
   object btnMultipleCities: TBitBtn
-    Left = 208
+    Left = 224
     Height = 30
-    Top = 40
+    Top = 56
     Width = 216
     Caption = 'Specify Multiple Cities'
     Glyph.Data = {

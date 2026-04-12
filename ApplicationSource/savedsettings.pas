@@ -5,7 +5,7 @@ unit savedsettings;
 interface
 
 uses
-  Classes, SysUtils, DOM, XMLRead, XMLWrite, Generics.Collections, dataModule, CityRecords;
+  Classes, SysUtils, DOM, XMLRead, XMLWrite, Generics.Collections, CityRecords;
 
 const
   SettingsFileName : String = 'savedsettings.xml';
@@ -35,6 +35,7 @@ type
       DBTableName : String;
       MultipleCities : Boolean;
       SavedColumnMappings : TSavedColumnMappingList;
+      CityGroupsList: TCityGroupsList;
       procedure SaveSettingsToFile;
     private
       procedure ReadSettingsFromFile;
@@ -62,7 +63,8 @@ begin
   MalePercentage := 0;
   FemalePercentage := 0;
   SavedColumnMappings := TSavedColumnMappingList.Create;
-	ReadSettingsFromFile;
+  CityGroupsList := TCityGroupsList.Create;
+  ReadSettingsFromFile;
 end;
 
 //Reads settings from the XML file and populates the properties of this class. 
@@ -112,7 +114,7 @@ begin
       end;
       //List of Cities
       if (doc.DocumentElement.FindNode('CitiesList') <> nil) then begin
-        dataModule.dataModuleMain.CityGroupsList.Clear;
+        CityGroupsList.Clear;
         fldListNode := doc.DocumentElement.FindNode('CitiesList');
         grpNode := fldListNode.FirstChild;
 
@@ -130,7 +132,7 @@ begin
             cityGroup.CitiesList.Add(cityrecord);
             grpItemNode := grpItemNode.NextSibling;
           end;
-          dataModule.dataModuleMain.CityGroupsList.Add(cityGroup);
+          CityGroupsList.Add(cityGroup);
           grpNode := grpNode.NextSibling;
         end;
       end;
@@ -212,11 +214,11 @@ begin
       useColStr := 'false';
     rootNode.AppendChild(CreateXMLValueNode(doc, 'MultipleCities', useColStr));
     //List of Cities
-    if (dataModule.dataModuleMain.CityGroupsList.Count > 0) then begin
+    if (CityGroupsList.Count > 0) then begin
       fldListNode := doc.CreateElement('CitiesList');
       rootNode.AppendChild(fldListNode);
-      for i := 0 to dataModule.dataModuleMain.CityGroupsList.Count - 1 do begin
-        cityGroup := dataModule.dataModuleMain.CityGroupsList[i];
+      for i := 0 to CityGroupsList.Count - 1 do begin
+        cityGroup := CityGroupsList[i];
         grpNode := doc.CreateElement('CityGroup');
         TDOMElement(grpNode).SetAttribute('name', cityGroup.GroupName);
         fldListNode.AppendChild(grpNode);
