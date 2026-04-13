@@ -359,6 +359,7 @@ var
 begin
   for i := 0 to dataModuleMain.SavedSettings.CityGroupsList.Count - 1 do begin
     if (dataModuleMain.SavedSettings.CityGroupsList[i].GroupName.ToUpper = grpName.ToUpper) then begin
+      dataModuleMain.SavedSettings.CityGroupsList[i].CitiesList.Clear;
       dataModuleMain.SavedSettings.CityGroupsList[i].CitiesList := ctList;
       break;
     end;

@@ -254,13 +254,18 @@ begin
   includeNearbyCities := chkIncludeNearby.Checked;
   multCities := chkMultipleCities.Checked;
   if (multCities) then begin
-    SampleNamesList := SamplesGenerator.GenerateSampleSet(CountryCode, '', '', num_rows,
-      maleDist, femaleDist, randomGenderDist, includeNearbyCities, multCities, CitiesSelectForm.GroupSelected);
-    if (SamplesGenerator.Successful) then begin
-      PopulateSampleNamesGrid;
+    if (CitiesSelectForm.GroupSelected = String.Empty) then begin
+      ShowMessage('Please select a city group.');
     end
     else begin
-      ShowMessage(SamplesGenerator.ErrorMsg);
+      SampleNamesList := SamplesGenerator.GenerateSampleSet(CountryCode, '', '', num_rows,
+        maleDist, femaleDist, randomGenderDist, includeNearbyCities, multCities, CitiesSelectForm.GroupSelected);
+      if (SamplesGenerator.Successful) then begin
+        PopulateSampleNamesGrid;
+      end
+      else begin
+        ShowMessage(SamplesGenerator.ErrorMsg);
+      end;
     end;
   end
   else if ((comboStates.ItemIndex >= 0) and (comboCities.ItemIndex >= 0) and (not (row_count.Equals(String.Empty)))) then begin

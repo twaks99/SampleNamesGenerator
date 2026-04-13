@@ -312,9 +312,9 @@ begin
     CountryCode:= 'US'
   else
     CountryCode := 'CA';
-  dataModule.dataModuleMain.queryStates.Params[0].Value := CountryCode;
-  dataModule.dataModuleMain.queryStates.Close;
-  dataModule.dataModuleMain.queryStates.Open;
+  dataModuleMain.queryStates.Params[0].Value := CountryCode;
+  dataModuleMain.queryStates.Close;
+  dataModuleMain.queryStates.Open;
   PopulateStatesCombo;
 end;
 
@@ -382,10 +382,10 @@ end;
 procedure TformMain.PopulateStatesCombo;
 begin
   comboStates.Items.Clear;
-  dataModule.dataModuleMain.QueryStates.First;
-  while (not dataModule.dataModuleMain.QueryStates.EOF) do begin
-    comboStates.Items.Add(dataModule.dataModuleMain.QueryStates.FieldByName('state_name').AsString);
-    dataModule.dataModuleMain.QueryStates.Next;
+  dataModuleMain.QueryStates.First;
+  while (not dataModuleMain.QueryStates.EOF) do begin
+    comboStates.Items.Add(dataModuleMain.QueryStates.FieldByName('state_name').AsString);
+    dataModuleMain.QueryStates.Next;
   end;
   if (Settings.StateName <> String.Empty) then
     SetSavedStateName;
@@ -399,15 +399,15 @@ begin
   savedStateCode:= Settings.StateName;
   savedCityName:= Settings.CityName;
   idx := 0;
-  dataModule.dataModuleMain.queryStates.First;
-  while (not dataModule.dataModuleMain.queryStates.EOF) do begin
-    currentStateCode := dataModule.dataModuleMain.queryStates.FieldByName('state_code').AsString;
-    if (dataModule.dataModuleMain.queryStates.FieldByName('state_code').AsString = savedStateCode) then begin
+  dataModuleMain.queryStates.First;
+  while (not dataModuleMain.queryStates.EOF) do begin
+    currentStateCode := dataModuleMain.queryStates.FieldByName('state_code').AsString;
+    if (dataModuleMain.queryStates.FieldByName('state_code').AsString = savedStateCode) then begin
       comboStates.ItemIndex:= idx;
       Break;
     end;
     Inc(idx);
-    dataModule.dataModuleMain.queryStates.Next;
+    dataModuleMain.queryStates.Next;
   end;
   //Populate combo box for cities.
   PopulateCitiesCombo;
@@ -442,7 +442,7 @@ begin
   state_name := String.Empty;
   if (comboStates.ItemIndex >= 0) then begin
     state_name := comboStates.Items[comboStates.ItemIndex];
-    dataModule.dataModuleMain.queryStates.First;
+    dataModuleMain.queryStates.First;
     while (not dataModule.dataModuleMain.queryStates.EOF) do begin
       if (dataModule.dataModuleMain.queryStates.FieldByName('state_name').AsString = state_name) then begin
         state_code := dataModule.dataModuleMain.queryStates.FieldByName('state_code').AsString;

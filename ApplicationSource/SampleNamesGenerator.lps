@@ -18,8 +18,9 @@
         <ComponentName Value="formMain"/>
         <HasResources Value="True"/>
         <ResourceBaseClass Value="Form"/>
-        <TopLine Value="249"/>
-        <CursorPos X="52" Y="270"/>
+        <IsVisibleTab Value="True"/>
+        <TopLine Value="242"/>
+        <CursorPos X="6" Y="270"/>
         <UsageCount Value="200"/>
         <Loaded Value="True"/>
         <LoadedDesigner Value="True"/>
@@ -28,9 +29,8 @@
         <Filename Value="generatesamplename.pas"/>
         <IsPartOfProject Value="True"/>
         <UnitName Value="GenerateSampleName"/>
-        <IsVisibleTab Value="True"/>
         <EditorIndex Value="5"/>
-        <TopLine Value="195"/>
+        <TopLine Value="196"/>
         <CursorPos X="32" Y="197"/>
         <UsageCount Value="201"/>
         <Loaded Value="True"/>
@@ -102,8 +102,8 @@
         <ResourceBaseClass Value="Form"/>
         <UnitName Value="MultipleCitiesSelect"/>
         <EditorIndex Value="2"/>
-        <TopLine Value="176"/>
-        <CursorPos Y="185"/>
+        <TopLine Value="57"/>
+        <CursorPos Y="77"/>
         <UsageCount Value="203"/>
         <Loaded Value="True"/>
         <LoadedDesigner Value="True"/>

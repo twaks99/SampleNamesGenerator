@@ -69,13 +69,14 @@ implementation
 
 procedure TCitiesSelectForm.comboStateSelect(Sender: TObject);
 begin
-  comboCity.Caption := '';
+  comboCity.Caption := String.Empty;
   PopulateCitiesCombo;
 end;
 
 procedure TCitiesSelectForm.FormCreate(Sender: TObject);
 begin
   InitForm;
+  GroupSelected := String.Empty;
 end;
 
 procedure TCitiesSelectForm.listCitiesSelectionChange(Sender: TObject;
